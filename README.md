@@ -4,7 +4,7 @@
 **Contributors**_:_ Monday_blues_, Dixizer, andrewwindsor, HongMint  
 **Minecraft Versions**_:_ Spigot(Paper) 1.12 ~ 1.17  
 **Contact Developer**_:_ Discord(updated): 종원짱#6938   
-**Download**_:_ [download](https://github.com/FreedyPlugins/FreedyMinigameMaker2/blob/master/jar/FreedyMinigameMaker2.jar)
+**Download**_:_ [download](https://github.com/FreedyPlugins/FreedyMinigameMaker2/raw/master/jar/FreedyMinigameMaker2.jar)
 
 ## Introduce
 You can create MiniGame systems such as Spleef, Tnt Run, and PvP.  
