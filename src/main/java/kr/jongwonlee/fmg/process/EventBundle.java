@@ -8,20 +8,21 @@ import java.util.stream.Collectors;
 
 public enum EventBundle {
 
-    PRE_JOIN,
     JOIN,
-    PRE_LEFT,
     LEFT,
-    START,
-    PRE_STOP,
-    STOP,
+    PRE_GAME_JOIN,
+    GAME_JOIN,
+    PRE_GAME_LEFT,
+    GAME_LEFT,
+    GAME_START,
+    PRE_GAME_STOP,
+    GAME_STOP,
     INTERACT,
     MOVE,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),
     INVENTORY_CLICK("onInventoryClick"),
-    MOVE("onMove"),
     BLOCK_BREAK("onBlockBreak"),
     BLOCK_PLACE("onBlockPlace"),
     BLOCK_DAMAGE("onBlockDamage"),

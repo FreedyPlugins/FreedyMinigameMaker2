@@ -55,20 +55,20 @@ public class MiniGame {
 
     public void join(UUID playerUuid) {
         Player player = toPlayer(playerUuid);
-        run(EventBundle.PRE_JOIN, player);
+        run(EventBundle.PRE_GAME_JOIN, player);
         if (playersData.containsKey(playerUuid)) return;
         playersData.put(playerUuid, new GameData());
         GameStore.setGame(player, this);
-        run(EventBundle.JOIN, player);
+        run(EventBundle.GAME_JOIN, player);
     }
 
     public void quit(UUID playerUuid) {
         if (!playersData.containsKey(playerUuid)) return;
         Player player = toPlayer(playerUuid);
-        run(EventBundle.PRE_LEFT, player);
+        run(EventBundle.PRE_GAME_LEFT, player);
         playersData.remove(playerUuid);
         GameStore.removeGame(player);
-        run(EventBundle.LEFT, player);
+        run(EventBundle.GAME_LEFT, player);
         if (playersData.isEmpty()) disable();
     }
 
@@ -81,11 +81,11 @@ public class MiniGame {
     }
 
     public void disable() {
-        run(EventBundle.PRE_STOP);
+        run(EventBundle.PRE_GAME_STOP);
         playersData.keySet().forEach(this::quit);
         playersData.clear();
         gameData.clear();
-        run(EventBundle.STOP);
+        run(EventBundle.GAME_STOP);
     }
 
 }

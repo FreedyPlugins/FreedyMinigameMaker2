@@ -2,7 +2,7 @@ name: FreedyMinigameMaker2
 version: @version@
 main: kr.jongwonlee.fmg.FMGPlugin
 api-version: 1.13
-authors: [ Bruce0203, Monday_blues_, Dixizer, andrewwindsor ]
+authors: [ Bruce0203, Monday_blues_, Dixizer, andrewwindsor, HongMint ]
 description: Make arcade-games with script system
 website: https://github.com/FreedyPlugins/FreedyMinigameMaker2
 commands:
