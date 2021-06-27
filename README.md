@@ -47,9 +47,3 @@ Interact: player interact stuffs
 
 ## Known issue
 Max game file size is about 1 billion columns.  
-
-
----
-# Note
-
-settings.yml bundlePrefix 에 on 은 Yaml의 true로 인식해서 따옴표를 붙여야 합니다.
