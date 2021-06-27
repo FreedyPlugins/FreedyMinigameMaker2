@@ -1,0 +1,4 @@
+DUPLICATED_BUNDLE: "Duplicated Bundle Name %s"
+INVALID_PROCESS_PARSE: "Invalid process \"%s\""
+ONLY_PLAYER: "Only players can run it."
+DUPLICATED_EVENT: "\"%s\" event alias duplicated in events.yml"
