@@ -1,1 +1,1 @@
-on join print Hello World
+on game join -> print Hello World

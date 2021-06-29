@@ -1,7 +1,7 @@
 package kr.jongwonlee.fmg.util;
 
 import kr.jongwonlee.fmg.FMGPlugin;
-import kr.jongwonlee.fmg.setting.Settings;
+import kr.jongwonlee.fmg.conf.Settings;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;

@@ -13,7 +13,7 @@ public enum GameAlert {
     private String message;
 
     public void print(String[] args) {
-        FMGPlugin.getInst().getLogger().warning(args == null ? message : String.format(message, (Object) args));
+        FMGPlugin.getInst().getLogger().warning(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public void print() {

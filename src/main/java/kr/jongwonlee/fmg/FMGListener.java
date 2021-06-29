@@ -1,6 +1,7 @@
 package kr.jongwonlee.fmg;
 
-import kr.jongwonlee.fmg.process.EventBundle;
+import kr.jongwonlee.fmg.game.GameStore;
+import kr.jongwonlee.fmg.proc.EventBundle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -4,8 +4,8 @@
 **Contributors**_:_ Monday_blues_, Dixizer, andrewwindsor, HongMint  
 **Minecraft Versions**_:_ Spigot(Paper) 1.12 ~ 1.17  
 **Contact Developer**_:_ Discord(updated): 종원#6938   
-**Download**_:_ [_download latest_](https://github.com/FreedyPlugins/FreedyMinigameMaker2/raw/master/jar/FreedyMinigameMaker2.jar) */* 
-[_download release_](https://github.com/FreedyPlugins/FreedyMinigameMaker2/raw/master/jar/FreedyMinigameMaker2.jar)
+**Note**_:_ A library under the Apache 2.0 license, [jafama's FastMath](https://github.com/jeffhain/jafama), is used for good computational performance.  
+**Website**_:_ [_Not Exists_]() */* 
 
 ## Introduce
 You can create MiniGame systems such as Spleef, Tnt Run, and PvP.  
