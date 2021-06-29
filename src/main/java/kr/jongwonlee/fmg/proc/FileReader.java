@@ -1,4 +1,4 @@
-package kr.jongwonlee.fmg.parse;
+package kr.jongwonlee.fmg.proc;
 
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.util.FileStore;

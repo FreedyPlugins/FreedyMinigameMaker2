@@ -2,11 +2,12 @@ package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.*;
-import kr.jongwonlee.fmg.parse.FileParser;
-import kr.jongwonlee.fmg.parse.ParseUnit;
+import kr.jongwonlee.fmg.proc.FileParser;
+import kr.jongwonlee.fmg.proc.ParseUnit;
 import kr.jongwonlee.fmg.proc.Process;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Processable(alias = {"("})
@@ -22,13 +23,13 @@ public class SmallFrontBrace implements FrontBrace {
         processList.add(process);
     }
 
+
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        if (processList == null) {
-            parseUnit.addBraceProc(this);
-            processList = new ArrayList<>();
-        }
+        processList = new ArrayList<>();
+        parseUnit.addBraceProc(this);
         addProc(FileParser.parseProcess(parseUnit, arguments));
+        Collections.reverse(processList);
     }
 
     @Override

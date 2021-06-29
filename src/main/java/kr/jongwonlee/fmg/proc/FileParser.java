@@ -1,8 +1,5 @@
-package kr.jongwonlee.fmg.parse;
+package kr.jongwonlee.fmg.proc;
 
-import kr.jongwonlee.fmg.proc.ProcBundle;
-import kr.jongwonlee.fmg.proc.ProcType;
-import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.data.etc.Nothing;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.util.GameAlert;
@@ -73,7 +70,6 @@ public class FileParser {
         int index = string.indexOf(' ');
         String args = cutFrontSpace(index == -1 ? "" : string.substring(index));
         Process process = procType.getNewProcess();
-        parseUnit.addProcType(procType);
         process.parse(parseUnit, args);
         return process;
     }
@@ -88,14 +84,12 @@ public class FileParser {
         if (procType == null) return getNothing(parseUnit, origin);
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
         Process process = procType.getNewProcess();
-        parseUnit.addProcType(procType);
         process.parse(parseUnit, args);
         return process;
     }
 
     public static Nothing getNothing(ParseUnit parseUnit, String string) {
         Nothing nothing = new Nothing();
-        parseUnit.addProcType(ProcType.NOTHING);
         nothing.parse(parseUnit, string);
         return nothing;
     }

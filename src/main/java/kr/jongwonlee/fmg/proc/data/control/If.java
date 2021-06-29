@@ -5,20 +5,16 @@ import kr.jongwonlee.fmg.proc.ProcType;
 import kr.jongwonlee.fmg.proc.Processable;
 import kr.jongwonlee.fmg.proc.ProcUnit;
 import kr.jongwonlee.fmg.proc.Process;
-import kr.jongwonlee.fmg.parse.FileParser;
-import kr.jongwonlee.fmg.parse.ParseUnit;
+import kr.jongwonlee.fmg.proc.FileParser;
+import kr.jongwonlee.fmg.proc.ParseUnit;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Processable(alias = "if")
 public class If implements Process {
 
-    List<Condition> conditionList;
-    private Process valueA;
-    private ProcType operator;
-    private Process valueB;
-    private Process body;
+    private SmallFrontBrace frontBrace;
 
     @Override
     public ProcType getType() {
@@ -29,43 +25,40 @@ public class If implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         Process parseProcess = FileParser.parseProcess(parseUnit, arguments);
         if (!(parseProcess instanceof SmallFrontBrace)) return;
-        conditionList = new ArrayList<>();
-        SmallFrontBrace frontBrace = ((SmallFrontBrace) parseProcess);
-        List<Process> processList = new ArrayList<>(frontBrace.getProcessList());
-        List<List<Process>> splitList = new ArrayList<>();
-        while (processList.size() == 0) {
-            Process process = processList.get(0);
-            if (process.getType() == ProcType.OR) splitList.subList(0, );
-        }
-        while (processList.size() == 0){
-            Process process = processList.get(0);
-            switch (process.getType()) {
-                case IF_BIG:
-                case IF_EQUAL:
-                case IF_BIG_SAME:
-                case IF_SMALL:
-                case IF_NOT_EQUAL:
-                case IF_SMALL_SAME: {
-                    break;
-                }
-            }
-            Condition condition = new Condition();
-            conditionList.add(condition);
-        }
-        valueA = FileParser.parseProcess(parseUnit, arguments);
-        operator = parseUnit.getProcType(0);
-        valueB = FileParser.parseProcess(parseUnit, parseUnit.getArgs());
-        body = FileParser.parseProcess(parseUnit, parseUnit.getArgs());
+        frontBrace = ((SmallFrontBrace) parseProcess);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        String valueA = this.valueA.run(miniGame, procUnit);
-        String valueB = this.valueB.run(miniGame, procUnit);
-        if (getValue(valueA, valueB, operator)) {
-            body.run(miniGame, procUnit);
-            return "true";
-        } else return "false";
+        boolean result = false;
+        Process tempProc = null;
+        ProcType compareType;
+        ProcType conditionType = null;
+        List<Process> processList = frontBrace.getProcessList();
+        Iterator<Process> iterator = processList.iterator();
+        while (iterator.hasNext()) {
+            Process process = iterator.next();
+            if (process instanceof IfOperator) {
+                conditionType = process.getType();
+            } else if (process instanceof CompareOperator) {
+                compareType = process.getType();
+                if (result && compareType == ProcType.OR) {
+                    return processList.get(processList.size() - 1).run(miniGame, procUnit);
+                }
+                else if (!result && compareType == ProcType.AND) return "";
+            } else if (process instanceof SmallEndBrace && result) {
+                return iterator.next().run(miniGame, procUnit);
+            } else {
+                if (tempProc != null && conditionType != null) {
+                    String valueA = tempProc.run(miniGame, procUnit);
+                    String valueB = process.run(miniGame, procUnit);
+                    result = getValue(valueA, valueB, conditionType);
+                    conditionType = null;
+                }
+                tempProc = process;
+            }
+        }
+        return "";
     }
 
     private static double toDouble(String string) throws NumberFormatException {
@@ -87,15 +80,5 @@ public class If implements Process {
             return false;
         }
     }
-
-}
-class Condition {
-
-    Process valueA;
-    ProcType operator;
-    Process valueB;
-    Process body;
-
-
 
 }

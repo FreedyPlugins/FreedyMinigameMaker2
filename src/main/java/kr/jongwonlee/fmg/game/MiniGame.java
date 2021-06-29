@@ -3,7 +3,7 @@ package kr.jongwonlee.fmg.game;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.proc.ProcUnit;
-import kr.jongwonlee.fmg.parse.FileParser;
+import kr.jongwonlee.fmg.proc.FileParser;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

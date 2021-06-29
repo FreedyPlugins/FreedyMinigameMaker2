@@ -1,7 +1,6 @@
 package kr.jongwonlee.fmg.proc;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.parse.ParseUnit;
 
 public interface Process {
 

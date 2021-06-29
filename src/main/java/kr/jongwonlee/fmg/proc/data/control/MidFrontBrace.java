@@ -1,9 +1,9 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.parse.FileParser;
+import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.*;
-import kr.jongwonlee.fmg.parse.ParseUnit;
+import kr.jongwonlee.fmg.proc.ParseUnit;
 import kr.jongwonlee.fmg.proc.Process;
 
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class MidFrontBrace implements FrontBrace {
         this.skipProcess = process;
     }
 
-    public String skip(MiniGame miniGame, ProcUnit procUnit) {
-        return skipProcess.run(miniGame, procUnit);
-    }
+//    public String skip(MiniGame miniGame, ProcUnit procUnit) {
+//        return skipProcess.run(miniGame, procUnit);
+//    }
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
@@ -38,6 +38,7 @@ public class MidFrontBrace implements FrontBrace {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         procBundle.run(miniGame, procUnit);
+        skipProcess.run(miniGame, procUnit);
         return "";
     }
 

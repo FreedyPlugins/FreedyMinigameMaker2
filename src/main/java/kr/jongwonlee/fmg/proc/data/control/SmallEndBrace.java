@@ -5,8 +5,8 @@ import kr.jongwonlee.fmg.proc.ProcType;
 import kr.jongwonlee.fmg.proc.ProcUnit;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.Processable;
-import kr.jongwonlee.fmg.parse.FileParser;
-import kr.jongwonlee.fmg.parse.ParseUnit;
+import kr.jongwonlee.fmg.proc.FileParser;
+import kr.jongwonlee.fmg.proc.ParseUnit;
 
 @Processable(alias = {")"})
 public class SmallEndBrace implements Process {
@@ -15,8 +15,9 @@ public class SmallEndBrace implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         FrontBrace frontBrace = parseUnit.getFrontBrace();
         if (frontBrace instanceof SmallFrontBrace) {
-            frontBrace.addProc(this);
+            parseUnit.removeBraceProc();
             frontBrace.addProc(FileParser.parseProcess(parseUnit, arguments));
+            frontBrace.addProc(this);
         }
     }
 

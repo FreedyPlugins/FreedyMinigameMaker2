@@ -1,19 +1,22 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
+import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcType;
 import kr.jongwonlee.fmg.proc.ProcUnit;
-import kr.jongwonlee.fmg.proc.Process;
-import kr.jongwonlee.fmg.parse.ParseUnit;
+import kr.jongwonlee.fmg.proc.ParseUnit;
 import kr.jongwonlee.fmg.proc.Processable;
 
 @Processable(alias = "&&")
-public class And implements Process {
-
+public class And implements CompareOperator {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        parseUnit.putArgs(arguments);
+        FrontBrace frontBrace = parseUnit.getFrontBrace();
+        if (frontBrace instanceof SmallFrontBrace) {
+            frontBrace.addProc(FileParser.parseProcess(parseUnit, arguments));
+            frontBrace.addProc(this);
+        }
     }
 
     @Override
