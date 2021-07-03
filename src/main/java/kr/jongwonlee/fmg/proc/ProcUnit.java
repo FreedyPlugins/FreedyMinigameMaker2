@@ -3,19 +3,19 @@ package kr.jongwonlee.fmg.proc;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProcUnit {
 
     public final ProcTarget target;
-    private int state;
+    private boolean add;
     private boolean set;
     private boolean game;
     private boolean online;
     private boolean player;
-//    private final List<ProcType> processList;
-    private final List<ProcType> smallBraceList;
+    private String returned;
+
+    public boolean isAdd() {
+        return add;
+    }
 
     public boolean isSet() {
         return set;
@@ -31,6 +31,10 @@ public class ProcUnit {
 
     public boolean isPlayer() {
         return player;
+    }
+
+    public void setAdd(boolean add) {
+        this.add = add;
     }
 
     public void setSet(boolean set) {
@@ -49,29 +53,16 @@ public class ProcUnit {
         this.player = player;
     }
 
-    public ProcType getSmallBraceProc() {
-        if (smallBraceList.size() == 0) return null;
-        return smallBraceList.get(smallBraceList.size() - 1);
+    public String getReturned() {
+        return returned;
     }
 
-    public void addSmallBraceProc(ProcType procType) {
-        smallBraceList.add(procType);
+    public void setReturned(String returned) {
+        this.returned = returned;
     }
-
-    /*
-    public void addProcType(ProcType procType) {
-        processList.add(procType);
-    }
-
-    public ProcType getLatestProcType() {
-        if (processList.size() == 0) return null;
-        else return processList.get(processList.size() - 1);
-    }*/
 
     public ProcUnit(ProcTarget target) {
         this.target = target;
-        smallBraceList = new ArrayList<>();
-//        processList = new ArrayList<>();
     }
 
     public ProcUnit reset() {

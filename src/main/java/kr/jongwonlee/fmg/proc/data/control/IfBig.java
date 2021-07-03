@@ -1,11 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.ProcType;
-import kr.jongwonlee.fmg.proc.ProcUnit;
-import kr.jongwonlee.fmg.proc.Processable;
-import kr.jongwonlee.fmg.proc.FileParser;
-import kr.jongwonlee.fmg.proc.ParseUnit;
+import kr.jongwonlee.fmg.proc.*;
 
 @Processable(alias = {">"})
 public class IfBig implements IfOperator {
@@ -14,8 +10,8 @@ public class IfBig implements IfOperator {
     public void parse(ParseUnit parseUnit, String arguments) {
         FrontBrace frontBrace = parseUnit.getFrontBrace();
         if (frontBrace instanceof SmallFrontBrace) {
-            frontBrace.addProc(FileParser.parseProcess(parseUnit, arguments));
-            frontBrace.addProc(this);
+            frontBrace.addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
+            frontBrace.addProc(parseUnit, this);
         }
     }
 

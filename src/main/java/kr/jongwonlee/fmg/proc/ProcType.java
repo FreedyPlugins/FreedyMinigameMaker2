@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 public enum ProcType {
     /*control package---------------------------------*/
     AND(And.class),
+    ELSE(Else.class),
+    EXECUTE_ADD(ExecuteAdd.class),
     EXECUTE_GAME(ExecuteGame.class),
     EXECUTE_ONLINE(ExecuteOnline.class),
     EXECUTE_PLAYER(ExecutePlayer.class),
@@ -25,16 +27,20 @@ public enum ProcType {
     IF_SMALL_SAME(IfSmallSame.class),
     MID_END_BRACE(MidEndBrace.class),
     MID_FRONT_BRACE(MidFrontBrace.class),
+    NOTHING(Nothing.class),
     OR(Or.class),
+    RETURN(Return.class),
     SMALL_END_BRACE(SmallEndBrace.class),
     SMALL_FRONT_BRACE(SmallFrontBrace.class),
+    THEN(Then.class),
+    WHILE(While.class),
     /*etc package---------------------------------*/
     DATA(Data.class),
     DO(Do.class),
     EXECUTE(Execute.class),
+    INT(Int.class),
     LOG(Log.class),
     NAME(Name.class),
-    NOTHING(Nothing.class),
     TIMINGS(Timings.class),
     /*minecraft package---------------------------------*/
     BROADCAST(Broadcast.class),

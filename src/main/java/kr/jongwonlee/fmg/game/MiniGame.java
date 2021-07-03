@@ -1,13 +1,15 @@
 package kr.jongwonlee.fmg.game;
 
 import kr.jongwonlee.fmg.proc.EventBundle;
+import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.proc.ProcUnit;
-import kr.jongwonlee.fmg.proc.FileParser;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MiniGame {
 
@@ -23,22 +25,26 @@ public class MiniGame {
         gameData = new GameData();
     }
 
-    public void run(String name, Player player) {
-        if (bundleMap.containsKey(name)) bundleMap.get(name).run(this, player);
+    public String run(String name, Player player) {
+        if (bundleMap.containsKey(name)) return bundleMap.get(name).run(this, player);
+        return "";
     }
 
-    public void run(String name, ProcUnit procUnit) {
-        if (bundleMap.containsKey(name)) bundleMap.get(name).run(this, procUnit);
+    public String run(String name, ProcUnit procUnit) {
+        if (bundleMap.containsKey(name)) return bundleMap.get(name).run(this, procUnit);
+        return "";
     }
 
-    public void run(EventBundle name) {
+    public String run(EventBundle name) {
         String eventName = name.getName();
-        if (bundleMap.containsKey(eventName)) bundleMap.get(eventName).run(this);
+        if (bundleMap.containsKey(eventName)) return bundleMap.get(eventName).run(this);
+        return "";
     }
 
-    public void run(EventBundle name, Player player) {
+    public String run(EventBundle name, Player player) {
         String eventName = name.getName();
-        if (bundleMap.containsKey(eventName)) bundleMap.get(eventName).run(this, player);
+        if (bundleMap.containsKey(eventName)) return bundleMap.get(eventName).run(this, player);
+        return "";
     }
 
     public String getName() {

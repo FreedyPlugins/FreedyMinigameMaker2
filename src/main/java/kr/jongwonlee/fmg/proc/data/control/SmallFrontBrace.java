@@ -1,10 +1,8 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.*;
-import kr.jongwonlee.fmg.proc.FileParser;
-import kr.jongwonlee.fmg.proc.ParseUnit;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +17,7 @@ public class SmallFrontBrace implements FrontBrace {
         return processList;
     }
 
-    public void addProc(Process process) {
+    public void addProc(ParseUnit parseUnit, Process process) {
         processList.add(process);
     }
 
@@ -28,7 +26,7 @@ public class SmallFrontBrace implements FrontBrace {
     public void parse(ParseUnit parseUnit, String arguments) {
         processList = new ArrayList<>();
         parseUnit.addBraceProc(this);
-        addProc(FileParser.parseProcess(parseUnit, arguments));
+        addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
         Collections.reverse(processList);
     }
 

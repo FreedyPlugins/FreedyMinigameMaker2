@@ -1,12 +1,17 @@
 package kr.jongwonlee.fmg.proc;
 
-import kr.jongwonlee.fmg.proc.data.etc.Nothing;
 import kr.jongwonlee.fmg.conf.Settings;
+import kr.jongwonlee.fmg.proc.data.control.Then;
+import kr.jongwonlee.fmg.proc.data.control.Nothing;
 import kr.jongwonlee.fmg.util.GameAlert;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FileParser {
 
@@ -16,41 +21,42 @@ public class FileParser {
             Map<String, ProcBundle> bundles = new HashMap<>();
             String firstLine = reader.readLine();
             if (firstLine == null) return bundles;
-            String line = cutFrontSpace(cutBackSpace(firstLine.replace("\t", "")));
+            String line = firstLine.replace("\t", "").trim();
             while (line != null) {
                 if (isStartWith(line, Settings.getBundlePrefix())) {
-                    String bundleName = cutFrontSpace(line.substring(line.indexOf(Settings.getBundlePrefix()) + Settings.getBundlePrefix().length()));
-                    String lambda = "->";
-                    int lambdaIndex = bundleName.indexOf(lambda);
-                    if (lambdaIndex != -1) {
-                        String lambdaBundleName = cutBackSpace(bundleName.substring(0, lambdaIndex)).toLowerCase();
-                        String lambdaArgs = cutFrontSpace(bundleName.substring(lambdaIndex + lambda.length()));
-                        if (lambdaArgs.length() != 0) {
-                            List<Process> lambdaProcList = new ArrayList<>();
-                            ParseUnit parseUnit = new ParseUnit();
-                            Process process = parseProcess(parseUnit, lambdaArgs);
-                            while  (parseUnit.hasBrace()) {
-                                parseUnit.getFrontBrace().addProc(parseProcess(parseUnit, reader.readLine()));
-                            }
-                            lambdaProcList.add(process);
-                            ProcBundle lambdaProcBundle = new ProcBundle(lambdaProcList);
-                            bundles.put(lambdaBundleName, lambdaProcBundle);
-                        }
-                    }
-                    bundleName = bundleName.toLowerCase();
-                    if (bundleName.equals("")) continue;
-                    List<Process> processList = new ArrayList<>();
+                    String bundleName = line.substring(line.indexOf(Settings.getBundlePrefix()) + Settings.getBundlePrefix().length()).trim();
                     ParseUnit parseUnit = new ParseUnit();
+                    List<Process> processList = new ArrayList<>();
+                    if (bundleName.equals("")) continue;
+                    int braceIndex = bundleName.indexOf("{");
+                    if (braceIndex != -1) {
+                        String braceArg = bundleName.substring(braceIndex + 1);
+                        bundleName = bundleName.substring(0, braceIndex).toLowerCase().trim();
+                        processList.add(parseProcess(parseUnit, ProcType.MID_FRONT_BRACE, braceArg));
+                        while (parseUnit.hasBrace()) {
+                            line = reader.readLine();
+                            if (line == null) break;
+                            line = line.replace("\t", "").trim();
+                            parseUnit.getFrontBrace().addProc(parseUnit, parseProcess(parseUnit, line));
+                        }
+                        if (bundles.containsKey(bundleName)) {
+                            GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
+                        } else bundles.put(bundleName, new ProcBundle(processList));
+                        continue;
+                    }
+                    bundleName = bundleName.toLowerCase().trim();
                     while ((line = reader.readLine()) != null) {
-                        line = cutBackSpace(cutFrontSpace(line).replace("\t", ""));
+                        line = line.replace("\t", "").trim();
                         if (isStartWith(line, Settings.getBundlePrefix())) break;
                         Process process = parseProcess(parseUnit, line);
-                        while  (parseUnit.hasBrace()) {
-                            parseUnit.getFrontBrace().addProc(parseProcess(parseUnit, reader.readLine()));
+                        while (parseUnit.hasBrace()) {
+                            line = reader.readLine().replace("\t", "").trim();
+                            parseUnit.getFrontBrace().addProc(parseUnit, parseProcess(parseUnit, line));
                         }
                         processList.add(process);
                     }
                     if (bundles.containsKey(bundleName)) {
+                        Bukkit.broadcastMessage(bundleName);
                         GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
                     } else bundles.put(bundleName, new ProcBundle(processList));
                 } else line = reader.readLine();
@@ -66,7 +72,7 @@ public class FileParser {
         if (string == null) return getNothing(parseUnit, "");
         String origin = toColor(string);
         if (procType == null) return getNothing(parseUnit, string);
-        string = FileParser.cutFrontSpace(origin);
+        string = cutFrontSpace(origin);
         int index = string.indexOf(' ');
         String args = cutFrontSpace(index == -1 ? "" : string.substring(index));
         Process process = procType.getNewProcess();
@@ -88,10 +94,24 @@ public class FileParser {
         return process;
     }
 
+    public static boolean isEmptyProcess(Process process) {
+        if (process instanceof Nothing) {
+            String value = ((Nothing) process).getValue();
+            return value == null || value.trim().length() == 0;
+        }
+        return false;
+    }
+
     public static Nothing getNothing(ParseUnit parseUnit, String string) {
         Nothing nothing = new Nothing();
         nothing.parse(parseUnit, string);
         return nothing;
+    }
+
+    public static Then getOneMoreLine(ParseUnit parseUnit, String string) {
+        Then then = new Then();
+        then.parse(parseUnit, string);
+        return then;
     }
 
     public static boolean isStartWith(String string, String regex) {
@@ -100,6 +120,7 @@ public class FileParser {
         return index == 0;
     }
 
+    @Deprecated
     public static int getStartIndex(String string) {
         if (string == null) return -1;
         for (int i = string.length() - 1; i >= 0; i--) {
@@ -108,16 +129,6 @@ public class FileParser {
             }
         }
         return -1;
-    }
-
-    public static String cutBackSpace(String string) {
-        if (string == null) return null;
-        for (int i = string.length() - 1; i >= 0; i--) {
-            if (string.charAt(i) != ' ' && string.charAt(i) != '\t') {
-                return string.substring(0, i + 1);
-            }
-        }
-        return string;
     }
 
     public static String cutFrontSpace(String string) {

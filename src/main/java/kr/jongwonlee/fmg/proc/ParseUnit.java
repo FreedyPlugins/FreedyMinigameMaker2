@@ -11,6 +11,10 @@ public class ParseUnit {
     private final List<FrontBrace> braceList;
     private final List<If> ifList;
 
+    public void removeBraceProc(FrontBrace frontBrace) {
+        braceList.remove(frontBrace);
+    }
+
     public void addBraceProc(FrontBrace frontBrace) {
         braceList.add(frontBrace);
     }
@@ -28,8 +32,8 @@ public class ParseUnit {
         return braceList.get(braceList.size() - 1);
     }
 
-    public void addIf(If aIf) {
-        ifList.add(aIf);
+    public void addIf(If anIf) {
+        ifList.add(anIf);
     }
 
     public void removeIf() {

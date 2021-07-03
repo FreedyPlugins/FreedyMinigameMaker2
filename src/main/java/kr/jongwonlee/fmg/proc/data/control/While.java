@@ -8,8 +8,8 @@ import org.bukkit.Bukkit;
 import java.util.Iterator;
 import java.util.List;
 
-@Processable(alias = "if")
-public class If extends ConditionOperator {
+@Processable(alias = "while")
+public class While extends ConditionOperator {
 
     private SmallFrontBrace frontBrace;
     private boolean result = true;
@@ -20,12 +20,11 @@ public class If extends ConditionOperator {
 
     @Override
     public ProcType getType() {
-        return ProcType.IF;
+        return ProcType.WHILE;
     }
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        parseUnit.addIf(this);
         Process parseProcess = FileParser.parseProcess(parseUnit, arguments);
         if (!(parseProcess instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) parseProcess);
@@ -53,11 +52,13 @@ public class If extends ConditionOperator {
                 compareType = process.getType();
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
+                    run(miniGame, procUnit);
                     return "";
                 }
                 else if (!result && compareType == ProcType.AND) return "";
             } else if (process instanceof SmallEndBrace && result) {
                 iterator.next().run(miniGame, procUnit);
+                run(miniGame, procUnit);
                 return "";
             } else {
                 if (tempProc != null && conditionType != null) {

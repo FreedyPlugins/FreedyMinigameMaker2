@@ -1,17 +1,17 @@
-package kr.jongwonlee.fmg.proc.data.etc;
+package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import kr.jongwonlee.fmg.proc.Process;
 
-@Processable(alias = {"execute"})
-public class Execute implements Process {
+@Processable(alias = {"add"})
+public class ExecuteAdd implements Process {
 
-    Process process;
+    private Process process;
 
     @Override
     public ProcType getType() {
-        return ProcType.EXECUTE;
+        return ProcType.EXECUTE_ADD;
     }
 
     @Override
@@ -21,7 +21,9 @@ public class Execute implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return process.run(miniGame, procUnit);
+        procUnit.setAdd(true);
+        process.run(miniGame, procUnit);
+        return null;
     }
 
 }

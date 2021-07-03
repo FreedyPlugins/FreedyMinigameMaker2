@@ -2,12 +2,8 @@ package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.ProcType;
-import kr.jongwonlee.fmg.proc.Processable;
-import kr.jongwonlee.fmg.proc.ProcUnit;
 import kr.jongwonlee.fmg.proc.Process;
-import kr.jongwonlee.fmg.proc.FileParser;
-import kr.jongwonlee.fmg.proc.ParseUnit;
+import kr.jongwonlee.fmg.proc.*;
 
 @Processable(alias = {"log", "console"})
 public class Log implements Process {

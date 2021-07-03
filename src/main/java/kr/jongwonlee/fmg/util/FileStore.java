@@ -57,14 +57,14 @@ public class FileStore {
     }
 
     public void loadResource() throws IOException {
-        InputStream inputStream = plugin.getResource(file.getName().equals(Settings.getHubGameName() + Settings.getExtension()) ? "hub" : (inDir ? "game" : this.file.getName()));
-        if (inputStream == null) return;
-        byte[] buffer = new byte[inputStream.available()];
-        inputStream.read(buffer);
-        OutputStream outStream = new FileOutputStream(this.file);
-        outStream.write(buffer);
-        inputStream.close();
-        outStream.close();
+            InputStream inputStream = plugin.getResource(file.getName().equals(Settings.getHubGameName() + Settings.getExtension()) ? "hub" : (inDir ? "game" : this.file.getName()));
+            if (inputStream == null) return;
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            OutputStream outStream = new FileOutputStream(this.file);
+            outStream.write(buffer);
+            inputStream.close();
+            outStream.close();
     }
 
     public File getFile() {

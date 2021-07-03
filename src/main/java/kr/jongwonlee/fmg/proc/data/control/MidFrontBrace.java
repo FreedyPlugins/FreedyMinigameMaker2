@@ -1,10 +1,8 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.FileParser;
-import kr.jongwonlee.fmg.proc.*;
-import kr.jongwonlee.fmg.proc.ParseUnit;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 
 import java.util.ArrayList;
 
@@ -12,19 +10,15 @@ import java.util.ArrayList;
 public class MidFrontBrace implements FrontBrace {
 
     ProcBundle procBundle;
-    Process skipProcess;
+    Process nextProcess;
 
-    public void addProc(Process process) {
+    public void addProc(ParseUnit parseUnit, Process process) {
         procBundle.add(process);
     }
 
     public void addSkipProc(Process process) {
-        this.skipProcess = process;
+        this.nextProcess = process;
     }
-
-//    public String skip(MiniGame miniGame, ProcUnit procUnit) {
-//        return skipProcess.run(miniGame, procUnit);
-//    }
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
@@ -32,14 +26,15 @@ public class MidFrontBrace implements FrontBrace {
             parseUnit.addBraceProc(this);
             procBundle = new ProcBundle(new ArrayList<>());
         }
-        addProc(FileParser.parseProcess(parseUnit, arguments));
+        addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         procBundle.run(miniGame, procUnit);
-        skipProcess.run(miniGame, procUnit);
-        return "";
+        nextProcess.run(miniGame, procUnit);
+        String returned = procUnit.getReturned();
+        return returned == null ? "" : returned;
     }
 
     @Override

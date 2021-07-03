@@ -18,20 +18,28 @@ public class ProcBundle {
         processList.add(process);
     }
 
-    public void run(MiniGame miniGame) {
-        run(miniGame, new ProcUnit(new ProcTarget()));
+    public String run(MiniGame miniGame) {
+        return run(miniGame, new ProcUnit(new ProcTarget()));
     }
 
-    public void run(MiniGame miniGame, Player player) {
-        run(miniGame, ProcUnit.getNewProcUnit(player));
+    public String run(MiniGame miniGame, Player player) {
+        return run(miniGame, ProcUnit.getNewProcUnit(player));
     }
 
     public void run(MiniGame miniGame, Entity entity) {
         run(miniGame, ProcUnit.getNewProcUnit(entity));
     }
 
-    public void run(MiniGame miniGame, ProcUnit procUnit) {
-        processList.forEach(processable -> processable.run(miniGame, procUnit.reset()));
+    public String run(MiniGame miniGame, ProcUnit procUnit) {
+        for (Process process : processList) {
+            if (procUnit.getReturned() == null) process.run(miniGame, procUnit.reset());
+            else {
+                String returned = procUnit.getReturned();
+                procUnit.setReturned(null);
+                return returned;
+            }
+        }
+        return "";
     }
 
 }

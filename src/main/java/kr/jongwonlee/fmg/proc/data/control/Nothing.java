@@ -1,12 +1,8 @@
-package kr.jongwonlee.fmg.proc.data.etc;
+package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.ProcType;
-import kr.jongwonlee.fmg.proc.Processable;
-import kr.jongwonlee.fmg.proc.ProcUnit;
 import kr.jongwonlee.fmg.proc.Process;
-import kr.jongwonlee.fmg.proc.FileParser;
-import kr.jongwonlee.fmg.proc.ParseUnit;
+import kr.jongwonlee.fmg.proc.*;
 
 @Processable(alias = "nothing")
 public class Nothing implements Process {
@@ -15,6 +11,10 @@ public class Nothing implements Process {
     Process process;
     Process frontProcess;
 
+    public String getValue() {
+        return value;
+    }
+
     @Override
     public ProcType getType() {
         return ProcType.NOTHING;
@@ -22,7 +22,10 @@ public class Nothing implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        String args = FileParser.cutBackSpace(FileParser.cutFrontSpace(arguments));
+        String args = arguments.trim();
+        if (args.length() == 0) {
+            return;
+        }
         int index = args.indexOf(' ');
         String frontArg = index == -1 ? args : args.substring(0, index + 1);
         int frontQuote = frontArg.indexOf('\"');
