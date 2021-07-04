@@ -8,6 +8,8 @@ public enum GameAlert {
     INVALID_PROCESS_PARSE,
     ONLY_PLAYER,
     DUPLICATED_EVENT,
+    ERROR,
+    EDITOR_SAVE,
     ;
 
     private String message;

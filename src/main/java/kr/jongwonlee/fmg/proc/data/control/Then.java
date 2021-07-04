@@ -16,7 +16,6 @@ public class Then implements FrontBrace {
 
     @Override
     public void addProc(ParseUnit parseUnit, Process process) {
-        Bukkit.broadcastMessage(process.getType().name());
         this.process = process;
         parseUnit.removeBraceProc(this);
     }
@@ -34,7 +33,6 @@ public class Then implements FrontBrace {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        Bukkit.broadcastMessage(process.getType().name());
         return process.run(miniGame, procUnit);
     }
 

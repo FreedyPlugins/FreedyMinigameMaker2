@@ -5,6 +5,8 @@ import kr.jongwonlee.fmg.conf.ItemStore;
 import kr.jongwonlee.fmg.conf.LocationStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
+import kr.jongwonlee.fmg.image.ImageEditor;
+import kr.jongwonlee.fmg.nms.NMS;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
@@ -23,6 +25,8 @@ public final class FMGPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        NMS.init();
+        ImageEditor.init();
         FMGCommand.init();
         FMGListener.init();
         GameAlert.init();
@@ -49,6 +53,10 @@ public final class FMGPlugin extends JavaPlugin {
 
     public static void runTask(Runnable task) {
         Bukkit.getScheduler().runTask(getInst(), task);
+    }
+
+    public static void runTaskAsync(Runnable task) {
+        Bukkit.getScheduler().runTaskAsynchronously(getInst(), task);
     }
 
     public static void runTaskLater(Runnable task, long delay) {

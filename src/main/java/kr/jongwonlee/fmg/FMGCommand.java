@@ -6,6 +6,7 @@ import kr.jongwonlee.fmg.conf.LocationStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
+import kr.jongwonlee.fmg.image.ImageEditor;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.proc.ProcTarget;
 import kr.jongwonlee.fmg.proc.ProcUnit;
@@ -17,7 +18,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Set;
 
 public class FMGCommand implements CommandExecutor {
@@ -136,6 +136,11 @@ public class FMGCommand implements CommandExecutor {
                     case "locs":
                     case "location": {
                         LocationStore.setLocation(message, player.getLocation());
+                        return true;
+                    }
+                    case "edit":
+                    case "editor": {
+                        ImageEditor.openEditor(player, message);
                         return true;
                     }
                 }

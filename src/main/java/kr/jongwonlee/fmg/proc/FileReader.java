@@ -34,6 +34,10 @@ public class FileReader {
         return line;
     }
 
+    public void closeFile() throws IOException {
+        reader.close();
+    }
+
     public String getLine() {
         return line;
     }

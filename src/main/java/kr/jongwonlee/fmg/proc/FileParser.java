@@ -1,8 +1,8 @@
 package kr.jongwonlee.fmg.proc;
 
 import kr.jongwonlee.fmg.conf.Settings;
-import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.proc.data.control.Nothing;
+import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,14 +56,15 @@ public class FileParser {
                         processList.add(process);
                     }
                     if (bundles.containsKey(bundleName)) {
-                        Bukkit.broadcastMessage(bundleName);
                         GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
                     } else bundles.put(bundleName, new ProcBundle(processList));
                 } else line = reader.readLine();
             }
+            reader.closeFile();
             return bundles;
         } catch (IOException e) {
             e.printStackTrace();
+
             return new HashMap<>();
         }
     }

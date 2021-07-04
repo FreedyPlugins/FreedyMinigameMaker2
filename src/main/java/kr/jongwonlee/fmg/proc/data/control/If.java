@@ -35,7 +35,6 @@ public class If extends ConditionOperator {
         if (process.getType() == ProcType.SMALL_END_BRACE) {
             processList.add(FileParser.getOneMoreLine(parseUnit, ""));
         }
-        processList.forEach(p -> Bukkit.broadcastMessage(p.getType().name()));
     }
 
     @Override

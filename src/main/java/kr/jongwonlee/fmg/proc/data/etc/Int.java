@@ -1,8 +1,8 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 
 @Processable(alias = {"int"})
 public class Int implements Process {
