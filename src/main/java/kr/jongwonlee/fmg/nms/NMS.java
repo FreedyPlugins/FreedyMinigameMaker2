@@ -18,7 +18,6 @@ public class NMS {
         } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
             return;
         }
-        FMGPlugin.getInst().getLogger().info("Your server is running version " + version);
         switch (version) {
             case "v1_12_R1":
                 imageViewer = new kr.jongwonlee.fmg.nms.v1_12_R1.Viewer();
