@@ -32,12 +32,9 @@ public class ProcBundle {
 
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         for (Process process : processList) {
-            if (procUnit.getReturned() == null) process.run(miniGame, procUnit.reset());
-            else {
-                String returned = procUnit.getReturned();
-                procUnit.setReturned(null);
-                return returned;
-            }
+            process.run(miniGame, procUnit.reset());
+            String returned = procUnit.getReturned();
+            if (returned != null) return returned;
         }
         return "";
     }

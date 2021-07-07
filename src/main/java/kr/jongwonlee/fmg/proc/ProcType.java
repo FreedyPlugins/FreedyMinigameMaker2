@@ -2,8 +2,7 @@ package kr.jongwonlee.fmg.proc;
 
 import kr.jongwonlee.fmg.proc.data.control.*;
 import kr.jongwonlee.fmg.proc.data.etc.*;
-import kr.jongwonlee.fmg.proc.data.minecraft.Broadcast;
-import kr.jongwonlee.fmg.proc.data.minecraft.SendMessage;
+import kr.jongwonlee.fmg.proc.data.minecraft.*;
 import kr.jongwonlee.fmg.util.GameAlert;
 
 import java.util.Arrays;
@@ -36,15 +35,21 @@ public enum ProcType {
     WHILE(While.class),
     /*etc package---------------------------------*/
     DATA(Data.class),
+    DELAY(Delay.class),
     DO(Do.class),
     EXECUTE(Execute.class),
+    EXECUTE_ASYNC(ExecuteAsync.class),
     INT(Int.class),
     LOG(Log.class),
     NAME(Name.class),
+    RANDOM(Random.class),
     TIMINGS(Timings.class),
     /*minecraft package---------------------------------*/
+    ACTION_BAR(ActionBar.class),
     BROADCAST(Broadcast.class),
     SEND_MESSAGE(SendMessage.class),
+    TELEPORT(Teleport.class),
+    TITLE(Title.class),
     /*---------------------------------*/
     ;
 

@@ -60,7 +60,11 @@ public final class FMGPlugin extends JavaPlugin {
     }
 
     public static void runTaskLater(Runnable task, long delay) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, delay);
+        Bukkit.getScheduler().runTaskLater(plugin, task, delay);
+    }
+
+    public static void runTaskLaterAsync(Runnable task, long delay) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
     }
 
 }

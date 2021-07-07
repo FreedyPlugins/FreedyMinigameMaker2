@@ -27,24 +27,24 @@ public class MiniGame {
 
     public String run(String name, Player player) {
         if (bundleMap.containsKey(name)) return bundleMap.get(name).run(this, player);
-        return "";
+        else return "";
     }
 
     public String run(String name, ProcUnit procUnit) {
         if (bundleMap.containsKey(name)) return bundleMap.get(name).run(this, procUnit);
-        return "";
+        else return "";
     }
 
     public String run(EventBundle name) {
         String eventName = name.getName();
         if (bundleMap.containsKey(eventName)) return bundleMap.get(eventName).run(this);
-        return "";
+        else return "";
     }
 
     public String run(EventBundle name, Player player) {
         String eventName = name.getName();
         if (bundleMap.containsKey(eventName)) return bundleMap.get(eventName).run(this, player);
-        return "";
+        else return "";
     }
 
     public String getName() {
@@ -57,6 +57,10 @@ public class MiniGame {
 
     public GameData getGameData() {
         return gameData;
+    }
+
+    public GameData getPlayerData(UUID uuid) {
+        return playersData.getOrDefault(uuid, gameData);
     }
 
     public void join(UUID playerUuid) {

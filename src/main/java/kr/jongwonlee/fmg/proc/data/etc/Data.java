@@ -9,6 +9,21 @@ import kr.jongwonlee.fmg.proc.*;
 public class Data implements Process {
 
     Process process;
+    boolean isAdd;
+    boolean isGame;
+    boolean isSet;
+
+    public boolean isAdd() {
+        return isAdd;
+    }
+
+    public boolean isGame() {
+        return isGame;
+    }
+
+    public boolean isSet() {
+        return isSet;
+    }
 
     @Override
     public ProcType getType() {
@@ -17,6 +32,9 @@ public class Data implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        isAdd = parseUnit.useAdd();
+        isGame = parseUnit.useGame();
+        isSet = parseUnit.useSet();
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
@@ -34,26 +52,21 @@ public class Data implements Process {
         int index = message.indexOf(' ');
         String name = index <= 0 ? message : message.substring(0, index);
         String value = index <= 0 ? "" : message.substring(index + 1);
-        if (procUnit.isAdd()) {
-            procUnit.setAdd(false);
-            if (procUnit.isGame()) {
+        if (isAdd()) {
+            if (isGame()) {
                 miniGame.getGameData().setData(name, add(miniGame.getGameData().getData(name), value));
-                procUnit.setGame(false);
             } else {
-                GameData gameData = miniGame.getPlayersData().get(procUnit.target.player.getUniqueId());
+                GameData gameData = miniGame.getPlayerData(procUnit.target.player.getUniqueId());
                 gameData.setData(name, add(gameData.getData(name), value));
             }
-        } else if (procUnit.isSet()) {
-            procUnit.setSet(false);
-            if (procUnit.isGame()) {
+        } else if (isSet()) {
+            if (isGame()) {
                 miniGame.getGameData().setData(name, value);
-                procUnit.setGame(false);
             } else {
-                miniGame.getPlayersData().get(procUnit.target.player.getUniqueId()).setData(name, value);
+                miniGame.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
             }
         } else {
-            if (procUnit.isGame()) {
-                procUnit.setGame(false);
+            if (isGame()) {
                 return miniGame.getGameData().getData(name) + ' ' + value;
             } else {
                 return getPlayerData(miniGame, procUnit).getData(name) + ' ' + value;

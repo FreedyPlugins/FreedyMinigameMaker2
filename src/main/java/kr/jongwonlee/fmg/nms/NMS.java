@@ -1,6 +1,5 @@
 package kr.jongwonlee.fmg.nms;
 
-import kr.jongwonlee.fmg.FMGPlugin;
 import org.bukkit.Bukkit;
 
 public class NMS {

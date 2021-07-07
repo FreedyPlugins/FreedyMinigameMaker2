@@ -66,6 +66,7 @@ public class FMGCommand implements CommandExecutor {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
                         long before = System.currentTimeMillis();
                         if (sender instanceof Player) sender.sendMessage("Reloading...");
+                        FMGPlugin.getInst().getLogger().info("Reloading...");
                         if (game == null) {
                             ItemStore.init();
                             LocationStore.init();
@@ -99,13 +100,17 @@ public class FMGCommand implements CommandExecutor {
                 switch (args[0]) {
                     case "join": {
                         if (!sender.hasPermission("freedyminigamemaker.join." + message)) return true;
-                        game.join(player.getUniqueId());
+                        if (player == null) GameAlert.ONLY_PLAYER.print();
+                        else game.join(player.getUniqueId());
                         return true;
                     }
                     case "left":
                     case "quit": {
                         if (!sender.hasPermission("freedyminigamemaker.quit." + message)) return true;
-                        GameStore.getGames().forEach(miniGame -> miniGame.quit(player.getUniqueId()));
+                        if (player == null) GameAlert.ONLY_PLAYER.print();
+                        else GameStore.getGames().forEach(miniGame -> {
+                            if (!miniGame.equals(GameStore.getHubGame())) miniGame.quit(player.getUniqueId());
+                        });
                         return true;
                     }
                     case "do":
@@ -129,17 +134,20 @@ public class FMGCommand implements CommandExecutor {
                 switch (args[0]) {
                     case "item":
                     case "items": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
                         ItemStore.setItemStack(message, player.getInventory().getItemInMainHand());
                         return true;
                     }
                     case "loc":
                     case "locs":
                     case "location": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
                         LocationStore.setLocation(message, player.getLocation());
                         return true;
                     }
                     case "edit":
                     case "editor": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
                         ImageEditor.openEditor(player, message);
                         return true;
                     }

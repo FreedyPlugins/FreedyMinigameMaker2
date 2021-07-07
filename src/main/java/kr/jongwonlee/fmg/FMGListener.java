@@ -18,7 +18,8 @@ public class FMGListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        GameStore.getGame(player).run(EventBundle.MOVE, player);
+        String result = GameStore.getGame(player).run(EventBundle.MOVE, player);
+        if (result.equals("false")) event.setCancelled(true);
     }
 
     @EventHandler

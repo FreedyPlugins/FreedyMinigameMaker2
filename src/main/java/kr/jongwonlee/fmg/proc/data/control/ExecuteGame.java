@@ -16,12 +16,12 @@ public class ExecuteGame implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.setGame(true);
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        procUnit.setGame(true);
         return process.run(miniGame, procUnit);
     }
 

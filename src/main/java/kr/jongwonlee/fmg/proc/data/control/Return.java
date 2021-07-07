@@ -16,8 +16,9 @@ public class Return implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        procUnit.setReturned(process.run(miniGame, procUnit));
-        return "";
+        String returned = process.run(miniGame, procUnit);
+        procUnit.setReturned(returned);
+        return returned;
     }
 
     @Override

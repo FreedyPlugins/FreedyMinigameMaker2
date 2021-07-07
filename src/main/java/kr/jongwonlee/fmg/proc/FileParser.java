@@ -4,7 +4,6 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.proc.data.control.Nothing;
 import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.util.GameAlert;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
@@ -23,6 +22,7 @@ public class FileParser {
             if (firstLine == null) return bundles;
             String line = firstLine.replace("\t", "").trim();
             while (line != null) {
+                line = line.replace("\t", "").trim();
                 if (isStartWith(line, Settings.getBundlePrefix())) {
                     String bundleName = line.substring(line.indexOf(Settings.getBundlePrefix()) + Settings.getBundlePrefix().length()).trim();
                     ParseUnit parseUnit = new ParseUnit();
@@ -30,15 +30,17 @@ public class FileParser {
                     if (bundleName.equals("")) continue;
                     int braceIndex = bundleName.indexOf("{");
                     if (braceIndex != -1) {
-                        String braceArg = bundleName.substring(braceIndex + 1);
+                        Process process = parseProcess(parseUnit, bundleName.substring(braceIndex));
                         bundleName = bundleName.substring(0, braceIndex).toLowerCase().trim();
-                        processList.add(parseProcess(parseUnit, ProcType.MID_FRONT_BRACE, braceArg));
                         while (parseUnit.hasBrace()) {
                             line = reader.readLine();
-                            if (line == null) break;
-                            line = line.replace("\t", "").trim();
+                            if (line != null) line = line.replace("\t", "").trim();
+                            else break;
                             parseUnit.getFrontBrace().addProc(parseUnit, parseProcess(parseUnit, line));
                         }
+                        line = reader.readLine();
+                        if (line != null) line = line.replace("\t", "").trim();
+                        processList.add(process);
                         if (bundles.containsKey(bundleName)) {
                             GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
                         } else bundles.put(bundleName, new ProcBundle(processList));

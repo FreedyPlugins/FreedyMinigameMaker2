@@ -61,7 +61,10 @@ public class Nothing implements Process {
         if (markUp != -1) value = repEscapes(frontArg.substring(0, markUp));
         else {
             value = repEscapes(frontArg);
-            if (index != -1) process = FileParser.parseProcess(parseUnit, args.substring(index));
+            if (index != -1) {
+                process = FileParser.parseProcess(parseUnit, args.substring(index));
+                if (process.getType() != ProcType.NOTHING) value = args.substring(0, index);
+            }
         }
     }
 

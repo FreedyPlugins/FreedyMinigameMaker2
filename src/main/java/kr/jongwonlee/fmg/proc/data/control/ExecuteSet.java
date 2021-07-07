@@ -16,12 +16,12 @@ public class ExecuteSet implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.setSet(true);
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        procUnit.setSet(true);
         process.run(miniGame, procUnit);
         return null;
     }
