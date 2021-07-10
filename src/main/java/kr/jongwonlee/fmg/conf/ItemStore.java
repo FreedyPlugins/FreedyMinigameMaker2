@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class ItemStore {
 
-    private static final String ROOT = "item.";
     private static Map<String, ItemStack> itemMap = new HashMap<>();
     private static final YamlStore yamlStore = new YamlStore("items.yml");
 
@@ -19,23 +18,23 @@ public class ItemStore {
     }
 
     public static void init() {
-        itemMap = yamlStore.getItemStackMap(ROOT);
+        itemMap = yamlStore.getItemStackMap("");
     }
 
     public static ItemStack getItemStack(String name) {
-        return itemMap.getOrDefault(ROOT + name, null);
+        return itemMap.getOrDefault("" + name, null);
     }
 
     public static void setItemStack(String name, ItemStack itemStack) {
         if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
             itemMap.remove(name);
             FMGPlugin.runTaskAsync(() -> {
-                yamlStore.set(ROOT + name, null);
+                yamlStore.set(name, null);
             });
         } else {
             itemMap.put(name, itemStack);
             FMGPlugin.runTaskAsync(() -> {
-                yamlStore.set(ROOT + name, itemStack);
+                yamlStore.set(name, itemStack);
             });
         }
     }

@@ -84,8 +84,8 @@ public class Item implements Process {
                         List<String> lore = itemMeta.getLore();
                         if (lore == null) lore = new ArrayList<>();
                         if (line + 1 >= lore.size()) lore.add(value);
-                        else lore.set(line, value);
-                        itemMeta.setLore(lore);
+                        else if (lore.size() <= line) lore.add(value);
+                        else itemMeta.setLore(lore);
                         itemStack.setItemMeta(itemMeta);
                     }
                 } else {
@@ -96,17 +96,32 @@ public class Item implements Process {
                     boolean isTypeItemStack = process.getType() == ProcType.EXECUTE_TYPE;
                     if (isTypeItemStack) {
                         ItemStack itemStack = new ItemStack(Material.getMaterial(value));
-                        miniGame.getGameData().setItemStack(name, itemStack);
+                        miniGame.getGameData().setItemStack(name, cloneItemStack(itemStack));
                     } else if (isGameItemStack){
                         GameData gameData = miniGame.getGameData();
                         ItemStack itemStack = gameData.getItemStack(value);
-                        gameData.setItemStack(name, itemStack);
+                        gameData.setItemStack(name, cloneItemStack(itemStack));
                     } else if (isAllItemStack) {
                         ItemStack itemStack = ItemStore.getItemStack(value);
-                        miniGame.getGameData().setItemStack(name, itemStack);
+                        miniGame.getGameData().setItemStack(name, cloneItemStack(itemStack));
                     } else if (player != null) {
                         ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
-                        miniGame.getGameData().setItemStack(name, itemStack);
+                        miniGame.getGameData().setItemStack(name, cloneItemStack(itemStack));
+                    }
+                }
+            } else if (isRemove) {
+                if (isLore) {
+                    int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
+                    ItemStack itemStack = miniGame.getGameData().getItemStack(name);
+                    if (isExist(itemStack)) {
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+                        if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+                        List<String> lore = itemMeta.getLore();
+                        if (lore == null) lore = new ArrayList<>();
+                        if (line + 1 >= lore.size()) lore.remove(line);
+                        else if (lore.size() <= line) lore.remove(line);
+                        else itemMeta.setLore(lore);
+                        itemStack.setItemMeta(itemMeta);
                     }
                 }
             }
@@ -116,6 +131,10 @@ public class Item implements Process {
 
     private static boolean isExist(ItemStack itemStack) {
         return itemStack != null && itemStack.getType() != Material.AIR;
+    }
+
+    private static ItemStack cloneItemStack(ItemStack itemStack) {
+        return itemStack == null ? null : itemStack.clone();
     }
 
 }

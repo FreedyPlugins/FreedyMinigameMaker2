@@ -34,7 +34,10 @@ public class FMGCommand implements CommandExecutor {
                 MiniGame game = GameStore.getGame(message);
                 switch (args[0].toLowerCase()) {
                     case "create": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         if (message.length() == 0) return false;
                         try {
                             GameStore.createGame(message);
@@ -44,14 +47,20 @@ public class FMGCommand implements CommandExecutor {
                         return true;
                     }
                     case "delete": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         if (message.length() == 0) return false;
                         GameStore.removeShop(message);
                         return true;
                     }
                     case "games":
                     case "list": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         Set<String> games = GameStore.getGameNames();
                         if (games.size() == 0) sender.sendMessage("Game not exist");
                         else games.forEach(sender::sendMessage);
@@ -63,7 +72,10 @@ public class FMGCommand implements CommandExecutor {
                     case "relo":
                     case "reloa":
                     case "reload": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         long before = System.currentTimeMillis();
                         if (sender instanceof Player) sender.sendMessage("Reloading...");
                         FMGPlugin.getInst().getLogger().info("Reloading...");
@@ -86,7 +98,10 @@ public class FMGCommand implements CommandExecutor {
                     case "info":
                     case "about":
                     case "help": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         about(sender);
                         return true;
                     }
@@ -99,14 +114,20 @@ public class FMGCommand implements CommandExecutor {
                 MiniGame game = GameStore.getGame(message);
                 switch (args[0]) {
                     case "join": {
-                        if (!sender.hasPermission("freedyminigamemaker.join." + message)) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.join." + message)) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         if (player == null) GameAlert.ONLY_PLAYER.print();
                         else game.join(player.getUniqueId());
                         return true;
                     }
                     case "left":
                     case "quit": {
-                        if (!sender.hasPermission("freedyminigamemaker.quit." + message)) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.quit." + message)) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         if (player == null) GameAlert.ONLY_PLAYER.print();
                         else GameStore.getGames().forEach(miniGame -> {
                             if (!miniGame.equals(GameStore.getHubGame())) miniGame.quit(player.getUniqueId());
@@ -117,7 +138,10 @@ public class FMGCommand implements CommandExecutor {
                     case "run":
                     case "proc":
                     case "process": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         if (sender instanceof Player) GameStore.getGame(Settings.getHubGameName()).run(message.toLowerCase(), player);
                         else GameStore.getGame(Settings.getHubGameName()).run(message.toLowerCase(), new ProcUnit(new ProcTarget()));
                         return true;
@@ -134,20 +158,29 @@ public class FMGCommand implements CommandExecutor {
                 switch (args[0]) {
                     case "item":
                     case "items": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         ItemStore.setItemStack(message, player.getInventory().getItemInMainHand());
                         return true;
                     }
                     case "loc":
                     case "locs":
                     case "location": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         LocationStore.setLocation(message, player.getLocation());
                         return true;
                     }
                     case "edit":
                     case "editor": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) return true;
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
                         ImageEditor.openEditor(player, message);
                         return true;
                     }
@@ -158,7 +191,10 @@ public class FMGCommand implements CommandExecutor {
                 e.printStackTrace();
                 about(sender);
                 return false;
-            } else return true;
+            } else {
+                GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                return true;
+            }
         }
         return true;
     }

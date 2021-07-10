@@ -7,6 +7,10 @@
 **Note**_:_ A library under the Apache 2.0 license, [jafama's FastMath](https://github.com/jeffhain/jafama), is used for good computational performance. [FastUUID](https://github.com/jchambers/fast-uuid), which is licensed for MIT, is also used for fast performance.  
 **Website**_:_ [_Not Exists_]() */* 
 
+# T o D o 
+no permission GameAlert creation  
+Item 
+
 ## Introduce
 You can create MiniGame systems such as Spleef, Tnt Run, and PvP.  
 There is a document for direct generation. This plugin is free to share.
