@@ -1,34 +1,29 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
-import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"async"})
-public class ExecuteAsync implements Process {
+@Processable(alias = {"uuid"})
+public class Uuid implements Process {
 
     Process process;
-    ProcType procType;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
-        procType = process.getType();
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (procType == ProcType.DELAY) {
-            return process.run(miniGame, procUnit);
-        }
-        FMGPlugin.runTaskAsync(() -> process.run(miniGame, procUnit));
-        return "";
+        String message = process.run(miniGame, procUnit);
+        if (procUnit.target.player != null) return procUnit.target.player.getUniqueId() + message;
+        else if (procUnit.target.entity != null) return procUnit.target.entity.getUniqueId() + message;
+        else return miniGame.getName() + message;
     }
 
     @Override
     public ProcType getType() {
-        return ProcType.EXECUTE_ASYNC;
+        return ProcType.UUID;
     }
 }

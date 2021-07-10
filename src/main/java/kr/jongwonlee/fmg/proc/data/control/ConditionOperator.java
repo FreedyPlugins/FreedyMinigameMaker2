@@ -14,8 +14,21 @@ public abstract class ConditionOperator implements Process {
             switch (operator) {
                 case IF_BIG: return toDouble(valueA) > toDouble(valueB);
                 case IF_BIG_SAME: return toDouble(valueA) >= toDouble(valueB);
-                case IF_EQUAL: return valueA.equals(valueB);
-                case IF_NOT_EQUAL: return !valueA.equals(valueB);
+                case IF_EQUAL: {
+                    try {
+                        return toDouble(valueA) == toDouble(valueB);
+                    } catch (NumberFormatException e) {
+                        return valueA.equals(valueB);
+                    }
+                }
+                case IF_NOT_EQUAL: {
+                    try {
+                        return toDouble(valueA) != toDouble(valueB);
+                    } catch (NumberFormatException e) {
+                        return !valueA.equals(valueB);
+                    }
+
+                }
                 case IF_SMALL: return toDouble(valueA) < toDouble(valueB);
                 case IF_SMALL_SAME: return toDouble(valueA) <= toDouble(valueB);
                 default: return false;

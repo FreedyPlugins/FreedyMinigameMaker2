@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.conf;
 
+import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.util.YamlStore;
 import org.bukkit.Location;
 
@@ -8,28 +9,30 @@ import java.util.Map;
 
 public class LocationStore {
 
-    private static final String ROOT = "locations.";
     private static Map<String, Location> locationMap = new HashMap<>();
+    private static final YamlStore yamlStore = new YamlStore("locations.yml");
 
     public static void init() {
-        YamlStore yamlStore = new YamlStore("locations.yml");
-        locationMap = yamlStore.getLocationMap(ROOT);
+        locationMap = yamlStore.getLocationMap("");
     }
 
     public static Location getLocation(String name) {
-        return locationMap.getOrDefault(ROOT + name, null);
+        return locationMap.getOrDefault("" + name, null);
     }
 
     public static void setLocation(String name, Location location) {
-        YamlStore yamlStore = new YamlStore("locations.yml");
         if (location != null) {
-            yamlStore.setLocation(ROOT + name, location);
-            yamlStore.save();
             locationMap.put(name, location);
+            FMGPlugin.runTaskAsync(() -> {
+                yamlStore.setLocation("" + name, location);
+                yamlStore.save();
+            });
         } else {
-            yamlStore.set(ROOT + name, null);
-            yamlStore.save();
             locationMap.remove(name);
+            FMGPlugin.runTaskAsync(() -> {
+                yamlStore.set("" + name, null);
+                yamlStore.save();
+            });
         }
     }
 

@@ -5,6 +5,8 @@ import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

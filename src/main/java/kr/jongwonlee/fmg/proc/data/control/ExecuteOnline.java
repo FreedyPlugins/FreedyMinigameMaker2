@@ -16,6 +16,7 @@ public class ExecuteOnline implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 

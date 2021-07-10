@@ -11,7 +11,6 @@ import java.util.List;
 public class Title implements Process {
 
     private SmallFrontBrace frontBrace;
-    private Process process;
 
     @Override
     public ProcType getType() {
@@ -20,7 +19,7 @@ public class Title implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        process = FileParser.parseProcess(parseUnit, arguments);
+        Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
     }
@@ -28,6 +27,7 @@ public class Title implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
+            if (frontBrace == null) return "";
             List<Process> processList = frontBrace.getProcessList();
             if (procUnit.target.player != null) {
                 String fadeIn = processList.get(0).run(miniGame, procUnit);

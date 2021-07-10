@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.conf;
 
+import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.util.YamlStore;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -11,9 +12,9 @@ public class ItemStore {
 
     private static final String ROOT = "item.";
     private static Map<String, ItemStack> itemMap = new HashMap<>();
+    private static final YamlStore yamlStore = new YamlStore("items.yml");
 
     public static void init() {
-        YamlStore yamlStore = new YamlStore("items.yml");
         itemMap = yamlStore.getItemStackMap(ROOT);
     }
 
@@ -24,14 +25,16 @@ public class ItemStore {
     public static void setItemStack(String name, ItemStack itemStack) {
         if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
             itemMap.remove(name);
-            YamlStore yamlStore = new YamlStore("items.yml");
-            yamlStore.set(ROOT + name, null);
-            yamlStore.save();
+            FMGPlugin.runTaskAsync(() -> {
+                yamlStore.set(ROOT + name, null);
+                yamlStore.save();
+            });
         } else {
             itemMap.put(name, itemStack);
-            YamlStore yamlStore = new YamlStore("items.yml");
-            yamlStore.set(ROOT + name, itemStack);
-            yamlStore.save();
+            FMGPlugin.runTaskAsync(() -> {
+                yamlStore.set(ROOT + name, itemStack);
+                yamlStore.save();
+            });
         }
     }
 

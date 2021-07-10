@@ -28,16 +28,40 @@ public class SmallFrontBrace implements FrontBrace {
         parseUnit.addBraceProc(this);
         addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
         Collections.reverse(processList);
+        for (int i = 1; i + 1 < processList.size(); i++) {
+            Process process = processList.get(i);
+            if (process instanceof MathOperator) {
+                MathOperator mathOperator = ((MathOperator) process);
+                Process valueA = processList.get(i - 1);
+                Process valueB = processList.get(i + 1);
+                processList.remove(i - 1);
+                processList.remove(i);
+                mathOperator.setValueA(valueA);
+                mathOperator.setValueB(valueB);
+            }
+        }
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return "";
+        if (processList.isEmpty()) return "";
+        else return processList.get(0).run(miniGame, procUnit);
     }
 
     @Override
     public ProcType getType() {
         return ProcType.SMALL_FRONT_BRACE;
+    }
+
+    public void cutBehindEndBrace() {
+        for (int i = 0; i < processList.size(); i++) {
+            Process proc = processList.get(i);
+            if (proc.getType() == ProcType.SMALL_END_BRACE) {
+                processList = processList.subList(0, i);
+                break;
+            }
+        }
+
     }
 
 }

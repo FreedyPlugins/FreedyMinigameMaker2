@@ -23,7 +23,7 @@ public class Delay implements Process {
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         process = FileParser.parseProcess(parseUnit, arguments);
-        isAsync = parseUnit.useAsync();
+        isAsync = parseUnit.useExecutor(ProcType.EXECUTE_ASYNC);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
         List<Process> processList = frontBrace.getProcessList();

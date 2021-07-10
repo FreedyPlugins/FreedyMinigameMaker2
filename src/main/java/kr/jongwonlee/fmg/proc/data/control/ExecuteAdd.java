@@ -16,14 +16,13 @@ public class ExecuteAdd implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        parseUnit.setAdd(true);
+        parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        process.run(miniGame, procUnit);
-        return null;
+        return process.run(miniGame, procUnit);
     }
 
 }

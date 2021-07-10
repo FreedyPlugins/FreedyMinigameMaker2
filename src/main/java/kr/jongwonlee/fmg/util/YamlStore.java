@@ -136,10 +136,12 @@ public class YamlStore extends FileStore {
             set(path, null);
             return;
         }
-        set(path + "WORLD", location.getWorld().getName());
-        set(path + "X", location.getBlockX());
-        set(path + "Y", location.getBlockY());
-        set(path + "Z", location.getBlockZ());
+        set(path + ".WORLD", location.getWorld().getName());
+        set(path + ".X", location.getX());
+        set(path + ".Y", location.getY());
+        set(path + ".Z", location.getZ());
+        set(path + ".YAW", location.getYaw());
+        set(path + ".PITCH", location.getPitch());
     }
 
     public Location getLocation(String path) {
@@ -148,7 +150,9 @@ public class YamlStore extends FileStore {
         final double x = getDouble(path + ".X");
         final double y = getDouble(path + ".Y");
         final double z = getDouble(path + ".Z");
-        return new Location(world, x, y, z);
+        final double yaw = getDouble(path + ".YAW");
+        final double pitch = getDouble(path + ".PITCH");
+        return new Location(world, x, y, z, ((float) yaw), ((float) pitch));
     }
 
     public Map<String, ItemStack> getItemStackMap(String path) {

@@ -37,6 +37,7 @@ public class While extends ConditionOperator {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
+        if (frontBrace == null) return "";
         Process tempProc = null;
         ProcType compareType;
         ProcType conditionType = null;

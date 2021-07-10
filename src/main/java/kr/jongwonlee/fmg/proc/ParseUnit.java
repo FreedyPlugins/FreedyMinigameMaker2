@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.proc;
 
+import kr.jongwonlee.fmg.proc.data.control.Executor;
 import kr.jongwonlee.fmg.proc.data.control.FrontBrace;
 import kr.jongwonlee.fmg.proc.data.control.If;
 
@@ -10,96 +11,21 @@ public class ParseUnit {
 
     private final List<FrontBrace> braceList;
     private final List<If> ifList;
+    private List<ProcType> executorList;
 
-    private boolean add;
-    private boolean set;
-    private boolean game;
-    private boolean online;
-    private boolean player;
-    private boolean async;
-
-    public boolean useAdd() {
-        boolean add = this.add;
-        setAdd(false);
-        return add;
+    public void addExecutor(ProcType procType) {
+        if (!executorList.contains(procType)) executorList.add(procType);
     }
 
-    public boolean useSet() {
-        boolean set = this.set;
-        setSet(false);
-        return set;
+    public boolean useExecutor(ProcType procType) {
+        if (executorList.contains(procType)) {
+            executorList.remove(procType);
+            return true;
+        } else return false;
     }
 
-    public boolean useGame() {
-        boolean game = this.game;
-        setGame(false);
-        return game;
-    }
-
-    public boolean useOnline() {
-        boolean online = this.online;
-        setOnline(false);
-        return online;
-    }
-
-    public boolean usePlayer() {
-        boolean player = this.player;
-        setPlayer(false);
-        return player;
-    }
-
-    public boolean useAsync() {
-        boolean async = this.async;
-        setAsync(false);
-        return async;
-    }
-
-    public boolean isAsync() {
-        return async;
-    }
-
-    public boolean isAdd() {
-        return add;
-    }
-
-    public boolean isSet() {
-        return set;
-    }
-
-    public boolean isGame() {
-        return game;
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public boolean isPlayer() {
-        return player;
-    }
-
-    public void setAsync(boolean async) {
-        this.async = async;
-    }
-
-    public void setAdd(boolean add) {
-        this.add = add;
-    }
-
-    public void setSet(boolean set) {
-        this.set = set;
-    }
-
-    public void setGame(boolean game) {
-        this.game = game;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
-    public void setPlayer(boolean player) {
-        this.player = player;
+    public void clearExecutor(ProcType procType) {
+        executorList = new ArrayList<>();
     }
 
     public void removeBraceProc(FrontBrace frontBrace) {
@@ -143,15 +69,7 @@ public class ParseUnit {
     public ParseUnit() {
         this.braceList = new ArrayList<>();
         this.ifList = new ArrayList<>();
-    }
-
-    @Deprecated
-    public ParseUnit reset() {
-        setSet(false);
-        setGame(false);
-        setOnline(false);
-        setPlayer(false);
-        return this;
+        this.executorList = new ArrayList<>();
     }
 
 }

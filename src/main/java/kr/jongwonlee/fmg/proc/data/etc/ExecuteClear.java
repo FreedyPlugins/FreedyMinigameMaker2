@@ -1,18 +1,13 @@
-package kr.jongwonlee.fmg.proc.data.control;
+package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"game", "minigame"})
-public class ExecuteGame implements Process {
+@Processable(alias = {"clear", "reset"})
+public class ExecuteClear implements Process {
 
-    private Process process;
-
-    @Override
-    public ProcType getType() {
-        return ProcType.EXECUTE_GAME;
-    }
+    Process process;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
@@ -23,6 +18,11 @@ public class ExecuteGame implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         return process.run(miniGame, procUnit);
+
     }
 
+    @Override
+    public ProcType getType() {
+        return ProcType.EXECUTE_CLEAR;
+    }
 }

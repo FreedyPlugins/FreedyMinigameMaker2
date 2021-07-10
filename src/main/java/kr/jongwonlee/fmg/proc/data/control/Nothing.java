@@ -40,6 +40,7 @@ public class Nothing implements Process {
                     value = repEscapes(args.substring(frontQuote + 1, endQuote));
                     String endArg = args.substring(endQuote + 1);
                     if (endArg.length() > 0) process = FileParser.parseProcess(parseUnit, endArg);
+                    if (process instanceof MathOperator) process = null;
                     return;
                 }
             }
@@ -53,6 +54,7 @@ public class Nothing implements Process {
                     value = repEscapes(args.substring(frontSmallQuote + 1, endQuote));
                     String endArg = args.substring(endQuote + 1);
                     if (endArg.length() > 0) process = FileParser.parseProcess(parseUnit, endArg);
+                    if (process instanceof MathOperator) process = null;
                     return;
                 }
             }
@@ -64,6 +66,7 @@ public class Nothing implements Process {
             if (index != -1) {
                 process = FileParser.parseProcess(parseUnit, args.substring(index));
                 if (process.getType() != ProcType.NOTHING) value = args.substring(0, index);
+                if (process instanceof MathOperator) process = null;
             }
         }
     }
