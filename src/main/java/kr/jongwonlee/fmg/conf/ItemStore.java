@@ -14,6 +14,10 @@ public class ItemStore {
     private static Map<String, ItemStack> itemMap = new HashMap<>();
     private static final YamlStore yamlStore = new YamlStore("items.yml");
 
+    public static YamlStore getYamlStore() {
+        return yamlStore;
+    }
+
     public static void init() {
         itemMap = yamlStore.getItemStackMap(ROOT);
     }
@@ -27,13 +31,11 @@ public class ItemStore {
             itemMap.remove(name);
             FMGPlugin.runTaskAsync(() -> {
                 yamlStore.set(ROOT + name, null);
-                yamlStore.save();
             });
         } else {
             itemMap.put(name, itemStack);
             FMGPlugin.runTaskAsync(() -> {
                 yamlStore.set(ROOT + name, itemStack);
-                yamlStore.save();
             });
         }
     }

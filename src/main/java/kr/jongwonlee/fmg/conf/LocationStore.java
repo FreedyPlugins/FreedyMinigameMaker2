@@ -12,6 +12,10 @@ public class LocationStore {
     private static Map<String, Location> locationMap = new HashMap<>();
     private static final YamlStore yamlStore = new YamlStore("locations.yml");
 
+    public static YamlStore getYamlStore() {
+        return yamlStore;
+    }
+
     public static void init() {
         locationMap = yamlStore.getLocationMap("");
     }
@@ -25,13 +29,11 @@ public class LocationStore {
             locationMap.put(name, location);
             FMGPlugin.runTaskAsync(() -> {
                 yamlStore.setLocation("" + name, location);
-                yamlStore.save();
             });
         } else {
             locationMap.remove(name);
             FMGPlugin.runTaskAsync(() -> {
                 yamlStore.set("" + name, null);
-                yamlStore.save();
             });
         }
     }

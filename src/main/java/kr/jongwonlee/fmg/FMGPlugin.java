@@ -40,7 +40,9 @@ public final class FMGPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        DataStore.getYamlStore().save();
+        ItemStore.getYamlStore().save();
+        LocationStore.getYamlStore().save();
     }
 
     public static void registerEvent(Listener listener) {
@@ -59,12 +61,16 @@ public final class FMGPlugin extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(getInst(), task);
     }
 
-    public static void runTaskLater(Runnable task, long delay) {
-        Bukkit.getScheduler().runTaskLater(plugin, task, delay);
+    public static int runTaskLater(Runnable task, long delay) {
+        return Bukkit.getScheduler().runTaskLater(plugin, task, delay).getTaskId();
     }
 
-    public static void runTaskLaterAsync(Runnable task, long delay) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+    public static int runTaskLaterAsync(Runnable task, long delay) {
+        return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delay).getTaskId();
+    }
+
+    public static int runTaskRepeatSync(Runnable task, long delay, long period) {
+        return Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, delay, period);
     }
 
 }

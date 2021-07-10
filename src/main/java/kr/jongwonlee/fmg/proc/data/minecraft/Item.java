@@ -1,5 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
+import kr.jongwonlee.fmg.conf.ItemStore;
+import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -22,6 +24,7 @@ public class Item implements Process {
     boolean isType;
     boolean isAdd;
     boolean isLore;
+    boolean isRemove;
 
     @Override
     public ProcType getType() {
@@ -35,6 +38,7 @@ public class Item implements Process {
         isType = parseUnit.useExecutor(ProcType.EXECUTE_TYPE);
         isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
         isLore = parseUnit.useExecutor(ProcType.EXECUTE_LORE);
+        isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
@@ -45,7 +49,9 @@ public class Item implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
+        if (frontBrace == null) {
+            return "";
+        }
         java.util.List<Process> processList = frontBrace.getProcessList();
         String name = processList.get(0).run(miniGame, procUnit);
         Player player = procUnit.target.player;
@@ -92,9 +98,16 @@ public class Item implements Process {
                         ItemStack itemStack = new ItemStack(Material.getMaterial(value));
                         miniGame.getGameData().setItemStack(name, itemStack);
                     } else if (isGameItemStack){
-
+                        GameData gameData = miniGame.getGameData();
+                        ItemStack itemStack = gameData.getItemStack(value);
+                        gameData.setItemStack(name, itemStack);
+                    } else if (isAllItemStack) {
+                        ItemStack itemStack = ItemStore.getItemStack(value);
+                        miniGame.getGameData().setItemStack(name, itemStack);
+                    } else if (player != null) {
+                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
+                        miniGame.getGameData().setItemStack(name, itemStack);
                     }
-
                 }
             }
         }
