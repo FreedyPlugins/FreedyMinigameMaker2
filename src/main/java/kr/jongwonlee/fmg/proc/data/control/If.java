@@ -11,6 +11,7 @@ import java.util.List;
 public class If extends ConditionOperator {
 
     private SmallFrontBrace frontBrace;
+    private MidFrontBrace midFrontBrace;
     private boolean result = true;
 
     public boolean isResult() {
@@ -31,8 +32,10 @@ public class If extends ConditionOperator {
         List<Process> processList = frontBrace.getProcessList();
         if (processList.size() == 0) return;
         Process process = processList.get(processList.size() - 1);
-        if (process.getType() == ProcType.SMALL_END_BRACE) {
+        if (process instanceof SmallEndBrace) {
             processList.add(FileParser.getOneMoreLine(parseUnit, ""));
+        } else if (process instanceof MidFrontBrace) {
+            midFrontBrace = ((MidFrontBrace) process);
         }
     }
 
@@ -55,9 +58,13 @@ public class If extends ConditionOperator {
                     return "";
                 }
                 else if (!result && compareType == ProcType.AND) return "";
-            } else if (process instanceof SmallEndBrace && result) {
-                iterator.next().run(miniGame, procUnit);
-                return "";
+            } else if (process instanceof SmallEndBrace) {
+                if (result) {
+                    iterator.next().run(miniGame, procUnit);
+                    return "";
+                } else {
+                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
+                }
             } else {
                 if (tempProc != null && conditionType != null) {
                     String valueA = tempProc.run(miniGame, procUnit);
@@ -68,6 +75,7 @@ public class If extends ConditionOperator {
                 tempProc = process;
             }
         }
+        if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
         return "";
     }
 

@@ -2,7 +2,6 @@ package kr.jongwonlee.fmg.conf;
 
 import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.util.YamlStore;
-import org.bukkit.Bukkit;
 
 import java.util.Map;
 

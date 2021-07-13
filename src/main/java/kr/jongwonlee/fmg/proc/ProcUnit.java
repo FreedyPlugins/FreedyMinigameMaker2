@@ -29,6 +29,10 @@ public class ProcUnit {
         return new ProcUnit(new ProcTarget().put(player));
     }
 
+    public static ProcUnit getNewProcUnit(Player player, Entity entity) {
+        return new ProcUnit(new ProcTarget().put(player).put(entity));
+    }
+
     public static ProcUnit getNewProcUnit(Entity entity) {
         return new ProcUnit(new ProcTarget().put(entity));
     }

@@ -26,8 +26,8 @@ public class GameStore implements Listener {
         List<String> dirFiles = FileStore.getDirFiles("");
         dirFiles.forEach(GameStore::loadGame);
         for (String name : gameMap.keySet()) {
-            if (!dirFiles.contains(name)) {
-                removeShop(name);
+            if (!dirFiles.contains(name) || name.length() == 0) {
+                removeGame(name);
             }
         }
         if (GameStore.gameStore == null) {
@@ -91,7 +91,7 @@ public class GameStore implements Listener {
         loadGame(name);
     }
 
-    public static void removeShop(String name) {
+    public static void removeGame(String name) {
         final MiniGame game = getGame(name);
         if (game == null) return;
         new FileStore(name + Settings.getExtension(), true, false).deleteFile();

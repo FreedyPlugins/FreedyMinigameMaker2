@@ -22,6 +22,12 @@ public enum EventBundle {
     GAME_STOP,
     INTERACT,
     MOVE,
+    CHAT,
+    COMMAND,
+    INVENTORY_CLICK,
+    INVENTORY_CLOSE,
+    ATTACK,
+    DAMAGE,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),
@@ -68,11 +74,16 @@ public enum EventBundle {
         List<String> stringList = new ArrayList<>();
         for (EventBundle eventBundle : EventBundle.values()) {
             String eventString = yamlStore.getString(eventBundle.name());
-            if (eventString == null) continue;
+            if (eventString == null) {
+                String name = eventBundle.name().toLowerCase().replace("_", " ");
+                yamlStore.set(eventBundle.name(), name.substring(0, 1).toUpperCase() + name.substring(1));
+                continue;
+            }
             if (stringList.contains(eventString)) GameAlert.DUPLICATED_EVENT.print(new String[]{eventBundle.name()});
             else eventBundle.name = eventString.toLowerCase();
             stringList.add(eventString);
         }
+        yamlStore.save();
     }
 
 }

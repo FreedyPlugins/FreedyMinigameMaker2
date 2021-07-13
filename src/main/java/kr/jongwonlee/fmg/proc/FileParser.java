@@ -27,7 +27,10 @@ public class FileParser {
                     String bundleName = line.substring(line.indexOf(Settings.getBundlePrefix()) + Settings.getBundlePrefix().length()).trim();
                     ParseUnit parseUnit = new ParseUnit();
                     List<Process> processList = new ArrayList<>();
-                    if (bundleName.equals("")) continue;
+                    if (bundleName.equals("")) {
+                        line = reader.readLine();
+                        continue;
+                    }
                     int braceIndex = bundleName.indexOf("{");
                     if (braceIndex != -1) {
                         Process process = parseProcess(parseUnit, bundleName.substring(braceIndex));
@@ -36,6 +39,7 @@ public class FileParser {
                             line = reader.readLine();
                             if (line != null) line = line.replace("\t", "").trim();
                             else break;
+                            if (isStartWith(line, Settings.getBundlePrefix())) break;
                             parseUnit.getFrontBrace().addProc(parseUnit, parseProcess(parseUnit, line));
                         }
                         line = reader.readLine();
@@ -47,12 +51,15 @@ public class FileParser {
                         continue;
                     }
                     bundleName = bundleName.toLowerCase().trim();
-                    while ((line = reader.readLine()) != null) {
+                    body : while ((line = reader.readLine()) != null) {
                         line = line.replace("\t", "").trim();
                         if (isStartWith(line, Settings.getBundlePrefix())) break;
                         Process process = parseProcess(parseUnit, line);
                         while (parseUnit.hasBrace()) {
-                            line = reader.readLine().replace("\t", "").trim();
+                            line = reader.readLine();
+                            if (line == null) break body;
+                            line = line.replace("\t", "").trim();
+                            if (isStartWith(line, Settings.getBundlePrefix())) break;
                             parseUnit.getFrontBrace().addProc(parseUnit, parseProcess(parseUnit, line));
                         }
                         processList.add(process);
@@ -71,6 +78,7 @@ public class FileParser {
         }
     }
 
+    @Deprecated
     public static Process parseProcess(ParseUnit parseUnit, ProcType procType, String string) {
         if (string == null) return getNothing(parseUnit, "");
         String origin = toColor(string);
@@ -90,9 +98,13 @@ public class FileParser {
         int index = string.indexOf(' ');
         String processName = (index == -1 ? string : string.substring(0, index)).toLowerCase();
         ProcType procType = ProcType.getProcType(processName);
-        if (procType == null) return getNothing(parseUnit, origin);
+        Process externalProc;
+        if (procType == null) {
+            externalProc = ProcType.getExternalProc(processName);
+            if (externalProc == null) return getNothing(parseUnit, origin);
+        } else externalProc = null;
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
-        Process process = procType.getNewProcess();
+        Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         return process;
     }

@@ -1,6 +1,5 @@
 package kr.jongwonlee.fmg.proc;
 
-import kr.jongwonlee.fmg.proc.data.control.Executor;
 import kr.jongwonlee.fmg.proc.data.control.FrontBrace;
 import kr.jongwonlee.fmg.proc.data.control.If;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public class ParseUnit {
 
     private final List<FrontBrace> braceList;
-    private final List<If> ifList;
+    private List<If> ifList;
     private List<ProcType> executorList;
 
     public void addExecutor(ProcType procType) {
@@ -64,6 +63,12 @@ public class ParseUnit {
     public If getIf() {
         if (ifList.size() == 0) return null;
         return ifList.get(ifList.size() - 1);
+    }
+
+    @Deprecated
+    public ParseUnit reset() {
+        ifList = new ArrayList<>();
+        return this;
     }
 
     public ParseUnit() {

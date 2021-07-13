@@ -10,6 +10,4 @@ public interface Process {
 
     ProcType getType();
 
-
-
 }

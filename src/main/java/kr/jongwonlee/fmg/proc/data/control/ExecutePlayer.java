@@ -1,33 +1,46 @@
 package kr.jongwonlee.fmg.proc.data.control;
 
-import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 @Processable(alias = "player")
-public class Player implements Process {
+public class ExecutePlayer implements Process {
 
-    SmallFrontBrace frontBrace;
+    Process process;
 
     @Override
     public ProcType getType() {
-        return ProcType.PLAYER;
+        return ProcType.EXECUTE_PLAYER;
     }
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.addExecutor(getType());
+        process = FileParser.parseProcess(parseUnit, arguments);
+    }
+
+    @Override
+    public String run(MiniGame miniGame, ProcUnit procUnit) {
+        return process.run(miniGame, procUnit);
+    }
+
+
+/*    @Override
+    public void parse(ParseUnit parseUnit, String arguments) {
         Process process = FileParser.parseProcess(parseUnit, arguments);
-        if (!(process instanceof SmallFrontBrace)) parseUnit.addExecutor(getType());
+        if (!(process instanceof SmallFrontBrace)) {
+            parseUnit.addExecutor(getType());
+            this.process = FileParser.parseProcess(parseUnit, arguments);
+        }
         else frontBrace = ((SmallFrontBrace) process);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
+        if (frontBrace == null) {
+            return process.run(miniGame, procUnit);
+        }
         org.bukkit.entity.Player originPlayer = procUnit.target.player;
         try {
             List<Process> processList = frontBrace.getProcessList();
@@ -44,6 +57,6 @@ public class Player implements Process {
             procUnit.target.player = originPlayer;
             return "";
         }
-    }
+    }*/
 
 }

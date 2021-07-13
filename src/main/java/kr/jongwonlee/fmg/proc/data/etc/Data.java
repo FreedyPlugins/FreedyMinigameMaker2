@@ -68,41 +68,4 @@ public class Data implements Process {
         return "";
     }
 
-/*
-    @Override
-    public String run(MiniGame miniGame, ProcUnit procUnit) {
-        String message = FileParser.cutFrontSpace(process.run(miniGame, procUnit));
-        int index = message.indexOf(' ');
-        String name = index <= 0 ? message : message.substring(0, index);
-        String value = index <= 0 ? "" : message.substring(index + 1);
-        if (isAdd()) {
-            if (isGame()) {
-                miniGame.getGameData().setData(name, add(miniGame.getGameData().getData(name), value));
-            } else {
-                GameData gameData = miniGame.getPlayerData(procUnit.target.player.getUniqueId());
-                gameData.setData(name, add(gameData.getData(name), value));
-            }
-        } else if (isSet()) {
-            if (isGame()) {
-                miniGame.getGameData().setData(name, value);
-            } else {
-                miniGame.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
-            }
-        } else {
-            if (isGame()) {
-                return miniGame.getGameData().getData(name) + ' ' + value;
-            } else {
-                return getPlayerData(miniGame, procUnit).getData(name) + ' ' + value;
-            }
-        }
-        return value;
-    }
-
-        private GameData getPlayerData(MiniGame miniGame, ProcUnit procUnit) {
-        return miniGame.getPlayersData().get(procUnit.target.player.getUniqueId());
-    }
-
-*/
-
-
 }

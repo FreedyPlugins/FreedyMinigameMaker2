@@ -15,6 +15,11 @@ public class Location implements Process {
     boolean isGame;
     boolean isSet;
     boolean isAdd;
+    boolean isPosX;
+    boolean isPosY;
+    boolean isPosZ;
+    boolean isPosYaw;
+    boolean isPosPitch;
 
     @Override
     public ProcType getType() {
@@ -26,6 +31,11 @@ public class Location implements Process {
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
+        isPosX = parseUnit.useExecutor(ProcType.EXECUTE_POS_X);
+        isPosY = parseUnit.useExecutor(ProcType.EXECUTE_POS_Y);
+        isPosZ = parseUnit.useExecutor(ProcType.EXECUTE_POS_Z);
+        isPosYaw = parseUnit.useExecutor(ProcType.EXECUTE_POS_YAW);
+        isPosPitch = parseUnit.useExecutor(ProcType.EXECUTE_POS_PITCH);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) {
             parseUnit.addExecutor(getType());
@@ -42,7 +52,22 @@ public class Location implements Process {
             String name = processList.get(0).run(miniGame, procUnit);
             Player player = procUnit.target.player;
             if (isGame) {
-                if (isSet) {
+                if (isPosX) {
+                    org.bukkit.Location location = miniGame.getGameData().getLocation(name);
+                    return String.valueOf(location.getX());
+                } else if (isPosY) {
+                    org.bukkit.Location location = miniGame.getGameData().getLocation(name);
+                    return String.valueOf(location.getY());
+                } else if (isPosZ) {
+                    org.bukkit.Location location = miniGame.getGameData().getLocation(name);
+                    return String.valueOf(location.getZ());
+                } else if (isPosYaw) {
+                    org.bukkit.Location location = miniGame.getGameData().getLocation(name);
+                    return String.valueOf(location.getYaw());
+                } else if (isPosPitch) {
+                    org.bukkit.Location location = miniGame.getGameData().getLocation(name);
+                    return String.valueOf(location.getPitch());
+                } else if (isSet) {
                     World world = Bukkit.getWorld(processList.get(2).run(miniGame, procUnit));
                     double posX = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
                     double posY = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
@@ -59,7 +84,22 @@ public class Location implements Process {
                     location.add(posX, posY, posZ);
                 }
             } else if (player != null) {
-                if (isSet) {
+                if (isPosX) {
+                    org.bukkit.Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                    return String.valueOf(location.getX());
+                } else if (isPosY) {
+                    org.bukkit.Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                    return String.valueOf(location.getY());
+                } else if (isPosZ) {
+                    org.bukkit.Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                    return String.valueOf(location.getZ());
+                } else if (isPosYaw) {
+                    org.bukkit.Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                    return String.valueOf(location.getYaw());
+                } else if (isPosPitch) {
+                    org.bukkit.Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                    return String.valueOf(location.getPitch());
+                } else if (isSet) {
                     World world = Bukkit.getWorld(processList.get(2).run(miniGame, procUnit));
                     double posX = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
                     double posY = Double.parseDouble(processList.get(6).run(miniGame, procUnit));

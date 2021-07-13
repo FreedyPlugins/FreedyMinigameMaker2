@@ -26,6 +26,10 @@ public class ProcBundle {
         return run(miniGame, ProcUnit.getNewProcUnit(player));
     }
 
+    public String run(MiniGame miniGame, Player player, Entity entity) {
+        return run(miniGame, ProcUnit.getNewProcUnit(player, entity));
+    }
+
     public void run(MiniGame miniGame, Entity entity) {
         run(miniGame, ProcUnit.getNewProcUnit(entity));
     }

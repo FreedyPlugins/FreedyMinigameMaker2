@@ -2,7 +2,7 @@ package kr.jongwonlee.fmg.proc;
 
 import java.lang.annotation.*;
 
-@Documented
+//@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 

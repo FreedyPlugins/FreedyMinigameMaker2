@@ -7,6 +7,7 @@ import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -49,6 +50,16 @@ public class MiniGame {
         else return "";
     }
 
+    public String run(EventBundle name, Player player, Entity entity) {
+        String eventName = name.getName();
+        if (bundleMap.containsKey(eventName)) return bundleMap.get(eventName).run(this, player, entity);
+        else return "";
+    }
+
+    public ProcBundle getProcBundle(String name) {
+        return bundleMap.getOrDefault(name, null);
+    }
+
     public String getName() {
         return name;
     }
@@ -67,7 +78,8 @@ public class MiniGame {
 
     public void join(UUID playerUuid) {
         Player player = toPlayer(playerUuid);
-        run(EventBundle.PRE_GAME_JOIN, player);
+        String result = run(EventBundle.PRE_GAME_JOIN, player);
+        if (result.equals("false")) return;
         if (playersData.containsKey(playerUuid)) return;
         playersData.put(playerUuid, new GameData());
         GameStore.setGame(player, this);

@@ -37,6 +37,10 @@ public class MidFrontBrace implements FrontBrace {
         return returned == null ? "" : returned;
     }
 
+    public String skip(MiniGame miniGame, ProcUnit procUnit) {
+        return nextProcess.run(miniGame, procUnit);
+    }
+
     @Override
     public ProcType getType() {
         return ProcType.MID_FRONT_BRACE;

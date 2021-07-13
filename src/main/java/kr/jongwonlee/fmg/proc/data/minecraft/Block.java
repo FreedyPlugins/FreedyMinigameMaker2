@@ -16,6 +16,7 @@ public class Block implements Process {
     boolean isGame;
     boolean isSet;
     boolean isType;
+    boolean isCode;
 
     @Override
     public ProcType getType() {
@@ -27,6 +28,7 @@ public class Block implements Process {
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isType = parseUnit.useExecutor(ProcType.EXECUTE_TYPE);
+        isCode = parseUnit.useExecutor(ProcType.EXECUTE_CODE);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
@@ -41,7 +43,10 @@ public class Block implements Process {
         String name = processList.get(0).run(miniGame, procUnit);
         Player player = procUnit.target.player;
         if (isGame) {
-            if (isType) {
+            if (isCode) {
+                BlockState block = miniGame.getGameData().getBlock(name);
+                return block.getTypeId() + ":" + block.getRawData();
+            } else if (isType) {
                 BlockState block = miniGame.getGameData().getBlock(name);
                 return block.getType().name();
             } else if (isSet) {
@@ -64,7 +69,10 @@ public class Block implements Process {
                 }
             }
         } else if (player != null) {
-            if (isType) {
+            if (isCode) {
+                BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                return block.getTypeId() + ":" + block.getRawData();
+            } else if (isType) {
                 BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
                 return block.getType().name();
             } else if (isSet) {

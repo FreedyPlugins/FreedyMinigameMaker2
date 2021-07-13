@@ -52,7 +52,7 @@ public class FMGCommand implements CommandExecutor {
                             return true;
                         }
                         if (message.length() == 0) return false;
-                        GameStore.removeShop(message);
+                        GameStore.removeGame(message);
                         return true;
                     }
                     case "games":
