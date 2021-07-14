@@ -39,6 +39,7 @@ public enum ProcType {
     SMALL_END_BRACE(SmallEndBrace.class),
     SMALL_FRONT_BRACE(SmallFrontBrace.class),
     SUBTRACT(Subtract.class),
+    TARGET(Target.class),
     THEN(Then.class),
     WHILE(While.class),
     /*etc package---------------------------------*/
@@ -75,6 +76,7 @@ public enum ProcType {
     BLOCK(Block.class),
     BROADCAST(Broadcast.class),
     GAME_MODE(GameMode.class),
+    HEALTH(Health.class),
     INVENTORY(Inventory.class),
     ITEM(Item.class),
     LOCATION(Location.class),

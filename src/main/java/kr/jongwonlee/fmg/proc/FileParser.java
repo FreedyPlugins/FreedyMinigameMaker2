@@ -1,6 +1,7 @@
 package kr.jongwonlee.fmg.proc;
 
 import kr.jongwonlee.fmg.conf.Settings;
+import kr.jongwonlee.fmg.proc.data.control.MathOperator;
 import kr.jongwonlee.fmg.proc.data.control.Nothing;
 import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.util.GameAlert;
@@ -106,6 +107,7 @@ public class FileParser {
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
+        if (process instanceof MathOperator) return getNothing(parseUnit, "");
         return process;
     }
 

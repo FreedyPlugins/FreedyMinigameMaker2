@@ -28,6 +28,7 @@ public class Inventory implements Process {
     private boolean isOnline;
     private boolean isEquals;
     private boolean isExists;
+    private boolean isClear;
 
     @Override
     public ProcType getType() {
@@ -46,6 +47,7 @@ public class Inventory implements Process {
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         isEquals = parseUnit.useExecutor(ProcType.EXECUTE_EQUALS);
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
+        isClear = parseUnit.useExecutor(ProcType.EXECUTE_CLEAR);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) {
             parseUnit.addExecutor(getType());
@@ -56,18 +58,21 @@ public class Inventory implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
+        if (frontBrace == null) return "";
         Player player = procUnit.target.player;
         List<Process> processList = frontBrace.getProcessList();
         Process process = processList.get(0);
         String name = process.run(miniGame, procUnit);
         try {
-            if (frontBrace == null) return "";
             if (isOnline) {
                 org.bukkit.inventory.Inventory inventory = GameDataStore.getInst().getInventory(name);
-                if (isType) {
+                if (isClear) {
+                    inventory.clear();
+                    return "";
+                } else if (isType) {
                     return inventory.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isSize) {
-                    return String.valueOf(inventory.getSize()) + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return inventory.getSize() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     return inventory == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isEquals) {
@@ -137,10 +142,13 @@ public class Inventory implements Process {
                 }
             } else if (isGame) {
                 org.bukkit.inventory.Inventory inventory = miniGame.getGameData().getInventory(name);
-                if (isType) {
+                if (isClear) {
+                    inventory.clear();
+                    return "";
+                } else if (isType) {
                     return inventory.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isSize) {
-                    return String.valueOf(inventory.getSize()) + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return inventory.getSize() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     return inventory == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isEquals) {
@@ -210,10 +218,13 @@ public class Inventory implements Process {
                 }
             } else if (player != null) {
                 org.bukkit.inventory.Inventory inventory = process.getType().equals(ProcType.EXECUTE_PLAYER) ? player.getInventory() : miniGame.getPlayerData(player.getUniqueId()).getInventory(name);
-                if (isType) {
+                if (isClear) {
+                    inventory.clear();
+                    return "";
+                } else if (isType) {
                     return inventory.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isSize) {
-                    return String.valueOf(inventory.getSize()) + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return inventory.getSize() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     return inventory == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isEquals) {
