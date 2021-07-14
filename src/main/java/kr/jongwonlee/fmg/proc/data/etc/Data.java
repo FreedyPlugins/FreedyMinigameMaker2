@@ -1,6 +1,6 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
-import kr.jongwonlee.fmg.conf.DataStore;
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -57,15 +57,15 @@ public class Data implements Process {
             if (isSet()) {
                 String value = processList.get(2).run(miniGame, procUnit);
                 if (isGame()) miniGame.getGameData().setData(name, value);
-                else if (isOnline()) DataStore.setData(name, value);
+                else if (isOnline()) GameDataStore.getInst().setData(name, value);
                 else if (procUnit.target.player != null) miniGame.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
-                return value;
+                return value + frontBrace.getLastProc().run(miniGame, procUnit);
             } else {
-                if (isGame()) return miniGame.getGameData().getData(name);
-                else if (isOnline()) return DataStore.getData(name);
-                else if (procUnit.target.player != null) return miniGame.getPlayerData(procUnit.target.player.getUniqueId()).getData(name);
+                if (isGame()) return miniGame.getGameData().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isOnline()) return GameDataStore.getInst().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (procUnit.target.player != null) return miniGame.getPlayerData(procUnit.target.player.getUniqueId()).getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
             }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

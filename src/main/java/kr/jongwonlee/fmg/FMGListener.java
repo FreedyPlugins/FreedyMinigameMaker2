@@ -4,6 +4,7 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.EventBundle;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -39,7 +40,8 @@ public class FMGListener implements Listener {
         playerData.setData("interactAction", event.getAction().name());
         playerData.setData("interactHand", event.getHand().name());
         playerData.setData("interactBlockFace", event.getBlockFace().name());
-        playerData.setBlock("interactBlock", event.getClickedBlock().getState());
+        Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock != null) playerData.setBlock("interactBlock", clickedBlock.getState());
         playerData.setItemStack("interactItem", event.getItem());
         String result = GameStore.getGame(player).run(EventBundle.INTERACT, player);
         if (result.equals("false")) event.setCancelled(true);

@@ -1,8 +1,6 @@
 package kr.jongwonlee.fmg;
 
-import kr.jongwonlee.fmg.conf.DataStore;
-import kr.jongwonlee.fmg.conf.ItemStore;
-import kr.jongwonlee.fmg.conf.LocationStore;
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
@@ -80,9 +78,7 @@ public class FMGCommand implements CommandExecutor {
                         if (sender instanceof Player) sender.sendMessage("Reloading...");
                         FMGPlugin.getInst().getLogger().info("Reloading...");
                         if (game == null) {
-                            ItemStore.init();
-                            LocationStore.init();
-                            DataStore.init();
+                            GameDataStore.init();
                             EventBundle.init();
                             GameAlert.init();
                             GameStore.init();
@@ -162,7 +158,7 @@ public class FMGCommand implements CommandExecutor {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
-                        ItemStore.setItemStack(message, player.getInventory().getItemInMainHand());
+                        GameDataStore.getInst().setItemStack(message, player.getInventory().getItemInMainHand());
                         return true;
                     }
                     case "loc":
@@ -172,7 +168,7 @@ public class FMGCommand implements CommandExecutor {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
-                        LocationStore.setLocation(message, player.getLocation());
+                        GameDataStore.getInst().setLocation(message, player.getLocation());
                         return true;
                     }
                     case "edit":
@@ -188,7 +184,7 @@ public class FMGCommand implements CommandExecutor {
             }
         } catch (Exception e) {
             if (sender.isOp()) {
-                e.printStackTrace();
+                if (!(e instanceof IllegalArgumentException)) e.printStackTrace();
                 about(sender);
                 return false;
             } else {

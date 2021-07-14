@@ -39,9 +39,9 @@ public class Sound implements Process {
                 player.playSound(player.getLocation(), name, volume, pitch);
             }
         } catch (NumberFormatException e) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

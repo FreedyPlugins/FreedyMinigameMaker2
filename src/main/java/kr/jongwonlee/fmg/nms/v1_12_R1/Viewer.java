@@ -81,10 +81,12 @@ public class Viewer implements ImageViewer {
                 PacketPlayOutEntityMetadata entityMetadataPacket = new PacketPlayOutEntityMetadata(frame.getId(), frame.getDataWatcher(), true);
                 int mapId = frame.getItem().getData();
                 PacketPlayOutMap mapPacket = new PacketPlayOutMap(mapId, (byte) 3, false, emptyList(), imageFrame.getPixels(), 0, 0, 128, 128);
-                PlayerConnection connection = ((CraftPlayer) image.player).getHandle().playerConnection;
-                connection.sendPacket(spawnEntityPacket);
-                connection.sendPacket(entityMetadataPacket);
-                connection.sendPacket(mapPacket);
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+                    connection.sendPacket(spawnEntityPacket);
+                    connection.sendPacket(entityMetadataPacket);
+                    connection.sendPacket(mapPacket);
+                });
             }
         }
     }

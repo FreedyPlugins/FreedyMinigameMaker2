@@ -32,7 +32,7 @@ public class MidFrontBrace implements FrontBrace {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         procBundle.run(miniGame, procUnit);
-        nextProcess.run(miniGame, procUnit);
+        if (nextProcess != null) nextProcess.run(miniGame, procUnit);
         String returned = procUnit.getReturned();
         return returned == null ? "" : returned;
     }

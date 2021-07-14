@@ -74,6 +74,7 @@ public enum ProcType {
     ACTION_BAR(ActionBar.class),
     BLOCK(Block.class),
     BROADCAST(Broadcast.class),
+    GAME_MODE(GameMode.class),
     INVENTORY(Inventory.class),
     ITEM(Item.class),
     LOCATION(Location.class),

@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -15,6 +16,7 @@ public class List implements Process {
     SmallFrontBrace frontBrace;
     boolean isAdd;
     boolean isGame;
+    boolean isOnline;
     boolean isSet;
     boolean isSize;
     boolean isClear;
@@ -30,6 +32,7 @@ public class List implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
+        isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isSize = parseUnit.useExecutor(ProcType.EXECUTE_SIZE);
         isClear = parseUnit.useExecutor(ProcType.EXECUTE_CLEAR);
@@ -47,14 +50,42 @@ public class List implements Process {
             java.util.List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             Player player = procUnit.target.player;
-            if (isGame) {
+            if (isOnline) {
+                java.util.List<String> list = GameDataStore.getInst().getList(name);
+                if (isSize) return String.valueOf(list.size()) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isClear && list != null) {
+                    GameDataStore.getInst().setList(name, null);
+                    return frontBrace.getLastProc().run(miniGame, procUnit) + frontBrace.getLastProc().run(miniGame, procUnit);
+                } else {
+                    if (isAdd) {
+                        if (list == null) {
+                            list = new ArrayList<>();
+                            GameDataStore.getInst().setList(name, list);
+                        }
+                        String value = processList.get(2).run(miniGame, procUnit);
+                        list.add(value);
+                    } else if (isRemove) {
+                        if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
+                        String value = processList.get(2).run(miniGame, procUnit);
+                        list.remove(value);
+                    } else if (isGet) {
+                        try {
+                            if (list == null || list.isEmpty()) return "null";
+                            String value = processList.get(2).run(miniGame, procUnit);
+                            int index = Integer.parseInt(value);
+                            return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
+                        } catch (Exception e) {
+                            return frontBrace.getLastProc().run(miniGame, procUnit);
+                        }
+                    }
+                }
+            } else if (isGame) {
                 java.util.List<String> list = miniGame.getGameData().getList(name);
-                if (isSize) return String.valueOf(list.size());
+                if (isSize) return String.valueOf(list.size()) + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isClear && list != null) {
                     miniGame.getGameData().setList(name, null);
-                    return "";
-                }
-                else {
+                    return frontBrace.getLastProc().run(miniGame, procUnit);
+                } else {
                     if (isAdd) {
                         if (list == null) {
                             list = new ArrayList<>();
@@ -63,54 +94,54 @@ public class List implements Process {
                         String value = processList.get(2).run(miniGame, procUnit);
                         list.add(value);
                     } else if (isRemove) {
-                        if (list == null) return "";
+                        if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         String value = processList.get(2).run(miniGame, procUnit);
                         list.remove(value);
                     } else if (isGet) {
                         try {
                             String value = processList.get(2).run(miniGame, procUnit);
                             int index = Integer.parseInt(value);
-                            if (list == null || list.isEmpty() || index + 1 >= list.size()) return "null";
-                            return list.get(FastMath.min(list.size() - 1, index));
+                            if (list == null || list.isEmpty() || index + 1 >= list.size()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
+                            return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
                         } catch (Exception e) {
-                            return "";
+                            return frontBrace.getLastProc().run(miniGame, procUnit);
                         }
                     }
                 }
             } else if (player != null) {
                 java.util.List<String> list = miniGame.getPlayerData(player.getUniqueId()).getList(name);
-                    if (isSize) return String.valueOf(list.size());
-                    else if (isClear && list != null) {
-                        miniGame.getPlayerData(player.getUniqueId()).setList(name, null);
-                        return "";
-                    } else {
-                        if (isAdd) {
-                            if (list == null) {
-                                list = new ArrayList<>();
-                                miniGame.getGameData().setList(name, list);
-                            }
-                            String value = processList.get(2).run(miniGame, procUnit);
-                            list.add(value);
-                        } else if (isRemove) {
-                            if (list == null) return "";
-                            String value = processList.get(2).run(miniGame, procUnit);
-                            list.remove(value);
-                        } else if (isGet) {
-                            try {
-                                if (list == null || list.isEmpty()) return "null";
-                                String value = processList.get(2).run(miniGame, procUnit);
-                                int index = Integer.parseInt(value);
-                                return list.get(FastMath.min(list.size() - 1, index));
-                            } catch (Exception e) {
-                                return "";
-                            }
+                if (isSize) return String.valueOf(list.size()) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isClear && list != null) {
+                    miniGame.getPlayerData(player.getUniqueId()).setList(name, null);
+                    return frontBrace.getLastProc().run(miniGame, procUnit);
+                } else {
+                    if (isAdd) {
+                        if (list == null) {
+                            list = new ArrayList<>();
+                            miniGame.getPlayerData(player.getUniqueId()).setList(name, list);
                         }
+                        String value = processList.get(2).run(miniGame, procUnit);
+                        list.add(value);
+                    } else if (isRemove) {
+                        if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
+                        String value = processList.get(2).run(miniGame, procUnit);
+                        list.remove(value);
+                    } else if (isGet) {
+                        try {
+                            if (list == null || list.isEmpty()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
+                            String value = processList.get(2).run(miniGame, procUnit);
+                            int index = Integer.parseInt(value);
+                            return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
+                        } catch (Exception e) {
+                            return frontBrace.getLastProc().run(miniGame, procUnit);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

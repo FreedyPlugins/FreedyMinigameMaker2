@@ -1,6 +1,6 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
-import kr.jongwonlee.fmg.conf.LocationStore;
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -45,10 +45,10 @@ public class Block implements Process {
         if (isGame) {
             if (isCode) {
                 BlockState block = miniGame.getGameData().getBlock(name);
-                return block.getTypeId() + ":" + block.getRawData();
+                return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isType) {
                 BlockState block = miniGame.getGameData().getBlock(name);
-                return block.getType().name();
+                return block.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isSet) {
                 Process process = processList.get(2);
                 boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
@@ -56,25 +56,25 @@ public class Block implements Process {
                 String targetLocation = process.run(miniGame, procUnit);
                 if (isGameLocation) {
                     Location location = miniGame.getGameData().getLocation(targetLocation);
-                    if (location == null) return "";
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getGameData().setBlock(name, location.getBlock().getState());
                 } else if (isAllLocation) {
-                    Location location = LocationStore.getLocation(targetLocation);
-                    if (location == null) return "";
+                    Location location = GameDataStore.getInst().getLocation(targetLocation);
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getGameData().setBlock(name, location.getBlock().getState());
                 } else {
                     Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
-                    if (location == null) return "";
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getGameData().setBlock(name, location.getBlock().getState());
                 }
             }
         } else if (player != null) {
             if (isCode) {
                 BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
-                return block.getTypeId() + ":" + block.getRawData();
+                return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isType) {
                 BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
-                return block.getType().name();
+                return block.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isSet) {
                 Process process = processList.get(2);
                 boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
@@ -82,21 +82,21 @@ public class Block implements Process {
                 String targetLocation = process.run(miniGame, procUnit);
                 if (isGameLocation) {
                     Location location = miniGame.getGameData().getLocation(targetLocation);
-                    if (location == null) return "";
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                 } else if (isAllLocation) {
-                    Location location = LocationStore.getLocation(targetLocation);
-                    if (location == null) return "";
+                    Location location = GameDataStore.getInst().getLocation(targetLocation);
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                 } else {
                     Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(targetLocation);
-                    if (location == null) return "";
+                    if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                     miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                 }
             }
 
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

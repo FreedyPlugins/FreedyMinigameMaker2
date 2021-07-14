@@ -1,8 +1,6 @@
 package kr.jongwonlee.fmg;
 
-import kr.jongwonlee.fmg.conf.DataStore;
-import kr.jongwonlee.fmg.conf.ItemStore;
-import kr.jongwonlee.fmg.conf.LocationStore;
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.image.ImageEditor;
@@ -31,18 +29,14 @@ public final class FMGPlugin extends JavaPlugin {
         FMGListener.init();
         GameAlert.init();
         EventBundle.init();
-        ItemStore.init();
-        DataStore.init();
-        LocationStore.init();
         Settings.init();
+        GameDataStore.init();
         GameStore.init();
     }
 
     @Override
     public void onDisable() {
-        DataStore.getYamlStore().save();
-        ItemStore.getYamlStore().save();
-        LocationStore.getYamlStore().save();
+        GameDataStore.save();
     }
 
     public static void registerEvent(Listener listener) {

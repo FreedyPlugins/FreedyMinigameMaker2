@@ -27,12 +27,13 @@ public class Refs implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
+            if (frontBrace == null) return "";
             List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             String message = processList.get(2).run(miniGame, procUnit);
             return GameStore.getGame(name).getProcBundle(message).run(miniGame, new ProcUnit(procUnit.target));
         } catch (Exception ignored) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
 
     }

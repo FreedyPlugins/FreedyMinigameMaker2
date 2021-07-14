@@ -33,13 +33,13 @@ public class Permission implements Process {
             List<Process> processList = frontBrace.getProcessList();
             Player player = procUnit.target.player;
             if (player != null) {
-                return player.hasPermission(processList.get(0).run(miniGame, procUnit)) ? "true" : "false";
+                return player.hasPermission(processList.get(0).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
             }
         }
         catch (Exception e) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

@@ -52,15 +52,11 @@ public class Potion implements Process {
                 }
 
             }
-        }
-        catch (NullPointerException e) {
+        } catch (Exception e) {
             //add to no such sound GameAlert
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        catch (Exception e) {
-            return "";
-        }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

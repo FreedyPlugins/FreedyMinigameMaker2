@@ -42,7 +42,7 @@ public class Delay implements Process {
         Runnable runnable = () -> processList.get(processList.size() - 1).run(miniGame, procUnit);
         if (isAsync) FMGPlugin.runTaskLaterAsync(runnable, ((long) Double.parseDouble(delay)));
         else FMGPlugin.runTaskLater(runnable, ((long) Double.parseDouble(delay)));
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

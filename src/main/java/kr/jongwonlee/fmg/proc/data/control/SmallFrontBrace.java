@@ -17,6 +17,10 @@ public class SmallFrontBrace implements FrontBrace {
         return processList;
     }
 
+    public Process getLastProc() {
+        return processList.get(processList.size() - 1);
+    }
+
     public void addProc(ParseUnit parseUnit, Process process) {
         processList.add(process);
     }

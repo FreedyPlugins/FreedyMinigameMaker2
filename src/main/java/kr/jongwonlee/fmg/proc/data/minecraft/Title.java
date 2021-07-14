@@ -38,9 +38,9 @@ public class Title implements Process {
                 procUnit.target.player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut));
             }
         } catch (NumberFormatException e) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

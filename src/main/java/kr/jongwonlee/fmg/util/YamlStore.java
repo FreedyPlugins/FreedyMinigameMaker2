@@ -3,10 +3,14 @@ package kr.jongwonlee.fmg.util;
 import kr.jongwonlee.fmg.FMGPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -36,6 +40,10 @@ public class YamlStore extends FileStore {
 
     public void setItemStackMap(String path, Map<String, ItemStack> itemStackMap) {
         itemStackMap.forEach((key, itemStack) -> getConfig().set(path + DOT + key, itemStack));
+    }
+
+    public void setInventoryMap(String path, Map<String, Inventory> inventoryMap) {
+        inventoryMap.forEach((key, inventory) -> setInventory(path + DOT + key, inventory));
     }
 
     public void setItemStackList(String path, List<ItemStack> itemStackList) {
@@ -174,6 +182,41 @@ public class YamlStore extends FileStore {
         for (String string : getKeys(getSection(path), true))
             stringMap.put(string, getString(path + DOT + string));
         return stringMap;
+    }
+
+    public Map<String, Inventory> getInventoryMap(String path) {
+        final Map<String, Inventory> inventoryMap = new HashMap<>();
+        for (String string : getKeys(getSection(path), true)) {
+            try {
+                String typeString = getString(path + DOT + "TYPE");
+                String title = getString(path + DOT + "TITLE");
+                InventoryType inventoryType = typeString == null ? null : InventoryType.valueOf(typeString);
+                int size = getInt(path + DOT + "SIZE");
+                Inventory inventory;
+                if (inventoryType == null) inventory = Bukkit.createInventory(null, size, title == null ? "" : title);
+                else inventory = Bukkit.createInventory(null, inventoryType, title == null ? "" : title);
+                Map<String, ItemStack> itemStackMap = getItemStackMap(path + DOT + "ITEMS");
+                itemStackMap.forEach((s, itemStack) -> inventory.setItem(Integer.parseInt(s), itemStack));
+                inventoryMap.put(string, inventory);
+            } catch (Exception ignored) { }
+        }
+        return inventoryMap;
+    }
+
+    public Map<String, List<String>> getListMap(String path) {
+        final Map<String, List<String>> stringMap = new HashMap<>();
+        for (String string : getKeys(getSection(path), true))
+            stringMap.put(string, getStringList(path + DOT + string));
+        return stringMap;
+    }
+
+    public void setInventory(String path, Inventory inventory) {
+        InventoryType type = inventory.getType();
+        set(path + DOT + "TYPE", type == InventoryType.CHEST ? null : type);
+        set(path + DOT + "TITLE", inventory.getTitle());
+        set(path + DOT + "SIZE", inventory.getSize());
+        ItemStack[] contents = inventory.getStorageContents();
+        for (int i = 0; i < contents.length; i++) set(path + DOT + "ITEMS" + DOT + i, contents[i]);
     }
 
 }

@@ -1,7 +1,6 @@
 package kr.jongwonlee.fmg.game;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,13 +11,26 @@ import java.util.Map;
 
 public class GameData {
 
-    private final Map<String, String> dataMap;
-    private final Map<String, Location> locationMap;
-    private final Map<String, BlockState> blockMap;
-    private final Map<String, ItemStack> itemStackMap;
-    private final Map<String, Inventory> inventoryMap;
-    private final Map<String, List<String>> listMap;
+    protected Map<String, String> dataMap;
+    protected Map<String, Location> locationMap;
+    protected Map<String, BlockState> blockMap;
+    protected Map<String, ItemStack> itemStackMap;
+    protected Map<String, Inventory> inventoryMap;
+    protected Map<String, List<String>> listMap;
 
+    public GameData(Map<String, String> dataMap,
+                    Map<String, Location> locationMap,
+                    Map<String, BlockState> blockMap,
+                    Map<String, ItemStack> itemStackMap,
+                    Map<String, Inventory> inventoryMap,
+                    Map<String, List<String>> listMap) {
+        this.dataMap = dataMap;
+        this.locationMap = locationMap;
+        this.blockMap = blockMap;
+        this.itemStackMap = itemStackMap;
+        this.inventoryMap = inventoryMap;
+        this.listMap = listMap;
+    }
 
     public GameData() {
         this.dataMap = new HashMap<>();
@@ -79,12 +91,12 @@ public class GameData {
     }
 
     public void clear() {
-        this.dataMap.clear();
-        this.locationMap.clear();
-        this.blockMap.clear();
-        this.itemStackMap.clear();
-        this.inventoryMap.clear();
-        this.listMap.clear();
+        this.dataMap = new HashMap<>();
+        this.locationMap = new HashMap<>();
+        this.blockMap = new HashMap<>();
+        this.itemStackMap = new HashMap<>();
+        this.inventoryMap = new HashMap<>();
+        this.listMap = new HashMap<>();
     }
 
 }

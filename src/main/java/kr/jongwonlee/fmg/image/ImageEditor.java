@@ -52,6 +52,7 @@ public class ImageEditor implements Listener {
     }
 
     public static void openEditor(Player player, String name) {
+        if (!GameStore.isGame(name)) return;
         FMGPlugin.runTaskAsync(() -> {
             ImageEditor imageEditor = new ImageEditor();
             imageEditor.name = name;
@@ -72,6 +73,7 @@ public class ImageEditor implements Listener {
                 while ((line = fileReader.readLine()) != null) {
                     imageEditor.source.add(line);
                 }
+                fileReader.closeFile();
                 if (imageEditor.source.isEmpty()) imageEditor.source.add("");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -179,6 +181,7 @@ public class ImageEditor implements Listener {
                     while ((line = fileReader.readLine()) != null) {
                         source.add(line);
                     }
+                    fileReader.closeFile();
                     if (source.isEmpty()) source.add("");
                 } catch (IOException e) {
                     e.printStackTrace();

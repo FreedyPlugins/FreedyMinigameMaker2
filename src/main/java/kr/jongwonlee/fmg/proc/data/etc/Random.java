@@ -37,9 +37,9 @@ public class Random implements Process {
                 return String.valueOf(result);
             }
         } catch (NumberFormatException e) {
-            return "";
+            return frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return "";
+        return frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }
