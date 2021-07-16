@@ -15,7 +15,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class FMGCommand implements CommandExecutor {
@@ -53,8 +55,7 @@ public class FMGCommand implements CommandExecutor {
                         GameStore.removeGame(message);
                         return true;
                     }
-                    case "games":
-                    case "list": {
+                    case "games": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
@@ -78,15 +79,27 @@ public class FMGCommand implements CommandExecutor {
                         if (sender instanceof Player) sender.sendMessage("Reloading...");
                         FMGPlugin.getInst().getLogger().info("Reloading...");
                         if (game == null) {
-                            GameDataStore.init();
                             EventBundle.init();
                             GameAlert.init();
                             GameStore.init();
-                            GameStore.getGames().forEach(MiniGame::reload);
-                        }
-                        else game.reload();
+                        } else game.reload();
                         long after = System.currentTimeMillis();
                         String alert = String.format("Reloaded (%ss)!", ((double) (after - before)) / 1000D);
+                        FMGPlugin.getInst().getLogger().info(alert);
+                        if (sender instanceof Player) sender.sendMessage(alert);
+                        return true;
+                    }
+                    case "save": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
+                        long before = System.currentTimeMillis();
+                        if (sender instanceof Player) sender.sendMessage("Saving...");
+                        FMGPlugin.getInst().getLogger().info("Saved...");
+                        GameDataStore.save();
+                        long after = System.currentTimeMillis();
+                        String alert = String.format("Saved (%ss)!", ((double) (after - before)) / 1000D);
                         FMGPlugin.getInst().getLogger().info(alert);
                         if (sender instanceof Player) sender.sendMessage(alert);
                         return true;
@@ -169,6 +182,25 @@ public class FMGCommand implements CommandExecutor {
                             return true;
                         }
                         GameDataStore.getInst().setLocation(message, player.getLocation());
+                        return true;
+                    }
+                    case "var":
+                    case "data": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
+                        GameDataStore.getInst().setData(args[1], message.substring(message.indexOf(" ") + 1));
+                        return true;
+                    }
+                    case "list": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
+                        List<String> list = GameDataStore.getInst().getList(args[1]);
+                        if (list == null) GameDataStore.getInst().setList(args[1], list = new ArrayList<>());
+                        list.add(message.substring(message.indexOf(" ") + 1));
                         return true;
                     }
                     case "edit":

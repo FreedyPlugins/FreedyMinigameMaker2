@@ -5,7 +5,6 @@ import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -33,7 +32,8 @@ public class Permission implements Process {
             List<Process> processList = frontBrace.getProcessList();
             Player player = procUnit.target.player;
             if (player != null) {
-                return player.hasPermission(processList.get(0).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                String value = processList.get(0).run(miniGame, procUnit);
+                return value.equalsIgnoreCase("op") ? player.isOp() ? "true" : "false" : player.hasPermission(value) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
             }
         }
         catch (Exception e) {

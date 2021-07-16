@@ -17,6 +17,7 @@ public class Block implements Process {
     boolean isSet;
     boolean isType;
     boolean isCode;
+    boolean isLocation;
 
     @Override
     public ProcType getType() {
@@ -29,6 +30,7 @@ public class Block implements Process {
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isType = parseUnit.useExecutor(ProcType.EXECUTE_TYPE);
         isCode = parseUnit.useExecutor(ProcType.EXECUTE_CODE);
+        isLocation = parseUnit.useExecutor(ProcType.LOCATION);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
@@ -43,7 +45,16 @@ public class Block implements Process {
         String name = processList.get(0).run(miniGame, procUnit);
         Player player = procUnit.target.player;
         if (isGame) {
-            if (isCode) {
+            if (isLocation) {
+                BlockState block = miniGame.getGameData().getBlock(name);
+                Process process = processList.get(2);
+                boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
+                boolean isAllLocation = process.getType() == ProcType.EXECUTE_ONLINE;
+                String targetLocation = process.run(miniGame, procUnit);
+                if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation());
+                else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation());
+                else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation());
+            } else if (isCode) {
                 BlockState block = miniGame.getGameData().getBlock(name);
                 return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isType) {
@@ -69,7 +80,16 @@ public class Block implements Process {
                 }
             }
         } else if (player != null) {
-            if (isCode) {
+            if (isLocation) {
+                BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                Process process = processList.get(2);
+                boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
+                boolean isAllLocation = process.getType() == ProcType.EXECUTE_ONLINE;
+                String targetLocation = process.run(miniGame, procUnit);
+                if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation());
+                else if ( isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation());
+                else miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation());
+            } else if (isCode) {
                 BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
                 return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
             } else if (isType) {

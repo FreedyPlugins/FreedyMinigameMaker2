@@ -16,7 +16,8 @@ public class GameDataStore extends GameData {
 //    private static final YamlStore blockStore = new YamlStore("blocks.yml");
 
     public GameDataStore() {
-        super(dataStore.getStringMap(""),
+        super(
+                dataStore.getStringMap(""),
                 locationStore.getLocationMap(""),
                 new HashMap<>(),
                 itemStackStore.getItemStackMap(""),
@@ -27,6 +28,7 @@ public class GameDataStore extends GameData {
     public static GameDataStore getInst() {
         return instance;
     }
+
     public static void init() {
         instance = new GameDataStore();
     }

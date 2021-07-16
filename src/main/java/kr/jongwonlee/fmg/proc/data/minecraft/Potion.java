@@ -35,16 +35,16 @@ public class Potion implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
-            if (frontBrace == null) return "";
-            List<Process> processList = frontBrace.getProcessList();
             Player player = procUnit.target.player;
             if (player != null) {
                 if (isAdd) {
+                    List<Process> processList = frontBrace.getProcessList();
                     String potion = processList.get(0).run(miniGame, procUnit);
                     int duration = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
                     int amplifier = Integer.parseInt(processList.get(4).run(miniGame, procUnit));
-                    player.addPotionEffect(PotionEffectType.getByName(potion).createEffect(duration, amplifier));
+                    player.addPotionEffect(PotionEffectType.getByName(potion).createEffect(duration, amplifier), false);
                 } else if (isRemove) {
+                    List<Process> processList = frontBrace.getProcessList();
                     String potion = processList.get(0).run(miniGame, procUnit);
                     player.removePotionEffect(PotionEffectType.getByName(potion));
                 } else if (isClear) {
@@ -54,9 +54,9 @@ public class Potion implements Process {
             }
         } catch (Exception e) {
             //add to no such sound GameAlert
-            return frontBrace.getLastProc().run(miniGame, procUnit);
+            return frontBrace == null ? "" : frontBrace.getLastProc().run(miniGame, procUnit);
         }
-        return frontBrace.getLastProc().run(miniGame, procUnit);
+        return frontBrace == null ? "" : frontBrace.getLastProc().run(miniGame, procUnit);
     }
 
 }

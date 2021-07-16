@@ -3,6 +3,7 @@ package kr.jongwonlee.fmg;
 import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
+import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.image.ImageEditor;
 import kr.jongwonlee.fmg.nms.NMS;
 import kr.jongwonlee.fmg.proc.EventBundle;
@@ -36,6 +37,7 @@ public final class FMGPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        GameStore.getGames().forEach(MiniGame::disable);
         GameDataStore.save();
     }
 

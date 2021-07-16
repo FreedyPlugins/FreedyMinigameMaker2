@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
+import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -17,8 +18,8 @@ public class Uuid implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         String message = process.run(miniGame, procUnit);
-        if (procUnit.target.player != null) return procUnit.target.player.getUniqueId() + message;
-        else if (procUnit.target.entity != null) return procUnit.target.entity.getUniqueId() + message;
+        if (procUnit.target.player != null) return FastUUID.toString(procUnit.target.player.getUniqueId()) + message;
+        else if (procUnit.target.entity != null) return FastUUID.toString(procUnit.target.entity.getUniqueId()) + message;
         else return miniGame.getName() + message;
     }
 

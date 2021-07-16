@@ -16,6 +16,8 @@ public class ExecutePlayer implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.useExecutor(ProcType.EXECUTE_GAME);
+        parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
     }
@@ -24,39 +26,5 @@ public class ExecutePlayer implements Process {
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         return process.run(miniGame, procUnit);
     }
-
-
-/*    @Override
-    public void parse(ParseUnit parseUnit, String arguments) {
-        Process process = FileParser.parseProcess(parseUnit, arguments);
-        if (!(process instanceof SmallFrontBrace)) {
-            parseUnit.addExecutor(getType());
-            this.process = FileParser.parseProcess(parseUnit, arguments);
-        }
-        else frontBrace = ((SmallFrontBrace) process);
-    }
-
-    @Override
-    public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) {
-            return process.run(miniGame, procUnit);
-        }
-        org.bukkit.entity.Player originPlayer = procUnit.target.player;
-        try {
-            List<Process> processList = frontBrace.getProcessList();
-            String name = processList.get(0).run(miniGame, procUnit);
-            try {
-                procUnit.target.player = Bukkit.getPlayer(FastUUID.parseUUID(name));
-            } catch (Exception ignored) {
-                org.bukkit.entity.Player player = Bukkit.getPlayer(name);
-                if (player != null) procUnit.target.player = player;
-            }
-            procUnit.target.player = originPlayer;
-            return processList.get(processList.size() - 1).run(miniGame, procUnit);
-        } catch (Exception e) {
-            procUnit.target.player = originPlayer;
-            return "";
-        }
-    }*/
 
 }

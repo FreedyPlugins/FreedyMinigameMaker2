@@ -18,6 +18,7 @@ import java.util.Objects;
 public class Inventory implements Process {
 
     private SmallFrontBrace frontBrace;
+    List<Process> processList;
     private boolean isAdd;
     private boolean isSet;
     private boolean isCreate;
@@ -29,6 +30,10 @@ public class Inventory implements Process {
     private boolean isEquals;
     private boolean isExists;
     private boolean isClear;
+    private boolean isClone;
+    private boolean isRemove;
+    private boolean isClose;
+
 
     @Override
     public ProcType getType() {
@@ -48,25 +53,33 @@ public class Inventory implements Process {
         isEquals = parseUnit.useExecutor(ProcType.EXECUTE_EQUALS);
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
         isClear = parseUnit.useExecutor(ProcType.EXECUTE_CLEAR);
+        isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
+        isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
+        isClose = parseUnit.useExecutor(ProcType.EXECUTE_CLOSE);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) {
             parseUnit.addExecutor(getType());
             return;
         }
         frontBrace = ((SmallFrontBrace) process);
+        processList = frontBrace.cutBehindEndBrace();
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
         Player player = procUnit.target.player;
-        List<Process> processList = frontBrace.getProcessList();
+        if (isClose) {
+            player.closeInventory();
+        }
+        if (frontBrace == null) return "";
         Process process = processList.get(0);
         String name = process.run(miniGame, procUnit);
         try {
             if (isOnline) {
                 org.bukkit.inventory.Inventory inventory = GameDataStore.getInst().getInventory(name);
-                if (isClear) {
+                if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
+                if (isRemove) GameDataStore.getInst().setInventory(name, null);
+                else if (isClear) {
                     inventory.clear();
                     return "";
                 } else if (isType) {
@@ -90,7 +103,31 @@ public class Inventory implements Process {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
                         return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
-
+                } else if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameInventory = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    boolean isPlayerInventory = proc2.getType() == ProcType.EXECUTE_PLAYER;
+                    GameData gameData;
+                    if (isOnlineInventory) gameData = GameDataStore.getInst();
+                    else if (isGameInventory) gameData = miniGame.getGameData();
+                    else if (isPlayerInventory) gameData = null;
+                    else gameData = miniGame.getPlayerData(player.getUniqueId());
+                    org.bukkit.inventory.Inventory inv;
+                    if (process.getType() == ProcType.EXECUTE_PLAYER) {
+                        inventory = player.getInventory();
+                    }
+                    if (gameData == null) {
+                        inv = player.getInventory();
+                    } else if (inventory.getType() != InventoryType.CHEST)
+                        inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
+                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    ItemStack[] contents = inventory.getContents();
+                    ItemStack[] itemStacks = contents.clone();
+                    for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
+                    inv.setContents(itemStacks);
+                    if (gameData != null) gameData.setInventory(value, inv);
                 } else if (isAdd) {
                     Process proc = processList.get(2);
                     String value = proc.run(miniGame, procUnit);
@@ -142,7 +179,9 @@ public class Inventory implements Process {
                 }
             } else if (isGame) {
                 org.bukkit.inventory.Inventory inventory = miniGame.getGameData().getInventory(name);
-                if (isClear) {
+                if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
+                if (isRemove) miniGame.getGameData().setInventory(name, null);
+                else if (isClear) {
                     inventory.clear();
                     return "";
                 } else if (isType) {
@@ -167,6 +206,31 @@ public class Inventory implements Process {
                         return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
 
+                } else if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameInventory = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    boolean isPlayerInventory = proc2.getType() == ProcType.EXECUTE_PLAYER;
+                    GameData gameData;
+                    if (isOnlineInventory) gameData = GameDataStore.getInst();
+                    else if (isGameInventory) gameData = miniGame.getGameData();
+                    else if (isPlayerInventory) gameData = null;
+                    else gameData = miniGame.getPlayerData(player.getUniqueId());
+                    org.bukkit.inventory.Inventory inv;
+                    if (process.getType() == ProcType.EXECUTE_PLAYER) {
+                        inventory = player.getInventory();
+                    }
+                    if (gameData == null) {
+                        inv = player.getInventory();
+                    } else if (inventory.getType() != InventoryType.CHEST)
+                        inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
+                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    ItemStack[] contents = inventory.getContents();
+                    ItemStack[] itemStacks = contents.clone();
+                    for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
+                    inv.setContents(itemStacks);
+                    if (gameData != null) gameData.setInventory(value, inv);
                 } else if (isAdd) {
                     Process proc = processList.get(2);
                     String value = proc.run(miniGame, procUnit);
@@ -218,7 +282,9 @@ public class Inventory implements Process {
                 }
             } else if (player != null) {
                 org.bukkit.inventory.Inventory inventory = process.getType().equals(ProcType.EXECUTE_PLAYER) ? player.getInventory() : miniGame.getPlayerData(player.getUniqueId()).getInventory(name);
-                if (isClear) {
+                if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
+                if (isRemove) miniGame.getPlayerData(player.getUniqueId()).setInventory(name, null);
+                else if (isClear) {
                     inventory.clear();
                     return "";
                 } else if (isType) {
@@ -242,6 +308,31 @@ public class Inventory implements Process {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
                         return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
+                } else if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameInventory = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    boolean isPlayerInventory = proc2.getType() == ProcType.EXECUTE_PLAYER;
+                    GameData gameData;
+                    if (isOnlineInventory) gameData = GameDataStore.getInst();
+                    else if (isGameInventory) gameData = miniGame.getGameData();
+                    else if (isPlayerInventory) gameData = null;
+                    else gameData = miniGame.getPlayerData(player.getUniqueId());
+                    org.bukkit.inventory.Inventory inv;
+                    if (process.getType() == ProcType.EXECUTE_PLAYER) {
+                        inventory = player.getInventory();
+                    }
+                    if (gameData == null) {
+                      inv = player.getInventory();
+                    } else if (inventory.getType() != InventoryType.CHEST)
+                        inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
+                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    ItemStack[] contents = inventory.getContents();
+                    ItemStack[] itemStacks = contents.clone();
+                    for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
+                    inv.setContents(itemStacks);
+                    if (gameData != null) gameData.setInventory(value, inv);
                 } else if (isAdd) {
                     Process proc = processList.get(2);
                     String value = proc.run(miniGame, procUnit);

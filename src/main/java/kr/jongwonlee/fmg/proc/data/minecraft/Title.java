@@ -4,6 +4,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public class Title implements Process {
 
     private SmallFrontBrace frontBrace;
+    boolean isGame;
+    boolean isOnline;
 
     @Override
     public ProcType getType() {
@@ -19,6 +22,8 @@ public class Title implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
+        isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
@@ -29,14 +34,14 @@ public class Title implements Process {
         try {
             if (frontBrace == null) return "";
             List<Process> processList = frontBrace.getProcessList();
-            if (procUnit.target.player != null) {
-                String fadeIn = processList.get(0).run(miniGame, procUnit);
-                String keeping = processList.get(2).run(miniGame, procUnit);
-                String fadeOut = processList.get(4).run(miniGame, procUnit);
-                String title = processList.get(6).run(miniGame, procUnit);
-                String subTitle = processList.get(8).run(miniGame, procUnit);
-                procUnit.target.player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut));
-            }
+            String fadeIn = processList.get(0).run(miniGame, procUnit);
+            String keeping = processList.get(2).run(miniGame, procUnit);
+            String fadeOut = processList.get(4).run(miniGame, procUnit);
+            String title = processList.get(6).run(miniGame, procUnit);
+            String subTitle = processList.get(8).run(miniGame, procUnit);
+            if (isGame) miniGame.getPlayersData().keySet().forEach(uuid -> Bukkit.getPlayer(uuid).sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut)));
+            else if (isOnline) Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut)));
+            else if (procUnit.target.player != null) procUnit.target.player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut));
         } catch (NumberFormatException e) {
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }

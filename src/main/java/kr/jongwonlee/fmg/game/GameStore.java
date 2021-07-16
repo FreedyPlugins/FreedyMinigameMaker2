@@ -25,11 +25,12 @@ public class GameStore implements Listener {
         hubGame = getGame(Settings.getHubGameName());
         List<String> dirFiles = FileStore.getDirFiles("");
         dirFiles.forEach(GameStore::loadGame);
-        for (String name : gameMap.keySet()) {
+        for (String name : new ArrayList<>(gameMap.keySet())) {
             if (!dirFiles.contains(name) || name.length() == 0) {
                 removeGame(name);
             }
         }
+        gameMap.values().forEach(MiniGame::reload);
         if (GameStore.gameStore == null) {
             GameStore gameStore = new GameStore();
             FMGPlugin.registerEvent(gameStore);

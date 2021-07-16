@@ -3,9 +3,7 @@ package kr.jongwonlee.fmg.util;
 import kr.jongwonlee.fmg.FMGPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,6 +55,10 @@ public class YamlStore extends FileStore {
 
     public void save() {
         try {
+            if (!file.exists()) {
+                loadResource();
+                this.config = YamlConfiguration.loadConfiguration(this.file);
+            }
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,7 +188,7 @@ public class YamlStore extends FileStore {
 
     public Map<String, Inventory> getInventoryMap(String path) {
         final Map<String, Inventory> inventoryMap = new HashMap<>();
-        for (String string : getKeys(getSection(path), true)) {
+        for (String string : getKeys(getSection(path), false)) {
             try {
                 String typeString = getString(path + DOT + "TYPE");
                 String title = getString(path + DOT + "TITLE");

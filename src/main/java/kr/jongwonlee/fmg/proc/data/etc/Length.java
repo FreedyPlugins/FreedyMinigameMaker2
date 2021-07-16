@@ -4,8 +4,8 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"millisec", "millisecond", "milliseconds"})
-public class MilliSeconds implements Process {
+@Processable(alias = "length")
+public class Length implements Process {
 
     Process process;
 
@@ -16,11 +16,11 @@ public class MilliSeconds implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return System.currentTimeMillis() + process.run(miniGame, procUnit);
+        return String.valueOf(process.run(miniGame, procUnit).length());
     }
 
     @Override
     public ProcType getType() {
-        return ProcType.MILLI_SECONDS;
+        return ProcType.LENGTH;
     }
 }

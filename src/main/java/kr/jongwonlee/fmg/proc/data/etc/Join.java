@@ -1,11 +1,12 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"millisec", "millisecond", "milliseconds"})
-public class MilliSeconds implements Process {
+@Processable(alias = "join")
+public class Join implements Process {
 
     Process process;
 
@@ -16,11 +17,15 @@ public class MilliSeconds implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return System.currentTimeMillis() + process.run(miniGame, procUnit);
+        String value = process.run(miniGame, procUnit);
+        try {
+            GameStore.getGame(value).join(procUnit.target.player.getUniqueId());
+        } catch (Exception ignored) { }
+        return value;
     }
 
     @Override
     public ProcType getType() {
-        return ProcType.MILLI_SECONDS;
+        return ProcType.JOIN;
     }
 }

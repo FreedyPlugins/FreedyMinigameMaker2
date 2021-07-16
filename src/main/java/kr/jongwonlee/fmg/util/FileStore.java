@@ -18,7 +18,7 @@ public class FileStore {
     public static final Path DIR = Paths.get(File.separator + "games" + File.separator);
     protected static final String DOT = ".";
     private final JavaPlugin plugin;
-    private boolean inDir;
+    private final boolean inDir;
 
     public String getRoot() {
         return plugin.getDataFolder().getAbsolutePath();

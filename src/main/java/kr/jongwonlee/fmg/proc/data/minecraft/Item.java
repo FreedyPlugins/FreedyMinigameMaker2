@@ -19,6 +19,7 @@ import java.util.List;
 public class Item implements Process {
 
     SmallFrontBrace frontBrace;
+    List<Process> processList;
     boolean isGame;
     boolean isSet;
     boolean isType;
@@ -48,6 +49,7 @@ public class Item implements Process {
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
+        processList = frontBrace.cutBehindEndBrace();
         parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         parseUnit.useExecutor(ProcType.EXECUTE_TYPE);
@@ -59,7 +61,6 @@ public class Item implements Process {
             if (frontBrace == null) {
                 return "";
             }
-            java.util.List<Process> processList = frontBrace.getProcessList();
             Process proc = processList.get(0);
             String name = proc.run(miniGame, procUnit);
             Player player = procUnit.target.player;
@@ -103,9 +104,9 @@ public class Item implements Process {
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
                             List<String> lore = itemMeta.getLore();
                             if (lore == null) lore = new ArrayList<>();
-                            if (line + 1 >= lore.size()) lore.add(value);
-                            else if (lore.size() <= line) lore.add(value);
-                            else itemMeta.setLore(lore);
+                            if (lore.size() > line) lore.set(line, value);
+                            else lore.add(value);
+                            itemMeta.setLore(lore);
                             itemStack.setItemMeta(itemMeta);
                         }
                     } else {
@@ -156,7 +157,7 @@ public class Item implements Process {
                             if (lore != null && !lore.isEmpty()) {
                                 if (line + 1 >= lore.size()) lore.remove(line);
                                 else if (lore.size() <= line) lore.remove(lore.size() - 1);
-                                else itemMeta.setLore(lore);
+                                itemMeta.setLore(lore);
                                 itemStack.setItemMeta(itemMeta);
                             }
                         }
@@ -202,9 +203,9 @@ public class Item implements Process {
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
                             List<String> lore = itemMeta.getLore();
                             if (lore == null) lore = new ArrayList<>();
-                            if (line + 1 >= lore.size()) lore.add(value);
-                            else if (lore.size() <= line) lore.add(value);
-                            else itemMeta.setLore(lore);
+                            if (lore.size() > line) lore.set(line, value);
+                            else lore.add(value);
+                            itemMeta.setLore(lore);
                             itemStack.setItemMeta(itemMeta);
                         }
                     } else {
@@ -255,7 +256,7 @@ public class Item implements Process {
                             if (lore != null && !lore.isEmpty()) {
                                 if (line + 1 >= lore.size()) lore.remove(line);
                                 else if (lore.size() <= line) lore.remove(lore.size() - 1);
-                                else itemMeta.setLore(lore);
+                                itemMeta.setLore(lore);
                                 itemStack.setItemMeta(itemMeta);
                             }
                         }
@@ -301,9 +302,9 @@ public class Item implements Process {
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
                             List<String> lore = itemMeta.getLore();
                             if (lore == null) lore = new ArrayList<>();
-                            if (line + 1 >= lore.size()) lore.add(value);
-                            else if (lore.size() <= line) lore.add(value);
-                            else itemMeta.setLore(lore);
+                            if (lore.size() > line) lore.set(line, value);
+                            else lore.add(value);
+                            itemMeta.setLore(lore);
                             itemStack.setItemMeta(itemMeta);
                         }
                     } else {
@@ -352,7 +353,7 @@ public class Item implements Process {
                             if (lore != null && !lore.isEmpty()) {
                                 if (line + 1 >= lore.size()) lore.remove(line);
                                 else if (lore.size() <= line) lore.remove(lore.size() - 1);
-                                else itemMeta.setLore(lore);
+                                itemMeta.setLore(lore);
                                 itemStack.setItemMeta(itemMeta);
                             }
                         }

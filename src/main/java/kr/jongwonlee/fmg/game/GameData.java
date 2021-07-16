@@ -1,10 +1,12 @@
 package kr.jongwonlee.fmg.game;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ public class GameData {
     protected Map<String, ItemStack> itemStackMap;
     protected Map<String, Inventory> inventoryMap;
     protected Map<String, List<String>> listMap;
+    private List<Integer> taskIdList;
 
     public GameData(Map<String, String> dataMap,
                     Map<String, Location> locationMap,
@@ -30,6 +33,7 @@ public class GameData {
         this.itemStackMap = itemStackMap;
         this.inventoryMap = inventoryMap;
         this.listMap = listMap;
+        this.taskIdList = new ArrayList<>();
     }
 
     public GameData() {
@@ -39,6 +43,7 @@ public class GameData {
         this.itemStackMap = new HashMap<>();
         this.inventoryMap = new HashMap<>();
         this.listMap = new HashMap<>();
+        taskIdList = new ArrayList<>();
     }
 
     public Location getLocation(String key) {
@@ -85,8 +90,18 @@ public class GameData {
         return dataMap.getOrDefault(key, "null");
     }
 
+    public void addTaskId(int taskId) {
+        taskIdList.add(taskId);
+    }
+
+    public void cancelTaskAll() {
+        taskIdList.forEach(taskId -> Bukkit.getScheduler().cancelTask(taskId));
+        taskIdList = new ArrayList<>();
+    }
+
     public void setData(String key, String value) {
         if (value == null) dataMap.remove(key);
+        else if (value.equals("null")) dataMap.remove(key);
         else dataMap.put(key, value);
     }
 

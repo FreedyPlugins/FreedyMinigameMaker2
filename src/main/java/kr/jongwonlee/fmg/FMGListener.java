@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg;
 
+import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
@@ -13,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class FMGListener implements Listener {
 
@@ -96,7 +100,7 @@ public class FMGListener implements Listener {
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setInventory("inventoryClosed", event.getInventory());
-        GameStore.getGame(player).run(EventBundle.INVENTORY_CLICK, player);
+        GameStore.getGame(player).run(EventBundle.INVENTORY_CLOSE, player);
     }
 
     @EventHandler
@@ -110,7 +114,8 @@ public class FMGListener implements Listener {
             playerData.setData("damage", String.valueOf(event.getDamage()));
             playerData.setData("damageCause", event.getCause().name());
             playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
-            String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, entity);
+            playerData.setData("entityUuid", FastUUID.toString(entity.getUniqueId()));
+            String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, entity);
             if (result.equals("false")) event.setCancelled(true);
         }
         if (entity instanceof Player) {
@@ -120,7 +125,8 @@ public class FMGListener implements Listener {
             playerData.setData("damage", String.valueOf(event.getDamage()));
             playerData.setData("damageCause", event.getCause().name());
             playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
-            String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, entity);
+            playerData.setData("attackerUuid", FastUUID.toString(attacker.getUniqueId()));
+            String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, entity);
             if (result.equals("false")) event.setCancelled(true);
         }
 

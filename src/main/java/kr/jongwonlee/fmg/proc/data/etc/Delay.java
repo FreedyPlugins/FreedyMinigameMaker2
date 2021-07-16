@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class Delay implements Process {
     Process process;
     SmallFrontBrace frontBrace;
     boolean isAsync;
+    boolean isGame;
+    boolean isOnline;
 
     @Override
     public ProcType getType() {
@@ -24,6 +27,8 @@ public class Delay implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         process = FileParser.parseProcess(parseUnit, arguments);
         isAsync = parseUnit.useExecutor(ProcType.EXECUTE_ASYNC);
+        isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
+        isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
         List<Process> processList = frontBrace.getProcessList();
@@ -37,11 +42,15 @@ public class Delay implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
+        Player player = procUnit.target.player;
         List<Process> processList = frontBrace.getProcessList();
         String delay = processList.get(0).run(miniGame, procUnit);
-        if (isAsync) FMGPlugin.runTaskLaterAsync(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
-        else FMGPlugin.runTaskLater(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
-        return "";
+        int taskId;
+        if (isAsync) taskId = FMGPlugin.runTaskLaterAsync(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
+        else taskId = FMGPlugin.runTaskLater(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
+        if (isGame) miniGame.getGameData().addTaskId(taskId);
+        else if (!isOnline && player != null) miniGame.getPlayerData(player.getUniqueId()).addTaskId(taskId);
+        return String.valueOf(taskId);
     }
 
 }

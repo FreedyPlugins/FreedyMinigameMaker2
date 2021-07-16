@@ -57,15 +57,15 @@ public class SmallFrontBrace implements FrontBrace {
         return ProcType.SMALL_FRONT_BRACE;
     }
 
-    public void cutBehindEndBrace() {
-        for (int i = 0; i < processList.size(); i++) {
-            Process proc = processList.get(i);
+    public List<Process> cutBehindEndBrace() {
+        List<Process> procTypeList = new ArrayList<>(processList);
+        for (int i = 0; i < procTypeList.size(); i++) {
+            Process proc = procTypeList.get(i);
             if (proc.getType() == ProcType.SMALL_END_BRACE) {
-                processList = processList.subList(0, i);
-                break;
+                return procTypeList.subList(0, i);
             }
         }
-
+        return procTypeList;
     }
 
 }

@@ -5,11 +5,10 @@ import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -89,6 +88,7 @@ public class MiniGame {
     public void quit(UUID playerUuid) {
         if (!playersData.containsKey(playerUuid)) return;
         Player player = toPlayer(playerUuid);
+        getPlayerData(playerUuid).cancelTaskAll();
         run(EventBundle.PRE_GAME_LEFT, player);
         playersData.remove(playerUuid);
         GameStore.removeGame(player);
@@ -106,7 +106,8 @@ public class MiniGame {
 
     public void disable() {
         run(EventBundle.PRE_GAME_STOP);
-        playersData.keySet().forEach(this::quit);
+        gameData.cancelTaskAll();
+        new ArrayList<>(playersData.keySet()).forEach(this::quit);
         playersData.clear();
         gameData.clear();
         run(EventBundle.GAME_STOP);

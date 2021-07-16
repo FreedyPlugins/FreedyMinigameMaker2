@@ -3,9 +3,10 @@ package kr.jongwonlee.fmg.proc.data.etc;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import org.bukkit.Bukkit;
 
-@Processable(alias = {"millisec", "millisecond", "milliseconds"})
-public class MilliSeconds implements Process {
+@Processable(alias = "cancel")
+public class CancelTask implements Process {
 
     Process process;
 
@@ -16,11 +17,15 @@ public class MilliSeconds implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return System.currentTimeMillis() + process.run(miniGame, procUnit);
+        try {
+            String value = process.run(miniGame, procUnit);
+            Bukkit.getScheduler().cancelTask(Integer.parseInt(value));
+        } catch (Exception ignored) { }
+        return "";
     }
 
     @Override
     public ProcType getType() {
-        return ProcType.MILLI_SECONDS;
+        return ProcType.CANCEL_TASK;
     }
 }

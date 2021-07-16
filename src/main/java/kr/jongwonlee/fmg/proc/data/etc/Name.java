@@ -3,7 +3,6 @@ package kr.jongwonlee.fmg.proc.data.etc;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
-import org.bukkit.Bukkit;
 
 @Processable(alias = {"name"})
 public class Name implements Process {
@@ -23,11 +22,11 @@ public class Name implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         String message = process.run(miniGame, procUnit);
-        Bukkit.broadcastMessage(message);
-        if (isPlayer) {
+        if (isGame) return miniGame.getName() + message;
+        else {
             if (procUnit.target.player != null) return procUnit.target.player.getName() + message;
             else if (procUnit.target.entity != null) return procUnit.target.entity.getName() + message;
-        } else if (isGame) return miniGame.getName() + message;
+        }
         return message;
     }
 

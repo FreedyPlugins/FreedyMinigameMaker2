@@ -17,22 +17,6 @@ public class Data implements Process {
     boolean isSet;
     boolean isOnline;
 
-    public boolean isAdd() {
-        return isAdd;
-    }
-
-    public boolean isGame() {
-        return isGame;
-    }
-
-    public boolean isSet() {
-        return isSet;
-    }
-
-    public boolean isOnline() {
-        return isOnline;
-    }
-
     @Override
     public ProcType getType() {
         return ProcType.DATA;
@@ -54,15 +38,15 @@ public class Data implements Process {
         if (frontBrace == null) return "";
         List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
-            if (isSet()) {
+            if (isSet) {
                 String value = processList.get(2).run(miniGame, procUnit);
-                if (isGame()) miniGame.getGameData().setData(name, value);
-                else if (isOnline()) GameDataStore.getInst().setData(name, value);
+                if (isGame) miniGame.getGameData().setData(name, value);
+                else if (isOnline) GameDataStore.getInst().setData(name, value);
                 else if (procUnit.target.player != null) miniGame.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
                 return value + frontBrace.getLastProc().run(miniGame, procUnit);
             } else {
-                if (isGame()) return miniGame.getGameData().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
-                else if (isOnline()) return GameDataStore.getInst().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isGame) return miniGame.getGameData().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isOnline) return GameDataStore.getInst().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (procUnit.target.player != null) return miniGame.getPlayerData(procUnit.target.player.getUniqueId()).getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
             }
         return frontBrace.getLastProc().run(miniGame, procUnit);
