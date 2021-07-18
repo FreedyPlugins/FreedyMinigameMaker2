@@ -4,7 +4,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"contains"})
+@Processable(alias = {"contains", "contain"})
 public class ExecuteContains implements Process {
 
     Process process;

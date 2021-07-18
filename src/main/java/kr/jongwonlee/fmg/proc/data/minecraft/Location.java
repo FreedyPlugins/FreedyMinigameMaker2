@@ -8,6 +8,7 @@ import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -212,25 +213,23 @@ public class Location implements Process {
                     double posZ = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
                     location.add(posX, posY, posZ);
                 } else if (isContains) {
-                    try {
-                        Process proc1 = processList.get(2);
-                        String value = proc1.run(miniGame, procUnit);
-                        org.bukkit.Location pos1;
-                        if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
-                        else if (proc1.getType() == ProcType.EXECUTE_ONLINE)
-                            pos1 = GameDataStore.getInst().getLocation(value);
-                        else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
-                        Process proc2 = processList.get(4);
-                        String value2 = proc2.run(miniGame, procUnit);
-                        org.bukkit.Location pos2;
-                        if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
-                        else if (proc2.getType() == ProcType.EXECUTE_ONLINE)
-                            pos2 = GameDataStore.getInst().getLocation(value2);
-                        else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
-                        return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
-                    } catch (Exception e) {
-                    e.printStackTrace();
-                    }
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    org.bukkit.Location pos1;
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
+                    else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
+                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    Process proc2 = processList.get(4);
+                    String value2 = proc2.run(miniGame, procUnit);
+                    org.bukkit.Location pos2;
+                    if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
+                    else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
+                    else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    Vector vector1 = pos1.toVector();
+                    Vector vector2 = pos2.toVector();
+                    Vector max = Vector.getMaximum(vector1, vector2);
+                    Vector min = Vector.getMinimum(vector1, vector2);
+                    return location.toVector().isInAABB(min, max) ? "true" : "false";
                 }
             }
         } catch (Exception e) {

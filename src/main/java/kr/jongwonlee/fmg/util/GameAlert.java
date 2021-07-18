@@ -13,6 +13,15 @@ public enum GameAlert {
     ERROR,
     EDITOR_SAVE,
     NEED_PERMISSION,
+    RELOADING,
+    RELOADED,
+    SAVING,
+    SAVED,
+    CREATED,
+    DELETED,
+    SETTLED,
+    INVALID_GAME_NAME,
+    GAME_NOT_EXISTS,
     ;
 
     private String message;
@@ -33,6 +42,14 @@ public enum GameAlert {
 
     public void print() {
         FMGPlugin.getInst().getLogger().warning(message);
+    }
+
+    public void printLog() {
+        FMGPlugin.getInst().getLogger().info(message);
+    }
+
+    public void printLog(String[] args) {
+        FMGPlugin.getInst().getLogger().info(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public static void init() {

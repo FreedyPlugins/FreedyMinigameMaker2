@@ -53,13 +53,14 @@ public class FMGListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        MiniGame game = GameStore.getGame(player);
-        GameData playerData = game.getPlayerData(player.getUniqueId());
-        playerData.setData("chat", event.getMessage());
-        String result = GameStore.getGame(player).run(EventBundle.CHAT, player);
-        if (result.equals("false")) event.setCancelled(true);
-
+        try {
+            Player player = event.getPlayer();
+            MiniGame game = GameStore.getGame(player);
+            GameData playerData = game.getPlayerData(player.getUniqueId());
+            playerData.setData("chat", event.getMessage());
+            String result = GameStore.getGame(player).run(EventBundle.CHAT, player);
+            if (result.equals("false")) event.setCancelled(true);
+        } catch (Exception ignored) {  }
     }
 
     @EventHandler

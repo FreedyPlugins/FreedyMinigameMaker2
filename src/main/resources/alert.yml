@@ -5,3 +5,12 @@ DUPLICATED_EVENT: "\"%s\" event alias duplicated in events.yml"
 ERROR: "ERROR: %s"
 EDITOR_SAVE: "Saved!"
 NEED_PERMISSION: "Need permission!"
+RELOADING: 'Reloading...'
+RELOADED: 'Reloaded (%ss)!'
+SAVING: 'Saving...'
+SAVED: 'Saved (%ss)!'
+CREATED: '%s Created'
+DELETED: '%s Deleted'
+SETTLED: 'Settled'
+INVALID_GAME_NAME: 'Invalid game name'
+GAME_NOT_EXISTS: 'Game not exist'

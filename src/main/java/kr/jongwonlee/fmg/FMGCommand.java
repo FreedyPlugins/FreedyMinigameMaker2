@@ -5,9 +5,8 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.image.ImageEditor;
-import kr.jongwonlee.fmg.proc.EventBundle;
-import kr.jongwonlee.fmg.proc.ProcTarget;
-import kr.jongwonlee.fmg.proc.ProcUnit;
+import kr.jongwonlee.fmg.proc.*;
+import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -41,8 +40,9 @@ public class FMGCommand implements CommandExecutor {
                         if (message.length() == 0) return false;
                         try {
                             GameStore.createGame(message);
+                            GameAlert.CREATED.print(sender, new String[]{message});
                         } catch (Exception e) {
-                            sender.sendMessage("Invalid game name");
+                            GameAlert.INVALID_GAME_NAME.print(sender, new String[]{});
                         }
                         return true;
                     }
@@ -53,15 +53,17 @@ public class FMGCommand implements CommandExecutor {
                         }
                         if (message.length() == 0) return false;
                         GameStore.removeGame(message);
+                        GameAlert.DELETED.print(sender, new String[]{message});
                         return true;
                     }
+                    case "game":
                     case "games": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
                         Set<String> games = GameStore.getGameNames();
-                        if (games.size() == 0) sender.sendMessage("Game not exist");
+                        if (games.size() == 0) GameAlert.GAME_NOT_EXISTS.print(sender, new String[]{});
                         else games.forEach(sender::sendMessage);
                         return true;
                     }
@@ -76,32 +78,33 @@ public class FMGCommand implements CommandExecutor {
                             return true;
                         }
                         long before = System.currentTimeMillis();
-                        if (sender instanceof Player) sender.sendMessage("Reloading...");
-                        FMGPlugin.getInst().getLogger().info("Reloading...");
+                        if (sender instanceof Player) GameAlert.RELOADING.print(sender, new String[]{});
+                        GameAlert.RELOADING.printLog();
                         if (game == null) {
                             EventBundle.init();
                             GameAlert.init();
                             GameStore.init();
                         } else game.reload();
                         long after = System.currentTimeMillis();
-                        String alert = String.format("Reloaded (%ss)!", ((double) (after - before)) / 1000D);
-                        FMGPlugin.getInst().getLogger().info(alert);
-                        if (sender instanceof Player) sender.sendMessage(alert);
+                        String[] strings = {String.valueOf((double) (after - before) / 1000D)};
+                        GameAlert.RELOADED.printLog(strings);
+                        if (sender instanceof Player) GameAlert.RELOADED.print(sender, strings);
                         return true;
                     }
-                    case "save": {
+                    case "save":
+                    case "saves": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
                         long before = System.currentTimeMillis();
-                        if (sender instanceof Player) sender.sendMessage("Saving...");
-                        FMGPlugin.getInst().getLogger().info("Saved...");
+                        if (sender instanceof Player) GameAlert.SAVING.print(sender, new String[]{});
+                        GameAlert.SAVING.printLog();
                         GameDataStore.save();
                         long after = System.currentTimeMillis();
-                        String alert = String.format("Saved (%ss)!", ((double) (after - before)) / 1000D);
-                        FMGPlugin.getInst().getLogger().info(alert);
-                        if (sender instanceof Player) sender.sendMessage(alert);
+                        String[] strings = {String.valueOf((double) (after - before) / 1000D)};
+                        GameAlert.SAVED.printLog(strings);
+                        if (sender instanceof Player) GameAlert.SAVED.print(sender, strings);
                         return true;
                     }
                     case "info":
@@ -143,10 +146,7 @@ public class FMGCommand implements CommandExecutor {
                         });
                         return true;
                     }
-                    case "do":
-                    case "run":
-                    case "proc":
-                    case "process": {
+                    case "do": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
@@ -165,42 +165,16 @@ public class FMGCommand implements CommandExecutor {
                 }
                 Player player = (Player) sender;
                 switch (args[0]) {
-                    case "item":
-                    case "items": {
+                    case "run":
+                    case "proc":
+                    case "process":
+                    case "parse": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
-                        GameDataStore.getInst().setItemStack(message, player.getInventory().getItemInMainHand());
-                        return true;
-                    }
-                    case "loc":
-                    case "locs":
-                    case "location": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
-                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
-                            return true;
-                        }
-                        GameDataStore.getInst().setLocation(message, player.getLocation());
-                        return true;
-                    }
-                    case "var":
-                    case "data": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
-                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
-                            return true;
-                        }
-                        GameDataStore.getInst().setData(args[1], message.substring(message.indexOf(" ") + 1));
-                        return true;
-                    }
-                    case "list": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
-                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
-                            return true;
-                        }
-                        List<String> list = GameDataStore.getInst().getList(args[1]);
-                        if (list == null) GameDataStore.getInst().setList(args[1], list = new ArrayList<>());
-                        list.add(message.substring(message.indexOf(" ") + 1));
+                        Process process = FileParser.parseProcess(new ParseUnit(), message);
+                        process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit(player));
                         return true;
                     }
                     case "edit":

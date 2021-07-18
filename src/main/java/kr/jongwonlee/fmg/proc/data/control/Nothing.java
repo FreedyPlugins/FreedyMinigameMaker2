@@ -147,7 +147,7 @@ public class Nothing implements Process {
                 .replace("\\\\", "\\")
                 .replace("\\'", "'")
                 .replace("\\\"", "\"")
-                .replace("\\\"", "\"");
+                .replace("\\n", "\n");
 
     }
 }

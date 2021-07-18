@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Objects;
 
 @Processable(alias = {"inventory", "inven", "inv"})
 public class Inventory implements Process {
@@ -33,7 +32,7 @@ public class Inventory implements Process {
     private boolean isClone;
     private boolean isRemove;
     private boolean isClose;
-
+    private boolean isItem;
 
     @Override
     public ProcType getType() {
@@ -56,6 +55,7 @@ public class Inventory implements Process {
         isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
         isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isClose = parseUnit.useExecutor(ProcType.EXECUTE_CLOSE);
+        isItem = parseUnit.useExecutor(ProcType.ITEM);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) {
             parseUnit.addExecutor(getType());
@@ -78,7 +78,24 @@ public class Inventory implements Process {
             if (isOnline) {
                 org.bukkit.inventory.Inventory inventory = GameDataStore.getInst().getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
-                if (isRemove) GameDataStore.getInst().setInventory(name, null);
+                if (isItem) {
+                    String proc = processList.get(2).run(miniGame, procUnit);
+                    int index = Integer.parseInt(proc);
+                    Process proc2 = processList.get(4);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    if (isGameItemStack){
+                        GameData gameData = miniGame.getGameData();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else if (isAllItemStack) {
+                        GameData gameData = GameDataStore.getInst();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else if (player != null) {
+                        GameData gameData = miniGame.getPlayerData(player.getUniqueId());
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    }
+                } else if (isRemove) GameDataStore.getInst().setInventory(name, null);
                 else if (isClear) {
                     inventory.clear();
                     return "";
@@ -95,13 +112,13 @@ public class Inventory implements Process {
                     boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isOnlineInventory) {
                         GameDataStore gameData = GameDataStore.getInst();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else if (isGameInventory){
                         GameData gameData = miniGame.getGameData();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else if (player != null) {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
                 } else if (isClone) {
                     Process proc2 = processList.get(2);
@@ -180,7 +197,24 @@ public class Inventory implements Process {
             } else if (isGame) {
                 org.bukkit.inventory.Inventory inventory = miniGame.getGameData().getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
-                if (isRemove) miniGame.getGameData().setInventory(name, null);
+                if (isItem) {
+                    String proc = processList.get(2).run(miniGame, procUnit);
+                    int index = Integer.parseInt(proc);
+                    Process proc2 = processList.get(4);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    if (isGameItemStack){
+                        GameData gameData = miniGame.getGameData();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else if (isAllItemStack) {
+                        GameData gameData = GameDataStore.getInst();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else if (player != null) {
+                        GameData gameData = miniGame.getPlayerData(player.getUniqueId());
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    }
+                } else if (isRemove) miniGame.getGameData().setInventory(name, null);
                 else if (isClear) {
                     inventory.clear();
                     return "";
@@ -197,13 +231,13 @@ public class Inventory implements Process {
                     boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isOnlineInventory) {
                         GameDataStore gameData = GameDataStore.getInst();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else if (isGameInventory) {
                         GameData gameData = miniGame.getGameData();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
 
                 } else if (isClone) {
@@ -283,7 +317,24 @@ public class Inventory implements Process {
             } else if (player != null) {
                 org.bukkit.inventory.Inventory inventory = process.getType().equals(ProcType.EXECUTE_PLAYER) ? player.getInventory() : miniGame.getPlayerData(player.getUniqueId()).getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
-                if (isRemove) miniGame.getPlayerData(player.getUniqueId()).setInventory(name, null);
+                if (isItem) {
+                    String proc = processList.get(2).run(miniGame, procUnit);
+                    int index = Integer.parseInt(proc);
+                    Process proc2 = processList.get(4);
+                    String value = proc2.run(miniGame, procUnit);
+                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
+                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
+                    if (isGameItemStack){
+                        GameData gameData = miniGame.getGameData();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else if (isAllItemStack) {
+                        GameData gameData = GameDataStore.getInst();
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    } else {
+                        GameData gameData = miniGame.getPlayerData(player.getUniqueId());
+                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                    }
+                } else if (isRemove) miniGame.getPlayerData(player.getUniqueId()).setInventory(name, null);
                 else if (isClear) {
                     inventory.clear();
                     return "";
@@ -300,13 +351,13 @@ public class Inventory implements Process {
                     boolean isOnlineInventory = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isOnlineInventory) {
                         GameDataStore gameData = GameDataStore.getInst();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else if (isGameInventory) {
                         GameData gameData = miniGame.getGameData();
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        return Objects.equals(inventory, gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                        return inventory.equals(gameData.getInventory(value)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                     }
                 } else if (isClone) {
                     Process proc2 = processList.get(2);

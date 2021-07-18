@@ -29,6 +29,7 @@ public class Item implements Process {
     boolean isOnline;
     boolean isName;
     boolean isExists;
+    boolean isGet;
 
     @Override
     public ProcType getType() {
@@ -46,6 +47,8 @@ public class Item implements Process {
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         isName = parseUnit.useExecutor(ProcType.NAME);
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
+        isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        if (isGet) parseUnit.addExecutor(getType());
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
