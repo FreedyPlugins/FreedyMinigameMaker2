@@ -1,6 +1,5 @@
 package kr.jongwonlee.fmg.util;
 
-import kr.jongwonlee.fmg.FMGPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,12 +10,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class YamlStore extends FileStore {
 
@@ -35,19 +30,6 @@ public class YamlStore extends FileStore {
         }
         this.config = YamlConfiguration.loadConfiguration(this.file);
     }
-
-    public void setItemStackMap(String path, Map<String, ItemStack> itemStackMap) {
-        itemStackMap.forEach((key, itemStack) -> getConfig().set(path + DOT + key, itemStack));
-    }
-
-    public void setInventoryMap(String path, Map<String, Inventory> inventoryMap) {
-        inventoryMap.forEach((key, inventory) -> setInventory(path + DOT + key, inventory));
-    }
-
-    public void setItemStackList(String path, List<ItemStack> itemStackList) {
-        for (int i = 0; i < itemStackList.size(); i++) getConfig().set(path + DOT + i, itemStackList.get(i));
-    }
-
 
     public FileConfiguration getConfig() {
         return this.config;
@@ -115,28 +97,6 @@ public class YamlStore extends FileStore {
         return getConfig().getItemStack(path);
     }
 
-    public String[] getShape(String path) {
-        return getString(path).replace(" ", "").replace("\n", "").split("");
-    }
-
-    public static List<String> getDirFiles(String otherPath) {
-        final File file = new File(FMGPlugin.getInst().getDataFolder().getAbsolutePath(), DIR + otherPath);
-        file.mkdirs();
-        final Path path = file.toPath();
-        try {
-            return Files.walk(path)
-                    .filter(f -> !Files.isDirectory(f))
-                    .map(p -> {
-                        final String string = path.relativize(p).toString();
-                        return string.substring(0, string.lastIndexOf('.'));
-                    })
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
     public void setLocation(String path, Location location) {
         if (location == null) {
             set(path, null);
@@ -177,8 +137,9 @@ public class YamlStore extends FileStore {
 
     public Map<String, String> getStringMap(String path) {
         final Map<String, String> stringMap = new HashMap<>();
-        for (String string : getKeys(getSection(path), false))
+        for (String string : getKeys(getSection(path), false)) {
             stringMap.put(string, getString(path + DOT + string));
+        }
         return stringMap;
     }
 
@@ -203,7 +164,7 @@ public class YamlStore extends FileStore {
 
     public Map<String, List<String>> getListMap(String path) {
         final Map<String, List<String>> stringMap = new HashMap<>();
-        for (String string : getKeys(getSection(path), true))
+        for (String string : getKeys(getSection(path), false))
             stringMap.put(string, getStringList(path + DOT + string));
         return stringMap;
     }
@@ -219,6 +180,17 @@ public class YamlStore extends FileStore {
         set(path + DOT + "SIZE", inventory.getSize());
         ItemStack[] contents = inventory.getStorageContents();
         for (int i = 0; i < contents.length; i++) set(path + DOT + "ITEMS" + DOT + i, contents[i]);
+    }
+
+    public void setList(String path, List<String> stringList) {
+        if (stringList.size() == 0) set(path, null);
+        else set(path, stringList);
+    }
+
+    public void reset(boolean doInit) {
+        remove();
+        create(doInit);
+        reload();
     }
 
 }

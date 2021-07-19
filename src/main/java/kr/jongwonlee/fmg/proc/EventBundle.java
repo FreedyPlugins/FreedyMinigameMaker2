@@ -28,8 +28,8 @@ public enum EventBundle {
     INVENTORY_CLOSE,
     ATTACK,
     DAMAGE,
-    PROJECTILE_DAMAGE,
-    PROJECTILE_ATTACK,
+    PLAYER_DAMAGE,
+    DROP_ITEM,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),

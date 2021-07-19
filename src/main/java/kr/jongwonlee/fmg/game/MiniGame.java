@@ -105,6 +105,7 @@ public class MiniGame {
     }
 
     public void disable() {
+        if (playersData.size() == 0) return;
         run(EventBundle.PRE_GAME_STOP);
         gameData.cancelTaskAll();
         new ArrayList<>(playersData.keySet()).forEach(this::quit);

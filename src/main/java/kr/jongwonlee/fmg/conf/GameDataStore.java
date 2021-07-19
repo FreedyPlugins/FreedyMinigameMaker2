@@ -46,7 +46,7 @@ public class GameDataStore extends GameData {
         inst.locationMap.forEach(locationStore::setLocation);
         inst.itemStackMap.forEach(itemStackStore::set);
         inst.inventoryMap.forEach(inventoryStore::setInventory);
-        inst.listMap.forEach(listStore::set);
+        inst.listMap.forEach(listStore::setList);
         dataStore.save();
         itemStackStore.save();
         locationStore.save();

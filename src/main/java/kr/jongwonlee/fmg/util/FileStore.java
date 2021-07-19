@@ -104,9 +104,4 @@ public class FileStore {
         file.delete();
     }
 
-    public void reset(boolean doInit) {
-        remove();
-        create(doInit);
-    }
-
 }

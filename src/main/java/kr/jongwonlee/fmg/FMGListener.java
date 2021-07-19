@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.EventBundle;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -13,12 +14,11 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class FMGListener implements Listener {
 
@@ -29,6 +29,7 @@ public class FMGListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        if (!player.isOnline()) return;
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setLocation("moveFrom", event.getFrom().clone());
@@ -40,13 +41,15 @@ public class FMGListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        if (!player.isOnline()) return;
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setData("interactAction", event.getAction().name());
-        playerData.setData("interactHand", event.getHand().name());
+        EquipmentSlot hand = event.getHand();
+        playerData.setData("interactHand", hand == null ? "null" : hand.name());
         playerData.setData("interactBlockFace", event.getBlockFace().name());
         Block clickedBlock = event.getClickedBlock();
-        if (clickedBlock != null) playerData.setBlock("interactBlock", clickedBlock.getState());
+        playerData.setBlock("interactBlock", clickedBlock == null ? null : clickedBlock.getState());
         playerData.setItemStack("interactItem", event.getItem());
         String result = GameStore.getGame(player).run(EventBundle.INTERACT, player);
         if (result.equals("false")) event.setCancelled(true);
@@ -56,6 +59,7 @@ public class FMGListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         try {
             Player player = event.getPlayer();
+            if (!player.isOnline()) return;
             MiniGame game = GameStore.getGame(player);
             GameData playerData = game.getPlayerData(player.getUniqueId());
             playerData.setData("chat", event.getMessage());
@@ -67,6 +71,7 @@ public class FMGListener implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
+        if (!player.isOnline()) return;
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setData("command", event.getMessage());
@@ -79,6 +84,7 @@ public class FMGListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         if (!(humanEntity instanceof Player)) return;
         Player player = ((Player) humanEntity);
+        if (!player.isOnline()) return;
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setInventory("inventoryClicked", event.getClickedInventory());
@@ -99,10 +105,37 @@ public class FMGListener implements Listener {
         HumanEntity humanEntity = event.getPlayer();
         if (!(humanEntity instanceof Player)) return;
         Player player = ((Player) humanEntity);
+        if (!player.isOnline()) return;
         MiniGame game = GameStore.getGame(player);
         GameData playerData = game.getPlayerData(player.getUniqueId());
         playerData.setInventory("inventoryClosed", event.getInventory());
         GameStore.getGame(player).run(EventBundle.INVENTORY_CLOSE, player);
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player)) return;
+        Player player = ((Player) entity);
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setData("damage", String.valueOf(event.getDamage()));
+        playerData.setData("damageCause", event.getCause().name());
+        playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
+        String result = GameStore.getGame(player).run(EventBundle.PLAYER_DAMAGE, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setItemStack("dropItem", event.getItemDrop().getItemStack());
+        String result = GameStore.getGame(player).run(EventBundle.DROP_ITEM, player);
+        if (result.equals("false")) event.setCancelled(true);
     }
 
     @EventHandler
@@ -115,6 +148,7 @@ public class FMGListener implements Listener {
             else if (attacker instanceof Projectile) player = ((Player) ((Projectile) attacker).getShooter());
             else player = null;
             if (player != null) {
+                if (!player.isOnline()) return;
                 MiniGame game = GameStore.getGame(player);
                 GameData playerData = game.getPlayerData(player.getUniqueId());
                 playerData.setData("damage", String.valueOf(event.getDamage()));
@@ -127,6 +161,7 @@ public class FMGListener implements Listener {
         }
         if (entity instanceof Player) {
             Player player = (Player) entity;
+            if (!player.isOnline()) return;
             MiniGame game = GameStore.getGame(player);
             GameData playerData = game.getPlayerData(player.getUniqueId());
             playerData.setData("damage", String.valueOf(event.getDamage()));
