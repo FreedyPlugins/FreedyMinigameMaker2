@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -108,16 +109,21 @@ public class FMGListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         Entity attacker = event.getDamager();
         Entity entity = event.getEntity();
-        if (attacker instanceof Player) {
-            Player player = (Player) attacker;
-            MiniGame game = GameStore.getGame(player);
-            GameData playerData = game.getPlayerData(player.getUniqueId());
-            playerData.setData("damage", String.valueOf(event.getDamage()));
-            playerData.setData("damageCause", event.getCause().name());
-            playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
-            playerData.setData("entityUuid", FastUUID.toString(entity.getUniqueId()));
-            String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, entity);
-            if (result.equals("false")) event.setCancelled(true);
+        {
+            Player player;
+            if (attacker instanceof Player) player = (Player) attacker;
+            else if (attacker instanceof Projectile) player = ((Player) ((Projectile) attacker).getShooter());
+            else player = null;
+            if (player != null) {
+                MiniGame game = GameStore.getGame(player);
+                GameData playerData = game.getPlayerData(player.getUniqueId());
+                playerData.setData("damage", String.valueOf(event.getDamage()));
+                playerData.setData("damageCause", event.getCause().name());
+                playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
+                playerData.setData("entityUuid", FastUUID.toString(entity.getUniqueId()));
+                String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, entity);
+                if (result.equals("false")) event.setCancelled(true);
+            }
         }
         if (entity instanceof Player) {
             Player player = (Player) entity;
@@ -130,8 +136,6 @@ public class FMGListener implements Listener {
             String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, entity);
             if (result.equals("false")) event.setCancelled(true);
         }
-
     }
-
 
 }

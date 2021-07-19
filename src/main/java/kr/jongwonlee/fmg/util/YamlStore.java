@@ -137,10 +137,6 @@ public class YamlStore extends FileStore {
         return new ArrayList<>();
     }
 
-    public void remove() {
-        file.delete();
-    }
-
     public void setLocation(String path, Location location) {
         if (location == null) {
             set(path, null);
@@ -181,7 +177,7 @@ public class YamlStore extends FileStore {
 
     public Map<String, String> getStringMap(String path) {
         final Map<String, String> stringMap = new HashMap<>();
-        for (String string : getKeys(getSection(path), true))
+        for (String string : getKeys(getSection(path), false))
             stringMap.put(string, getString(path + DOT + string));
         return stringMap;
     }
@@ -190,14 +186,14 @@ public class YamlStore extends FileStore {
         final Map<String, Inventory> inventoryMap = new HashMap<>();
         for (String string : getKeys(getSection(path), false)) {
             try {
-                String typeString = getString(path + DOT + "TYPE");
-                String title = getString(path + DOT + "TITLE");
-                InventoryType inventoryType = typeString == null ? null : InventoryType.valueOf(typeString);
-                int size = getInt(path + DOT + "SIZE");
+                String typeString = getString(path + DOT + string + DOT + "TYPE");
+                String title = getString(path + DOT + string + DOT + "TITLE");
+                InventoryType inventoryType = typeString == null ? InventoryType.CHEST : InventoryType.valueOf(typeString);
+                int size = getInt(path + DOT + string + DOT + "SIZE");
                 Inventory inventory;
-                if (inventoryType == null) inventory = Bukkit.createInventory(null, size, title == null ? "" : title);
+                if (inventoryType == InventoryType.CHEST) inventory = Bukkit.createInventory(null, size, title == null ? "" : title);
                 else inventory = Bukkit.createInventory(null, inventoryType, title == null ? "" : title);
-                Map<String, ItemStack> itemStackMap = getItemStackMap(path + DOT + "ITEMS");
+                Map<String, ItemStack> itemStackMap = getItemStackMap(path + DOT + string + DOT + "ITEMS");
                 itemStackMap.forEach((s, itemStack) -> inventory.setItem(Integer.parseInt(s), itemStack));
                 inventoryMap.put(string, inventory);
             } catch (Exception ignored) { }
@@ -213,6 +209,10 @@ public class YamlStore extends FileStore {
     }
 
     public void setInventory(String path, Inventory inventory) {
+        if (inventory == null) {
+            set(path, null);
+            return;
+        }
         InventoryType type = inventory.getType();
         set(path + DOT + "TYPE", type == InventoryType.CHEST ? null : type);
         set(path + DOT + "TITLE", inventory.getTitle());

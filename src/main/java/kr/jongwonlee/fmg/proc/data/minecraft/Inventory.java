@@ -79,8 +79,12 @@ public class Inventory implements Process {
                 org.bukkit.inventory.Inventory inventory = GameDataStore.getInst().getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
                 if (isItem) {
-                    String proc = processList.get(2).run(miniGame, procUnit);
-                    int index = Integer.parseInt(proc);
+                    Process proc1 = processList.get(2);
+                    int index;
+                    if (proc1.getType() != ProcType.EXECUTE_HOT_BAR) {
+                        String proc = proc1.run(miniGame, procUnit);
+                        index = Integer.parseInt(proc);
+                    } else index = player.getInventory().getHeldItemSlot();
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
                     boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
@@ -198,8 +202,12 @@ public class Inventory implements Process {
                 org.bukkit.inventory.Inventory inventory = miniGame.getGameData().getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
                 if (isItem) {
-                    String proc = processList.get(2).run(miniGame, procUnit);
-                    int index = Integer.parseInt(proc);
+                    Process proc1 = processList.get(2);
+                    int index;
+                    if (proc1.getType() != ProcType.EXECUTE_HOT_BAR) {
+                        String proc = proc1.run(miniGame, procUnit);
+                        index = Integer.parseInt(proc);
+                    } else index = player.getInventory().getHeldItemSlot();
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
                     boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
@@ -318,8 +326,12 @@ public class Inventory implements Process {
                 org.bukkit.inventory.Inventory inventory = process.getType().equals(ProcType.EXECUTE_PLAYER) ? player.getInventory() : miniGame.getPlayerData(player.getUniqueId()).getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
                 if (isItem) {
-                    String proc = processList.get(2).run(miniGame, procUnit);
-                    int index = Integer.parseInt(proc);
+                    Process proc1 = processList.get(2);
+                    int index;
+                    if (proc1.getType() != ProcType.EXECUTE_HOT_BAR) {
+                        String proc = proc1.run(miniGame, procUnit);
+                        index = Integer.parseInt(proc);
+                    } else index = player.getInventory().getHeldItemSlot();
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
                     boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;

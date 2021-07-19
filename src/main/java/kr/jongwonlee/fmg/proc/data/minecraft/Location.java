@@ -31,6 +31,7 @@ public class Location implements Process {
     boolean isRemove;
     boolean isCreate;
     boolean isExists;
+    boolean isEquals;
     boolean isContains;
     boolean isGet;
 
@@ -54,6 +55,7 @@ public class Location implements Process {
         isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isCreate = parseUnit.useExecutor(ProcType.EXECUTE_CREATE);
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
+        isEquals = parseUnit.useExecutor(ProcType.EXECUTE_EQUALS);
         isContains = parseUnit.useExecutor(ProcType.EXECUTE_CONTAINS);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
         if (isGet) parseUnit.addExecutor(getType());
@@ -122,6 +124,14 @@ public class Location implements Process {
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
                     else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
                     return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
+                } else if (isEquals) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    org.bukkit.Location pos1;
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
+                    else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
+                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    return location.equals(pos1) ? "true" : "false";
                 }
             } else if (isGame) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getGameData().getLocation(name);
@@ -174,6 +184,14 @@ public class Location implements Process {
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
                     else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
                     return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
+                } else if (isEquals) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    org.bukkit.Location pos1;
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
+                    else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
+                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    return location.equals(pos1) ? "true" : "false";
                 }
             } else if (player != null) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
@@ -230,6 +248,14 @@ public class Location implements Process {
                     Vector max = Vector.getMaximum(vector1, vector2);
                     Vector min = Vector.getMinimum(vector1, vector2);
                     return location.toVector().isInAABB(min, max) ? "true" : "false";
+                } else if (isEquals) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    org.bukkit.Location pos1;
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
+                    else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
+                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    return location.equals(pos1) ? "true" : "false";
                 }
             }
         } catch (Exception e) {

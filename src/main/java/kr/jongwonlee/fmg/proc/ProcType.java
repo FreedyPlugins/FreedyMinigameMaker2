@@ -57,6 +57,7 @@ public enum ProcType {
     EXECUTE_EQUALS(ExecuteEquals.class),
     EXECUTE_EXISTS(ExecuteExists.class),
     EXECUTE_GET(ExecuteGet.class),
+    EXECUTE_HOT_BAR(ExecuteHotBar.class),
     EXECUTE_LORE(ExecuteLore.class),
     EXECUTE_OPEN(ExecuteOpen.class),
     EXECUTE_POS_PITCH(ExecutePosPitch.class),

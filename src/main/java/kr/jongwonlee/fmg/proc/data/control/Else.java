@@ -13,9 +13,9 @@ public class Else implements Process {
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         anIf = parseUnit.getIf();
+        parseUnit.removeIf();
         if (anIf != null) process = FileParser.parseProcess(parseUnit, arguments);
         if (FileParser.isEmptyProcess(process)) process = FileParser.getOneMoreLine(parseUnit, "");
-        parseUnit.removeIf();
     }
 
     @Override

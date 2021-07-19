@@ -44,12 +44,15 @@ public class FileStore {
         this.inDir = inDir;
         this.plugin = plugin;
         this.file = new File(getRoot() + (inDir ? DIR : ""),fileName + "");
+        create(doInit);
+    }
+
+    public void create(boolean doInit) {
         if (!this.file.exists()) {
             try {
                 this.file.getParentFile().mkdirs();
                 if (!file.exists() && doInit) loadResource();
                 this.file.createNewFile();
-                return;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -97,5 +100,13 @@ public class FileStore {
         return new ArrayList<>();
     }
 
+    public void remove() {
+        file.delete();
+    }
+
+    public void reset(boolean doInit) {
+        remove();
+        create(doInit);
+    }
 
 }

@@ -2,6 +2,7 @@ package kr.jongwonlee.fmg.conf;
 
 import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.util.YamlStore;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
 
@@ -35,6 +36,12 @@ public class GameDataStore extends GameData {
 
     public static void save() {
         GameDataStore inst = getInst();
+        dataStore.reset(false);
+        dataStore.reset(false);
+        locationStore.reset(false);
+        itemStackStore.reset(false);
+        inventoryStore.reset(false);
+        listStore.reset(false);
         inst.dataMap.forEach(dataStore::set);
         inst.locationMap.forEach(locationStore::setLocation);
         inst.itemStackMap.forEach(itemStackStore::set);

@@ -5,11 +5,10 @@
 **Minecraft Versions**_:_ Spigot(Paper) 1.12 ~ 1.17  
 **Contact Developer**_:_ Discord(updated): 종원#6938   
 **Note**_:_ A library under the Apache 2.0 license, [jafama's FastMath](https://github.com/jeffhain/jafama), is used for good computational performance. [FastUUID](https://github.com/jchambers/fast-uuid), which is licensed for MIT, is also used for fast performance.  
-**Website**_:_ [_Not Exists_]() */* 
+**Website**_:_ [_Hompage_](wiki.freedy.online) 
 
 # T o D o 
-no permission GameAlert creation  
-Item 
+custom aliases of process
 
 ## Introduce
 You can create MiniGame systems such as Spleef, Tnt Run, and PvP.  
@@ -39,25 +38,15 @@ The space or tabs before the string is optional.
 
 Simple one line complete lambda is...
 ```
-on join -> print 'Hello World'
+on join { print 'Hello World' }
 ```
 
 ### Trigger event list
 
 ```
-Join: player join server
-Left: player left server
-PreGameJoin: before join game
-GameJoin: after join game
-GamePreLeft: before left game
-GameLeft: after left game
-GamePreStop: before game end
-GameStop: after game end
-Interact: player interact stuffs
-Move: everytime player move
+
 ```
 
 ---
 
 ## Known issue
-Max game file size is about 1 billion columns.  
