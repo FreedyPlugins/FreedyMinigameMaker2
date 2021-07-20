@@ -12,7 +12,7 @@ import java.util.List;
 public class Data implements Process {
 
     SmallFrontBrace frontBrace;
-    boolean isAdd;
+//    boolean isAdd;
     boolean isGame;
     boolean isSet;
     boolean isOnline;
@@ -24,7 +24,7 @@ public class Data implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
+//        isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);

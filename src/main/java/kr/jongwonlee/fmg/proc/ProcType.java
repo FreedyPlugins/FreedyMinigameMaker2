@@ -94,6 +94,7 @@ public enum ProcType {
     PERMISSION(Permission.class),
     POTION(Potion.class),
     SEND_MESSAGE(SendMessage.class),
+    SNEAKING(Sneaking.class),
     SOUND(Sound.class),
     TELEPORT(Teleport.class),
     TITLE(Title.class),

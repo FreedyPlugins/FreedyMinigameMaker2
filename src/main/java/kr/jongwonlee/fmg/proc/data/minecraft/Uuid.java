@@ -1,4 +1,4 @@
-package kr.jongwonlee.fmg.proc.data.etc;
+package kr.jongwonlee.fmg.proc.data.minecraft;
 
 import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.game.MiniGame;

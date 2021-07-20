@@ -1,4 +1,4 @@
-package kr.jongwonlee.fmg.proc.data.etc;
+package kr.jongwonlee.fmg.proc.data.minecraft;
 
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;

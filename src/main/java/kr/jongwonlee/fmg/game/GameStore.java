@@ -49,6 +49,7 @@ public class GameStore implements Listener {
         final Player player = event.getPlayer();
         MiniGame game = getGame(player);
         if (game != null) game.quit(player.getUniqueId());
+        getHubGame().quit(player.getUniqueId());
         playerGameMap.remove(player);
     }
 
