@@ -174,14 +174,6 @@ public class FMGCommand implements CommandExecutor {
                         process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit(player));
                         return true;
                     }
-                    case "edit":
-                    case "editor": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
-                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
-                            return true;
-                        }
-                        return true;
-                    }
                 }
             }
         } catch (Exception e) {
