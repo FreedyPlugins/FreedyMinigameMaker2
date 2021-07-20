@@ -8,7 +8,7 @@ website: https://github.com/FreedyPlugins/FreedyMinigameMaker2
 commands:
   fmg:
     description: minigame command
-    usage: §c/fmg <join|left|create|delete|rl|item|loc|about> ...
+    usage: §c/fmg <join|left|create|delete|rl|do|run|about> ...
 permissions:
   freedyminigamemaker.admin:
     description: Permission to create, modify, or delete minigames
