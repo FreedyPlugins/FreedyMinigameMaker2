@@ -39,8 +39,6 @@ public enum EventBundle {
     DEATH("onDeath"),
     DAMAGE_ENTITY("onDamageEntity"),
     DAMAGED("onDamaged"),
-    PROJECTILE("onProjectile"),
-    PROJECTILE_HIT("onProjectileHit"),
     ITEM_HELD("onItemHeld"),
     SWAP_HAND("onSwapHand"),
     DROP("onDrop"),

@@ -4,7 +4,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"game", "minigame"})
+@Processable(alias = {"game"})
 public class ExecuteGame implements Process {
 
     private Process process;

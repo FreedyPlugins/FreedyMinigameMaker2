@@ -5,7 +5,7 @@
 **Minecraft Versions**_:_ Spigot(Paper) 1.12 ~ 1.17  
 **Contact Developer**_:_ Discord(updated): 종원#6938   
 **Note**_:_ A library under the Apache 2.0 license, [jafama's FastMath](https://github.com/jeffhain/jafama), is used for good computational performance. [FastUUID](https://github.com/jchambers/fast-uuid), which is licensed for MIT, is also used for fast performance.  
-**Website**_:_ [_Hompage_](wiki.freedy.online) 
+**Website**_:_ [_Hompage_](https://wiki.freedy.online) 
 
 # T o D o 
 custom aliases of process
@@ -68,10 +68,29 @@ on join {
   print ( "/"Hello World/"" ) //OK! result: "Hello World"
   
 }
-```
 
 ```
 
+## Processes
+
+### ONLINE, GAME, and PLAYER
+aliases:   
+    ONLINE: `online, all`  
+    PLAYER: `player`  
+    GAME: `game`  
+It is a modifier for another process.    
+For example, if you run `player print "Hello"`, you send a message to the player,  
+and if you run `game print "Hello"`, you send a message to all players in the game,  
+and if you run `all print "Hello"`, you send a message to all players on the server.    
+`player` can be skipped like `print "Hello"`  
+
+### ACTION_BAR
+
+aliases: "sendactionbar", "actionbar"
+```
+actionbar "Hello World"
+game actionbar "Hello World"
+all actionbar "Hello World"
 ```
 
 ### Trigger event list
