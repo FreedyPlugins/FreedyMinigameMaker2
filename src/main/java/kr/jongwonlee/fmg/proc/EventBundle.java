@@ -17,7 +17,6 @@ public enum EventBundle {
     GAME_JOIN,
     PRE_GAME_LEFT,
     GAME_LEFT,
-    GAME_START,
     PRE_GAME_STOP,
     GAME_STOP,
     INTERACT,

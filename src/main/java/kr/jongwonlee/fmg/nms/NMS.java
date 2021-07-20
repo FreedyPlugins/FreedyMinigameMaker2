@@ -4,12 +4,6 @@ import org.bukkit.Bukkit;
 
 public class NMS {
 
-    private static ImageViewer imageViewer;
-
-    public static ImageViewer getImageViewer() {
-        return imageViewer;
-    }
-
     public static void init() {
         String version;
         try {
@@ -19,10 +13,8 @@ public class NMS {
         }
         switch (version) {
             case "v1_12_R1":
-                imageViewer = new kr.jongwonlee.fmg.nms.v1_12_R1.Viewer();
                 break;
             case "v1_17_R2":
-                imageViewer = new kr.jongwonlee.fmg.nms.v1_17_R1.Viewer();
                 break;
         }
     }

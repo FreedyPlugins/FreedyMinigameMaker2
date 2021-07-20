@@ -4,7 +4,6 @@ import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.image.ImageEditor;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.util.GameAlert;
@@ -14,9 +13,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class FMGCommand implements CommandExecutor {
@@ -183,7 +180,6 @@ public class FMGCommand implements CommandExecutor {
                             GameAlert.NEED_PERMISSION.print(sender, new String[]{});
                             return true;
                         }
-                        ImageEditor.openEditor(player, message);
                         return true;
                     }
                 }
@@ -202,6 +198,7 @@ public class FMGCommand implements CommandExecutor {
     }
 
     private static void about(CommandSender sender) {
-        Bukkit.dispatchCommand(sender, "about " + FMGPlugin.getInst().getName());
+        Bukkit.dispatchCommand(sender, "bukkit:about " + FMGPlugin.getInst().getName());
     }
+
 }

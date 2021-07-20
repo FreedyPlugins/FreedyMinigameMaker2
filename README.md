@@ -36,16 +36,149 @@ Capital letters are automatically converted to lowercase letters.
 If you want to mark a text section, use quotation marks.   
 The space or tabs before the string is optional.  
 
-Simple one line complete lambda is...
+Simple one line complete is...
 ```
 on join { print 'Hello World' }
+```
+
+example...
+
+```
+on join {
+  //This message is for notes that don't affect. After two slashes.
+  
+  print "Hello World" //OK!
+  
+  print 'Hello World' //OK!
+  
+  print Hello World //Not if Hello is an executable word such as print! Then OK!
+  
+  print ( "Hello World" ) //OK!
+  
+  print("Hello World") //BAD! Must have spaces between brackets!!
+  
+  print ( 5 + 5 ) //OK!
+  
+  print 5 + 5 //Math operations must be in brackets!
+  
+  print ( 5 + 5 + 5 ) //BAD!
+  
+  print ( ( 5 * 2 ) + 10 ) //OK!
+  
+  print ( "/"Hello World/"" ) //OK! result: "Hello World"
+  
+}
+```
+
+```
+
 ```
 
 ### Trigger event list
 
 ```
+Join: When you join the server
+#Can't be cancelled
+No meta
+
+Left: When I left the server,
+#Can't be cancelled
+No meta
+
+Pre game join: Before you join the game.
+No meta
+
+Game join: When I was in the game,
+#Can't be cancelled
+No meta
+
+Pre game left: Before you leave the game,
+No meta
+
+Game left: When I left the game,
+#Can't be cancelled
+No meta
+
+Pre game stop: After the last player left
+#Can't be cancelled
+No meta
+
+Game stop: When it's deactivated because there's no player in the game.
+#Can't be cancelled
+No meta
+
+Interact: When the player interacts
+  data: 
+    - interactAction
+    - interactHand
+    - interactBlockFace
+  block:
+    - interactBlock
+  item:
+    - interactItem
+
+Move: When the player moves
+  location:
+    - moveFrom
+    - moveTo  
+
+Chat: When the player chats
+  data:
+    - chat
+
+Command: When the player executes a command
+  data:
+    - command
+
+Inventory click: When the player clicks Inventory
+  inventory:
+    - inventoryClicked
+  data:
+    - inventoryHotBar
+    - inventoryAction
+    - inventoryClick
+    - inventoryRawSlot
+    - inventorySlotType
+    - inventorySlot
+  item:
+    - inventoryCursor
+    - inventoryCurrentItem
+
+Inventory close: When the player closes the inventory
+#Can't be cancelled
+  inventory: 
+    - inventoryClosed
+
+Attack: When a player attacks an entity
+  data:
+    - damage
+    - damageCause
+    - damageFinal
+    - entityUuid
+
+
+Damage: When the player is damaged by an entity
+  data:
+    - damage
+    - damageCause
+    - damageFinal
+    - attackerUuid
+
+Player damage: When the player is damaged,
+  data:
+    - damage
+    - damageCause
+    - damageFinal
+  
+
+Drop item: When the player drops the item.
+  item:
+    - dropItem
+
 
 ```
+
+
 
 ---
 
