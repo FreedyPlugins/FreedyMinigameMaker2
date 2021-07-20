@@ -1,5 +1,5 @@
 # FreedyMinigameMaker
-**description**_:_ Make arcade-games with script system  
+**description**_:_ Create arcade games with a script system.
 **Author**_:_  JongWonLee  
 **Contributors**_:_ Monday_blues_, Dixizer, andrewwindsor, HongMint  
 **Minecraft Versions**_:_ Spigot(Paper) 1.12 ~ 1.17  
