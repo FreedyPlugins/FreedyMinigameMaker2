@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 
 public class NMS {
 
+
     public static void init() {
         String version;
         try {
