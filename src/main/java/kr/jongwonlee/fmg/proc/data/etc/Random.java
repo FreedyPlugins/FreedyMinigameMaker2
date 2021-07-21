@@ -11,7 +11,9 @@ import java.util.List;
 @Processable(alias = {"random", "rand"})
 public class Random implements Process {
 
+    private Process process;
     private SmallFrontBrace frontBrace;
+    private boolean isGet;
 
     @Override
     public ProcType getType() {
@@ -20,7 +22,9 @@ public class Random implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        Process process = FileParser.parseProcess(parseUnit, arguments);
+        isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        if (isGet) parseUnit.addExecutor(getType());
+        process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
     }

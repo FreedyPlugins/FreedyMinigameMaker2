@@ -21,6 +21,7 @@ public enum ProcType {
     EXECUTE_ONLINE(ExecuteOnline.class),
     EXECUTE_REMOVE(ExecuteRemove.class),
     EXECUTE_SET(ExecuteSet.class),
+    FOR(For.class),
     IF(If.class),
     IF_BIG(IfBig.class),
     IF_BIG_SAME(IfBigSame.class),

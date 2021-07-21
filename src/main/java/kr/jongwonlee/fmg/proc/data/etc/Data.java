@@ -35,8 +35,9 @@ public class Data implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
-        List<Process> processList = frontBrace.getProcessList();
+        try {
+            if (frontBrace == null) return "";
+            List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             if (isSet) {
                 String value = processList.get(2).run(miniGame, procUnit);
@@ -49,7 +50,10 @@ public class Data implements Process {
                 else if (isOnline) return GameDataStore.getInst().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (procUnit.target.player != null) return miniGame.getPlayerData(procUnit.target.player.getUniqueId()).getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
             }
-        return frontBrace.getLastProc().run(miniGame, procUnit);
+            return frontBrace.getLastProc().run(miniGame, procUnit);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

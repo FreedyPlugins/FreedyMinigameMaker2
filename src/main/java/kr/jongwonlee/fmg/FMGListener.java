@@ -69,6 +69,18 @@ public class FMGListener implements Listener {
     }
 
     @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setLocation("teleportFrom", event.getFrom());
+        playerData.setLocation("teleportTo", event.getTo());
+        String result = GameStore.getGame(player).run(EventBundle.TELEPORT, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         if (!player.isOnline()) return;

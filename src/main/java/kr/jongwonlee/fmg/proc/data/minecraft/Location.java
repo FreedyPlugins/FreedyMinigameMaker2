@@ -34,6 +34,7 @@ public class Location implements Process {
     boolean isEquals;
     boolean isContains;
     boolean isGet;
+    boolean isBlock;
 
     @Override
     public ProcType getType() {
@@ -57,6 +58,7 @@ public class Location implements Process {
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
         isEquals = parseUnit.useExecutor(ProcType.EXECUTE_EQUALS);
         isContains = parseUnit.useExecutor(ProcType.EXECUTE_CONTAINS);
+        isBlock = parseUnit.useExecutor(ProcType.BLOCK);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
         if (isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
@@ -75,7 +77,12 @@ public class Location implements Process {
             Player player = procUnit.target.player;
             if (isOnline) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
-                if (isExists) return location == null ? "false" : "true";
+                if (isBlock) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
+                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     if (isPosX) location.setX(value);
@@ -123,6 +130,7 @@ public class Location implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
                     else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
                 } else if (isEquals) {
                     Process proc1 = processList.get(2);
@@ -135,7 +143,12 @@ public class Location implements Process {
                 }
             } else if (isGame) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getGameData().getLocation(name);
-                if (isExists) return location == null ? "false" : "true";
+                if (isBlock) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
+                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     if (isPosX) location.setX(value);
@@ -183,6 +196,7 @@ public class Location implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
                     else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
                 } else if (isEquals) {
                     Process proc1 = processList.get(2);
@@ -195,7 +209,12 @@ public class Location implements Process {
                 }
             } else if (player != null) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
-                if (isExists) return location == null ? "false" : "true";
+                if (isBlock) {
+                    Process proc1 = processList.get(2);
+                    String value = proc1.run(miniGame, procUnit);
+                    if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
+                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     if (isPosX) location.setX(value);
@@ -247,6 +266,7 @@ public class Location implements Process {
                     Vector vector2 = pos2.toVector();
                     Vector max = Vector.getMaximum(vector1, vector2);
                     Vector min = Vector.getMinimum(vector1, vector2);
+                    if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     return location.toVector().isInAABB(min, max) ? "true" : "false";
                 } else if (isEquals) {
                     Process proc1 = processList.get(2);
@@ -259,6 +279,7 @@ public class Location implements Process {
                 }
             }
         } catch (Exception e) {
+            if (frontBrace == null) return "";
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
         return frontBrace.getLastProc().run(miniGame, procUnit);

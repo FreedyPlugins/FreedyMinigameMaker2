@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 
 public class NMS {
 
-
     public static void init() {
         String version;
         try {
@@ -15,7 +14,7 @@ public class NMS {
         switch (version) {
             case "v1_12_R1":
                 break;
-            case "v1_17_R2":
+            case "v1_17_R1":
                 break;
         }
     }

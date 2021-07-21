@@ -26,7 +26,7 @@ public class FMGCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
             { //console or player ...
-                String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                String message = FileParser.toColor(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 MiniGame game = GameStore.getGame(message);
                 switch (args[0].toLowerCase()) {
                     case "create": {
@@ -118,7 +118,7 @@ public class FMGCommand implements CommandExecutor {
             }
             { // console or player with args option ...
                 final Player playerInArgs = args.length > 1 ? Bukkit.getPlayer(args[1]) : null;
-                final String message = String.join(" ", Arrays.copyOfRange(args, playerInArgs == null ? 1 : 2, args.length));
+                final String message = FileParser.toColor(String.join(" ", Arrays.copyOfRange(args, playerInArgs == null ? 1 : 2, args.length)));
                 final Player player = playerInArgs == null ? sender instanceof Player ? ((Player) sender) : null : playerInArgs;
                 MiniGame game = GameStore.getGame(message);
                 switch (args[0]) {
@@ -155,7 +155,7 @@ public class FMGCommand implements CommandExecutor {
                 }
             }
             { //only player
-                String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                String message = FileParser.toColor(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (!(sender instanceof Player)) {
                     GameAlert.ONLY_PLAYER.print();
                     return true;
