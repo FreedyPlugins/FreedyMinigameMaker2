@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class FMGListener implements Listener {
 
@@ -157,8 +158,12 @@ public class FMGListener implements Listener {
         {
             Player player;
             if (attacker instanceof Player) player = (Player) attacker;
-            else if (attacker instanceof Projectile) player = ((Player) ((Projectile) attacker).getShooter());
-            else player = null;
+            else if (attacker instanceof Projectile) {
+                Projectile projectile = (Projectile) attacker;
+                ProjectileSource shooter = projectile.getShooter();
+                if (shooter instanceof Player) player = (Player) projectile.getShooter();
+                else player = null;
+            } else player = null;
             if (player != null) {
                 if (!player.isOnline()) return;
                 MiniGame game = GameStore.getGame(player);
@@ -183,6 +188,18 @@ public class FMGListener implements Listener {
             String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, entity);
             if (result.equals("false")) event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onSwapHand(PlayerSwapHandItemsEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setItemStack("mainHandItem", event.getMainHandItem());
+        playerData.setItemStack("offHandItem", event.getOffHandItem());
+        String result = GameStore.getGame(player).run(EventBundle.SWAP_HAND, player);
+        if (result.equals("false")) event.setCancelled(true);
     }
 
 }

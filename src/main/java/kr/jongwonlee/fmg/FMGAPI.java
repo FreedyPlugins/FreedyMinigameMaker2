@@ -2,6 +2,7 @@ package kr.jongwonlee.fmg;
 
 import kr.jongwonlee.fmg.proc.ProcType;
 import kr.jongwonlee.fmg.proc.Process;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class FMGAPI {
 

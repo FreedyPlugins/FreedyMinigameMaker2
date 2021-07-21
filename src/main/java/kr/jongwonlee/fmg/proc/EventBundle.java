@@ -30,6 +30,7 @@ public enum EventBundle {
     PLAYER_DAMAGE,
     DROP_ITEM,
     TELEPORT,
+    SWAP_HAND,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),

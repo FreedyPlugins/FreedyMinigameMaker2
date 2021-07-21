@@ -27,29 +27,29 @@ public enum GameAlert {
     private String message;
 
     public void print(String[] args) {
-        FMGPlugin.getInst().getLogger().warning(args == null ? message : String.format(message, (Object[]) args));
+        if (message != null) FMGPlugin.getInst().getLogger().warning(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public void print(Player player, String[] args) {
         if (player == null) return;
-        player.sendMessage(args == null ? message : String.format(message, (Object[]) args));
+        if (message != null) player.sendMessage(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public void print(CommandSender sender, String[] args) {
         if (sender == null) return;
-        sender.sendMessage(args == null ? message : String.format(message, (Object[]) args));
+        if (message != null) sender.sendMessage(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public void print() {
-        FMGPlugin.getInst().getLogger().warning(message);
+        if (message != null) FMGPlugin.getInst().getLogger().warning(message);
     }
 
     public void printLog() {
-        FMGPlugin.getInst().getLogger().info(message);
+        if (message != null) FMGPlugin.getInst().getLogger().info(message);
     }
 
     public void printLog(String[] args) {
-        FMGPlugin.getInst().getLogger().info(args == null ? message : String.format(message, (Object[]) args));
+        if (message != null) FMGPlugin.getInst().getLogger().info(args == null ? message : String.format(message, (Object[]) args));
     }
 
     public static void init() {

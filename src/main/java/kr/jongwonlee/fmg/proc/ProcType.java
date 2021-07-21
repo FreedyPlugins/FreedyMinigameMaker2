@@ -4,9 +4,12 @@ import kr.jongwonlee.fmg.proc.data.control.*;
 import kr.jongwonlee.fmg.proc.data.etc.*;
 import kr.jongwonlee.fmg.proc.data.minecraft.*;
 import kr.jongwonlee.fmg.util.GameAlert;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum ProcType {
