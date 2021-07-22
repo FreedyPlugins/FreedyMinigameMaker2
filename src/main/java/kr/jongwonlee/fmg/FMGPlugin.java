@@ -4,6 +4,7 @@ import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
+import kr.jongwonlee.fmg.image.ImageEditor;
 import kr.jongwonlee.fmg.nms.NMS;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.proc.ProcType;

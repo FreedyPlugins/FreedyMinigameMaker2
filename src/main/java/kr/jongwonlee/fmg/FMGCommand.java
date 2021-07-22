@@ -4,6 +4,7 @@ import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
+import kr.jongwonlee.fmg.image.ImageEditor;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.util.GameAlert;
@@ -174,6 +175,16 @@ public class FMGCommand implements CommandExecutor {
                         process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit(player));
                         return true;
                     }
+                    case "edit":
+                    case "editor": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
+                        ImageEditor.openEditor(player, message);
+                        return true;
+                    }
+
                 }
             }
         } catch (Exception e) {
