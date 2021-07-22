@@ -5,8 +5,8 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.image.ImageEditor;
-import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -50,6 +50,7 @@ public class FMGCommand implements CommandExecutor {
                             return true;
                         }
                         if (message.length() == 0) return false;
+                        game.disable();
                         GameStore.removeGame(message);
                         GameAlert.DELETED.print(sender, new String[]{message});
                         return true;

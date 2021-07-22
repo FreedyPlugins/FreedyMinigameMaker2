@@ -2,7 +2,6 @@ package kr.jongwonlee.fmg.conf;
 
 import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.util.YamlStore;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
 

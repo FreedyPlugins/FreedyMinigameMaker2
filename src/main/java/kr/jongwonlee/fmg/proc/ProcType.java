@@ -4,12 +4,9 @@ import kr.jongwonlee.fmg.proc.data.control.*;
 import kr.jongwonlee.fmg.proc.data.etc.*;
 import kr.jongwonlee.fmg.proc.data.minecraft.*;
 import kr.jongwonlee.fmg.util.GameAlert;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum ProcType {
@@ -80,7 +77,6 @@ public enum ProcType {
     LIST(List.class),
     LOG(Log.class),
     MILLI_SECONDS(MilliSeconds.class),
-    NAME(Name.class),
     RANDOM(Random.class),
     REFERENCE(Refs.class),
     SPLIT(Split.class),
@@ -95,6 +91,8 @@ public enum ProcType {
     INVENTORY(Inventory.class),
     ITEM(Item.class),
     LOCATION(Location.class),
+    NAME(Name.class),
+    PARTICLE(Particle.class),
     PERMISSION(Permission.class),
     POTION(Potion.class),
     SEND_MESSAGE(SendMessage.class),

@@ -18,8 +18,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.awt.*;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.*;
 
@@ -106,7 +107,7 @@ public class ImageEditor implements Listener {
     public void save() {
         FileStore fileStore = new FileStore(name + Settings.getExtension(), true);
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileStore.getFile()));
+            BufferedWriter bufferedWriter = Files.newBufferedWriter(fileStore.getFile().toPath(), StandardCharsets.UTF_8);
             for (String line : source) {
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();

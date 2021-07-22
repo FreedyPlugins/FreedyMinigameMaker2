@@ -7,5 +7,3 @@
 **Note**_:_ A library under the Apache 2.0 license, [jafama's FastMath](https://github.com/jeffhain/jafama), is used for good computational performance. [FastUUID](https://github.com/jchambers/fast-uuid), which is licensed for MIT, is also used for fast performance.  
 **Website**_:_ [_Hompage_](https://github.com/FreedyPlugins/FreedyMinigameMaker2/wiki) 
 
-
-## Known issue
