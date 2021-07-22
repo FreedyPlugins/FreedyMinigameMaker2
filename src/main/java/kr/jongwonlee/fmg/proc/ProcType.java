@@ -83,8 +83,8 @@ public enum ProcType {
     NAME(Name.class),
     RANDOM(Random.class),
     REFERENCE(Refs.class),
+    SPLIT(Split.class),
     TIMINGS(Timings.class),
-    UUID(Uuid.class),
     /*minecraft package---------------------------------*/
     ACTION_BAR(ActionBar.class),
     BLOCK(Block.class),
@@ -102,6 +102,7 @@ public enum ProcType {
     SOUND(Sound.class),
     TELEPORT(Teleport.class),
     TITLE(Title.class),
+    UUID(Uuid.class),
     /*---------------------------------*/
     EXTERNAL(null),
     ;

@@ -88,6 +88,7 @@ public class YamlStore extends FileStore {
     }
 
     public void set(String path, Object value) {
+        if (path.length() == 0) return;
         getConfig().set(path, value);
     }
 
