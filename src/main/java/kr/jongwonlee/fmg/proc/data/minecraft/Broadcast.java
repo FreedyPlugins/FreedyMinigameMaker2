@@ -5,7 +5,7 @@ import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import org.bukkit.Bukkit;
 
-@Processable(alias = {"broadcast", "broadcastmessage", "announce", "say"})
+@Processable(alias = {"broadcast", "broadcastmessage", "announce"})
 public class Broadcast implements Process {
 
     private Process process;

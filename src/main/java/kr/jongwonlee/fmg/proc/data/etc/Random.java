@@ -13,7 +13,6 @@ public class Random implements Process {
 
     private Process process;
     private SmallFrontBrace frontBrace;
-    private boolean isGet;
 
     @Override
     public ProcType getType() {
@@ -22,7 +21,7 @@ public class Random implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        boolean isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
         if (isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
@@ -32,7 +31,7 @@ public class Random implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
-            if (frontBrace == null) return "";
+            if (frontBrace == null) return process.run(miniGame, procUnit);
             List<Process> processList = frontBrace.getProcessList();
             if (procUnit.target.player != null) {
                 String min = processList.get(0).run(miniGame, procUnit);
