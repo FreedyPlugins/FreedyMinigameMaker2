@@ -4,7 +4,6 @@ import kr.jongwonlee.fmg.image.Image;
 import kr.jongwonlee.fmg.nms.ImageViewer;
 
 public class Viewer implements ImageViewer {
-
     @Override
     public void createMap(Image image) {
 

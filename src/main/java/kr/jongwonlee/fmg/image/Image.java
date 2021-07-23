@@ -31,13 +31,6 @@ public class Image {
         drawableMap = new HashMap<>();
         this.face = yawToFace(player.getLocation().getYaw(), false);
         this.bufferedImage = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
-//        this.imageFile = new ImageFile("default");
-//        try {
-//            this.bufferedImage = ImageIO.read(imageFile.getFile());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return;
-//        }
         setSettled(true);
     }
 
