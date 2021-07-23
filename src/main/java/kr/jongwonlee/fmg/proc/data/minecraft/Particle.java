@@ -38,8 +38,8 @@ public class Particle implements Process {
             Process proc3 = processList.get(4);
             String value3 = proc3.run(miniGame, procUnit);
             int amount = Integer.parseInt(value3);
-            boolean isStatic = processList.size() <= 6;
-            if (isStatic) location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount, 0, 0, 0);
+            boolean isStatic = processList.size() >= 6;
+            if (isStatic) location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount, 0, 0, 0, 0, 0);
             else location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount);
         } catch (Exception ignored) {  }
         return frontBrace.getLastProc().run(miniGame, procUnit);

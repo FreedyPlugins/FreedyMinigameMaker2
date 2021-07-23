@@ -2,6 +2,8 @@ package kr.jongwonlee.fmg;
 
 import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.conf.Settings;
+import kr.jongwonlee.fmg.event.AddonDisableEvent;
+import kr.jongwonlee.fmg.event.AddonEnableEvent;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.nms.NMS;
@@ -30,6 +32,7 @@ public final class FMGPlugin extends JavaPlugin {
         EventBundle.init();
         Settings.init();
         GameDataStore.init();
+        Bukkit.getPluginManager().callEvent(new AddonEnableEvent());
         GameStore.init();
     }
 
@@ -37,6 +40,7 @@ public final class FMGPlugin extends JavaPlugin {
     public void onDisable() {
         GameStore.getGames().forEach(MiniGame::disable);
         GameDataStore.save();
+        Bukkit.getPluginManager().callEvent(new AddonDisableEvent());
     }
 
     public static void registerEvent(Listener listener) {
