@@ -30,9 +30,8 @@ public class Name implements Process {
             if (isPlayer) player.setDisplayName(message);
             else player.setPlayerListName(message);
         } else if (isGame) return miniGame.getName() + message;
-        else {
+        else if (isPlayer) {
             if (player != null) return player.getName() + message;
-            else if (procUnit.target.entity != null) return procUnit.target.entity.getName() + message;
         }
         return message;
     }
