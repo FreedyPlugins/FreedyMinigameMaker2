@@ -86,7 +86,8 @@ public class Target implements Process {
                 return "";
             } else {
                 try {
-                    procUnit.target.player = Bukkit.getPlayer(FastUUID.parseUUID(name));
+                    if (isName) procUnit.target.player = Bukkit.getPlayer(name);
+                    else procUnit.target.player = Bukkit.getPlayer(FastUUID.parseUUID(name));
                     String value = frontBrace.getLastProc().run(miniGame, procUnit);
                     procUnit.target.player = originPlayer;
                     return value;

@@ -32,6 +32,7 @@ public class Particle implements Process {
             Location location;
             if (proc1.getType() == ProcType.EXECUTE_GAME) location = miniGame.getGameData().getLocation(value1);
             else if (proc1.getType() == ProcType.EXECUTE_ONLINE) location = GameDataStore.getInst().getLocation(value1);
+            else if (proc1.getType() == ProcType.EXECUTE_PLAYER) location = player.getLocation();
             else location = miniGame.getPlayerData(player.getUniqueId()).getLocation(value1);
             Process proc2 = processList.get(2);
             String value2 = proc2.run(miniGame, procUnit);
