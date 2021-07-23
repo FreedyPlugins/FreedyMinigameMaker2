@@ -44,6 +44,7 @@ public class List implements Process {
         isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isShuffle = parseUnit.useExecutor(ProcType.EXECUTE_SHUFFLE);
         isContains = parseUnit.useExecutor(ProcType.EXECUTE_CONTAINS);
+        if (isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = (SmallFrontBrace) process;
