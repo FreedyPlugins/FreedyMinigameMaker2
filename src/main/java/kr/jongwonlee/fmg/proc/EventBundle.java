@@ -31,6 +31,8 @@ public enum EventBundle {
     DROP_ITEM,
     TELEPORT,
     SWAP_HAND,
+    BLOCK_BREAK,
+    BLOCK_PLACE,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),

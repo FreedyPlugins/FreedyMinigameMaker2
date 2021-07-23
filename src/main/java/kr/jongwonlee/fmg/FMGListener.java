@@ -13,6 +13,8 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -199,6 +201,28 @@ public class FMGListener implements Listener {
         playerData.setItemStack("mainHandItem", event.getMainHandItem());
         playerData.setItemStack("offHandItem", event.getOffHandItem());
         String result = GameStore.getGame(player).run(EventBundle.SWAP_HAND, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBreakBlock(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setBlock("blockBreak", event.getBlock().getState());
+        String result = GameStore.getGame(player).run(EventBundle.BLOCK_BREAK, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlaceBlock(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setBlock("blockPlace", event.getBlock().getState());
+        String result = GameStore.getGame(player).run(EventBundle.BLOCK_PLACE, player);
         if (result.equals("false")) event.setCancelled(true);
     }
 
