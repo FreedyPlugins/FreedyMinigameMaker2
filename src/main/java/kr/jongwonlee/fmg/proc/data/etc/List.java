@@ -59,7 +59,7 @@ public class List implements Process {
             Player player = procUnit.target.player;
             if (isOnline) {
                 java.util.List<String> list = GameDataStore.getInst().getList(name);
-                if (isContains) return list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isShuffle) Collections.shuffle(list);
                 else if (isClear && list != null) {
@@ -90,7 +90,7 @@ public class List implements Process {
                 }
             } else if (isGame) {
                 java.util.List<String> list = miniGame.getGameData().getList(name);
-                if (isContains) return list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isClear && list != null) {
                     miniGame.getGameData().setList(name, null);
@@ -120,7 +120,7 @@ public class List implements Process {
                 }
             } else if (player != null) {
                 java.util.List<String> list = miniGame.getPlayerData(player.getUniqueId()).getList(name);
-                if (isContains) return list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isClear && list != null) {
                     miniGame.getPlayerData(player.getUniqueId()).setList(name, null);

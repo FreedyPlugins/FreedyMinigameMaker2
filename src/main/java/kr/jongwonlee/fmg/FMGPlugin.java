@@ -25,6 +25,7 @@ public final class FMGPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        new MetricsLite(this, 12184);
         NMS.init();
         FMGCommand.init();
         FMGListener.init();

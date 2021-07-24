@@ -80,6 +80,7 @@ public enum ProcType {
     LOG(Log.class),
     MATH_COS(MathCos.class),
     MATH_SIN(MathSin.class),
+    MATH_SQRT(MathSqrt.class),
     MATH_TAN(MathTan.class),
     MILLI_SECONDS(MilliSeconds.class),
     RANDOM(Random.class),
