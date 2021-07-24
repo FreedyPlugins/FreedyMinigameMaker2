@@ -4,6 +4,7 @@ plugins {
     id 'java'
 }
 
+//I build this with Java 15.
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

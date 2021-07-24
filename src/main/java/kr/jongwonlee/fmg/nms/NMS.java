@@ -24,6 +24,9 @@ public class NMS {
             case "v1_17_R1":
                 imageViewer = new kr.jongwonlee.fmg.nms.v1_17_R1.Viewer();
                 break;
+            case "v1_16_R3":
+                imageViewer = new kr.jongwonlee.fmg.nms.v1_16_R3.Viewer();
+                break;
         }
     }
 

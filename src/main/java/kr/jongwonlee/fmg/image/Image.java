@@ -1,7 +1,6 @@
 package kr.jongwonlee.fmg.image;
 
 import kr.jongwonlee.fmg.nms.NMS;
-import kr.jongwonlee.fmg.nms.v1_12_R1.ImageFrame;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ public class Image {
     public BlockFace face;
     public Location location;
     public boolean isSettled;
-    public ImageFrame[][] subImages;
 
     public Drawable getDrawable(String name) {
         return drawableMap.get(name);

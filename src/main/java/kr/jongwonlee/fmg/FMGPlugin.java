@@ -38,6 +38,7 @@ public final class FMGPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Bukkit.getScheduler().cancelTasks(this);
         GameStore.getGames().forEach(MiniGame::disable);
         GameDataStore.save();
         Bukkit.getPluginManager().callEvent(new AddonDisableEvent());
@@ -51,12 +52,12 @@ public final class FMGPlugin extends JavaPlugin {
         HandlerList.unregisterAll(listener);
     }
 
-    public static void runTask(Runnable task) {
-        Bukkit.getScheduler().runTask(getInst(), task);
+    public static int runTask(Runnable task) {
+        return Bukkit.getScheduler().runTask(getInst(), task).getTaskId();
     }
 
-    public static void runTaskAsync(Runnable task) {
-        Bukkit.getScheduler().runTaskAsynchronously(getInst(), task);
+    public static int runTaskAsync(Runnable task) {
+        return Bukkit.getScheduler().runTaskAsynchronously(getInst(), task).getTaskId();
     }
 
     public static int runTaskLater(Runnable task, long delay) {

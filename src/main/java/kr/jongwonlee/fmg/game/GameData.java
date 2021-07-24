@@ -3,6 +3,7 @@ package kr.jongwonlee.fmg.game;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
+import org.bukkit.boss.BossBar;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,20 +20,21 @@ public class GameData {
     protected Map<String, ItemStack> itemStackMap;
     protected Map<String, Inventory> inventoryMap;
     protected Map<String, List<String>> listMap;
+    protected Map<String, BossBar> bossBarMap;
     private List<Integer> taskIdList;
 
     public GameData(Map<String, String> dataMap,
                     Map<String, Location> locationMap,
-                    Map<String, BlockState> blockMap,
                     Map<String, ItemStack> itemStackMap,
                     Map<String, Inventory> inventoryMap,
                     Map<String, List<String>> listMap) {
         this.dataMap = dataMap;
         this.locationMap = locationMap;
-        this.blockMap = blockMap;
+        this.blockMap = new HashMap<>();
         this.itemStackMap = itemStackMap;
         this.inventoryMap = inventoryMap;
         this.listMap = listMap;
+        this.bossBarMap = new HashMap<>();
         this.taskIdList = new ArrayList<>();
     }
 
@@ -43,6 +45,7 @@ public class GameData {
         this.itemStackMap = new HashMap<>();
         this.inventoryMap = new HashMap<>();
         this.listMap = new HashMap<>();
+        this.bossBarMap = new HashMap<>();
         taskIdList = new ArrayList<>();
     }
 
@@ -88,6 +91,14 @@ public class GameData {
 
     public String getData(String key) {
         return dataMap.getOrDefault(key, "null");
+    }
+
+    public void setBossBar(String key, BossBar bossBar) {
+        bossBarMap.put(key, bossBar);
+    }
+
+    public BossBar getBossBar(String key) {
+        return bossBarMap.getOrDefault(key, null);
     }
 
     public void addTaskId(int taskId) {

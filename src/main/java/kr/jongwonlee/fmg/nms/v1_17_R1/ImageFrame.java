@@ -1,6 +1,5 @@
 package kr.jongwonlee.fmg.nms.v1_17_R1;
 
-
 import net.minecraft.world.entity.decoration.EntityItemFrame;
 
 public class ImageFrame {

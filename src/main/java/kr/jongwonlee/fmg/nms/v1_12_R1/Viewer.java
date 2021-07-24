@@ -11,19 +11,21 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 
 import static java.util.Collections.emptyList;
 
-public class Viewer implements ImageViewer {
+public class Viewer extends ImageViewer {
+
+    public kr.jongwonlee.fmg.nms.v1_12_R1.ImageFrame[][] subImages;
 
     public void createMap(Image image) {
         WorldServer worldServer = ((CraftWorld) image.location.getWorld()).getHandle();
         int width = image.bufferedImage.getWidth() / 128;
         int height = image.bufferedImage.getHeight() / 128;
-        if (image.subImages == null) image.subImages = new ImageFrame[width][height];
+        if (subImages == null) subImages = new ImageFrame[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                ImageFrame imageFrame = image.subImages[x][y];
+                ImageFrame imageFrame = subImages[x][y];
                 if (imageFrame == null) {
                     imageFrame = new ImageFrame();
-                    image.subImages[x][y] = imageFrame;
+                    subImages[x][y] = imageFrame;
                     int mapId = Bukkit.createMap(image.location.getWorld()).getId();
                     EntityItemFrame frame = new EntityItemFrame(worldServer);
                     frame.setInvisible(false);
@@ -42,13 +44,13 @@ public class Viewer implements ImageViewer {
 
     @Deprecated
     public void applyMapToAllPlayer(Image image) {
-        if (image.subImages == null || !image.isSettled) return;
+        if (subImages == null || !image.isSettled) return;
         final int width = image.bufferedImage.getWidth() / 128;
         final int height = image.bufferedImage.getHeight() / 128;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (!image.isSettled) continue;
-                ImageFrame imageFrame = image.subImages[x][y];
+                ImageFrame imageFrame = subImages[x][y];
                 if (imageFrame == null) continue;
                 EntityItemFrame frame = imageFrame.getFrame();
                 PacketPlayOutSpawnEntity spawnEntityPacket = new PacketPlayOutSpawnEntity(frame, 71, frame.direction.get2DRotationValue(), frame.getBlockPosition());
@@ -67,14 +69,14 @@ public class Viewer implements ImageViewer {
     }
 
     public void applyMap(Image image) {
-        if (image.subImages == null || !image.isSettled) return;
+        if (subImages == null || !image.isSettled) return;
         if (!image.location.getWorld().equals(image.player.getWorld())) return;
         final int width = image.bufferedImage.getWidth() / 128;
         final int height = image.bufferedImage.getHeight() / 128;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (!image.isSettled) continue;
-                ImageFrame imageFrame = image.subImages[x][y];
+                ImageFrame imageFrame = subImages[x][y];
                 if (imageFrame == null) continue;
                 EntityItemFrame frame = imageFrame.getFrame();
                 PacketPlayOutSpawnEntity spawnEntityPacket = new PacketPlayOutSpawnEntity(frame, 71, frame.direction.get2DRotationValue(), frame.getBlockPosition());
@@ -92,8 +94,8 @@ public class Viewer implements ImageViewer {
     }
 
     public void destroyMap(Image image) {
-        if (image.subImages == null || !image.isSettled) return;
-        ImageFrame[][] finalSubImages = image.subImages;
+        if (subImages == null || !image.isSettled) return;
+        ImageFrame[][] finalSubImages = subImages;
         Bukkit.getOnlinePlayers().forEach(player -> {
             final int width = image.bufferedImage.getWidth() / 128;
             final int height = image.bufferedImage.getHeight() / 128;
@@ -106,7 +108,7 @@ public class Viewer implements ImageViewer {
                 }
             }
         });
-        image.subImages = null;
+        subImages = null;
     }
 
 

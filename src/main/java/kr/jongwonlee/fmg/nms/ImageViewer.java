@@ -8,15 +8,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 
-public interface ImageViewer {
+public abstract class ImageViewer {
 
-    void createMap(kr.jongwonlee.fmg.image.Image image);
+    public abstract void createMap(kr.jongwonlee.fmg.image.Image image);
 
-    void applyMap(kr.jongwonlee.fmg.image.Image image);
+    public abstract void applyMap(kr.jongwonlee.fmg.image.Image image);
 
-    void destroyMap(kr.jongwonlee.fmg.image.Image image);
+    public abstract void destroyMap(kr.jongwonlee.fmg.image.Image image);
 
-    default Location addLocation(BlockFace face, Location location, int x, int y) {
+    protected Location addLocation(BlockFace face, Location location, int x, int y) {
         Location loc = location.clone();
         switch (face) {
             case EAST:
@@ -37,7 +37,7 @@ public interface ImageViewer {
         return loc;
     }
 
-    default byte[] createPixels(BufferedImage image) {
+    protected byte[] createPixels(BufferedImage image) {
 
         int pixelCount = image.getWidth() * image.getHeight();
         int[] pixels = new int[pixelCount];
@@ -51,7 +51,7 @@ public interface ImageViewer {
         return colors;
     }
 
-    default BufferedImage deepCopy(BufferedImage bi) {
+    protected BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         return new BufferedImage(cm, bi.copyData(null), cm.isAlphaPremultiplied(), null);
     }

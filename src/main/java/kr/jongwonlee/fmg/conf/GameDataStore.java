@@ -19,7 +19,6 @@ public class GameDataStore extends GameData {
         super(
                 dataStore.getStringMap(""),
                 locationStore.getLocationMap(""),
-                new HashMap<>(),
                 itemStackStore.getItemStackMap(""),
                 inventoryStore.getInventoryMap(""),
                 listStore.getListMap(""));
