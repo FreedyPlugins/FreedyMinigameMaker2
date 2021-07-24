@@ -113,9 +113,9 @@ public class Location implements Process {
                     else if (proc.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setLocation(value, location.clone());
                     else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
                 } else if (isAdd) {
-                    double posX = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
-                    double posY = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
-                    double posZ = Double.parseDouble(processList.get(8).run(miniGame, procUnit));
+                    double posX = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
+                    double posY = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
+                    double posZ = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
                     location.add(posX, posY, posZ);
                 } else if (isContains) {
                     Process proc1 = processList.get(2);
@@ -179,9 +179,9 @@ public class Location implements Process {
                     else if (proc.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setLocation(value, location.clone());
                     else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
                 } else if (isAdd) {
-                    double posX = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
-                    double posY = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
-                    double posZ = Double.parseDouble(processList.get(8).run(miniGame, procUnit));
+                    double posX = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
+                    double posY = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
+                    double posZ = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
                     location.add(posX, posY, posZ);
                 } else if (isContains) {
                     Process proc1 = processList.get(2);

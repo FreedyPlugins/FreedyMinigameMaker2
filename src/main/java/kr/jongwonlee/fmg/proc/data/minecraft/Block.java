@@ -20,6 +20,7 @@ public class Block implements Process {
     boolean isCode;
     boolean isLocation;
     boolean isGet;
+    boolean isClone;
 
     @Override
     public ProcType getType() {
@@ -34,7 +35,11 @@ public class Block implements Process {
         isCode = parseUnit.useExecutor(ProcType.EXECUTE_CODE);
         isLocation = parseUnit.useExecutor(ProcType.LOCATION);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
-        if (isGet) parseUnit.addExecutor(getType());
+        isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
+        if (isGet) {
+            parseUnit.addExecutor(getType());
+            return;
+        }
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
@@ -50,7 +55,16 @@ public class Block implements Process {
             String name = processList.get(0).run(miniGame, procUnit);
             Player player = procUnit.target.player;
             if (isGame) {
-                if (isLocation) {
+                if (isClone) {
+                    BlockState block = miniGame.getGameData().getBlock(name);
+                    Process process = processList.get(2);
+                    String value = process.run(miniGame, procUnit);
+                    org.bukkit.block.Block targetBlock;
+                    if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value).getBlock();
+                    else targetBlock = miniGame.getPlayerData(player.getUniqueId()).getBlock(value).getBlock();
+                    targetBlock.setType(block.getType());
+                    targetBlock.setData(block.getRawData());
+                } else if (isLocation) {
                     BlockState block = miniGame.getGameData().getBlock(name);
                     Process process = processList.get(2);
                     boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
@@ -93,13 +107,21 @@ public class Block implements Process {
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         miniGame.getGameData().setBlock(name, location.getBlock().getState());
                     } else {
-                        Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                        Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         miniGame.getGameData().setBlock(name, location.getBlock().getState());
                     }
                 }
             } else if (player != null) {
-                if (isLocation) {
+                if (isClone) {
+                    BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                    Process process = processList.get(2);
+                    String value = process.run(miniGame, procUnit);
+                    BlockState targetBlock;
+                    if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value);
+                    else targetBlock = miniGame.getPlayerData(player.getUniqueId()).getBlock(value);
+                    targetBlock.setData(block.getData());
+                } else if (isLocation) {
                     BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
                     Process process = processList.get(2);
                     boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;

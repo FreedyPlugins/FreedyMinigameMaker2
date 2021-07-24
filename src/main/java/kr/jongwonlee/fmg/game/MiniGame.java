@@ -93,7 +93,7 @@ public class MiniGame {
         playersData.remove(playerUuid);
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
-        if (playersData.isEmpty()) disable();
+        if (playersData.size() == 0) disable();
     }
 
     public static Player toPlayer(UUID uuid) {
@@ -105,7 +105,6 @@ public class MiniGame {
     }
 
     public void disable() {
-        if (playersData.size() == 0) return;
         run(EventBundle.PRE_GAME_STOP);
         gameData.cancelTaskAll();
         new ArrayList<>(playersData.keySet()).forEach(this::quit);
