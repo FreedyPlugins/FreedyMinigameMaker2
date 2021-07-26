@@ -30,6 +30,7 @@ public class FileParser {
                     List<Process> processList = new ArrayList<>();
                     if (bundleName.equals("")) {
                         line = reader.readLine();
+                        parseUnit.clearExecutor();
                         continue;
                     }
                     int braceIndex = bundleName.indexOf("{");
@@ -38,6 +39,7 @@ public class FileParser {
                         bundleName = bundleName.substring(0, braceIndex).toLowerCase().trim();
                         while (parseUnit.hasBrace()) {
                             line = reader.readLine();
+                            parseUnit.clearExecutor();
                             if (line != null) line = line.replace("\t", "").trim();
                             else break;
                             if (isStartWith(line, Settings.getBundlePrefix())) break;
@@ -45,6 +47,7 @@ public class FileParser {
                         }
                         line = reader.readLine();
                         if (line != null) line = line.replace("\t", "").trim();
+                        parseUnit.clearExecutor();
                         processList.add(process);
                         if (bundles.containsKey(bundleName)) {
                             GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
@@ -53,11 +56,13 @@ public class FileParser {
                     }
                     bundleName = bundleName.toLowerCase().trim();
                     body : while ((line = reader.readLine()) != null) {
+                        parseUnit.clearExecutor();
                         line = line.replace("\t", "").trim();
                         if (isStartWith(line, Settings.getBundlePrefix())) break;
                         Process process = parseProcess(parseUnit, line);
                         while (parseUnit.hasBrace()) {
                             line = reader.readLine();
+                            parseUnit.clearExecutor();
                             if (line == null) break body;
                             line = line.replace("\t", "").trim();
                             if (isStartWith(line, Settings.getBundlePrefix())) break;

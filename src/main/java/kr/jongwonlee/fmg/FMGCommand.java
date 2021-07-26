@@ -151,7 +151,20 @@ public class FMGCommand implements CommandExecutor {
                             return true;
                         }
                         if (sender instanceof Player) GameStore.getGame(Settings.getHubGameName()).run(message.toLowerCase(), player);
-                        else GameStore.getGame(Settings.getHubGameName()).run(message.toLowerCase(), new ProcUnit(new ProcTarget()));
+                        else GameStore.getGame(Settings.getHubGameName()).run(message.toLowerCase(), ProcUnit.getNewProcUnit());
+                        return true;
+                    }
+                    case "run":
+                    case "proc":
+                    case "process":
+                    case "parse": {
+                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
+                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
+                            return true;
+                        }
+                        Process process = FileParser.parseProcess(new ParseUnit(), message);
+                        if (sender instanceof Player) process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit(player));
+                        else process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit());
                         return true;
                     }
                 }
@@ -164,18 +177,6 @@ public class FMGCommand implements CommandExecutor {
                 }
                 Player player = (Player) sender;
                 switch (args[0]) {
-                    case "run":
-                    case "proc":
-                    case "process":
-                    case "parse": {
-                        if (!sender.hasPermission("freedyminigamemaker.admin")) {
-                            GameAlert.NEED_PERMISSION.print(sender, new String[]{});
-                            return true;
-                        }
-                        Process process = FileParser.parseProcess(new ParseUnit(), message);
-                        process.run(GameStore.getHubGame(), ProcUnit.getNewProcUnit(player));
-                        return true;
-                    }
                     case "edit":
                     case "editor": {
                         if (!sender.hasPermission("freedyminigamemaker.admin")) {

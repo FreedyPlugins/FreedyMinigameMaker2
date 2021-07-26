@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.util.FileStore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -38,13 +39,13 @@ public class GameStore implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         GameStore.getHubGame().join(player.getUniqueId());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
         MiniGame game = getGame(player);

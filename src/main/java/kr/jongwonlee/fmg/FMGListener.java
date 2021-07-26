@@ -30,6 +30,32 @@ public class FMGListener implements Listener {
     }
 
     @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setData("joinMessage", event.getJoinMessage());
+        game.run(EventBundle.JOIN, player);
+        String joinMessage = playerData.getData("joinMessage");
+        if (joinMessage.equals("null")) event.setJoinMessage(null);
+        else event.setJoinMessage(joinMessage);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setData("leftMessage", event.getQuitMessage());
+        game.run(EventBundle.LEFT, player);
+        String joinMessage = playerData.getData("leftMessage");
+        if (joinMessage.equals("null")) event.setQuitMessage(null);
+        else event.setQuitMessage(joinMessage);
+    }
+
+    @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (!player.isOnline()) return;

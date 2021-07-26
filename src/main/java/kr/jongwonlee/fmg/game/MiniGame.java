@@ -76,6 +76,7 @@ public class MiniGame {
     }
 
     public void join(UUID playerUuid) {
+        if (this != GameStore.getHubGame()) GameStore.getHubGame().quit(playerUuid);
         Player player = toPlayer(playerUuid);
         String result = run(EventBundle.PRE_GAME_JOIN, player);
         if (result.equals("false")) return;
@@ -94,6 +95,7 @@ public class MiniGame {
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
         if (playersData.size() == 0) disable();
+        if (this != GameStore.getHubGame()) GameStore.getHubGame().join(playerUuid);
     }
 
     public static Player toPlayer(UUID uuid) {

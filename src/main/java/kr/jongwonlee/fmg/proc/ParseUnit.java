@@ -23,7 +23,7 @@ public class ParseUnit {
         } else return false;
     }
 
-    public void clearExecutor(ProcType procType) {
+    public void clearExecutor() {
         executorList = new ArrayList<>();
     }
 

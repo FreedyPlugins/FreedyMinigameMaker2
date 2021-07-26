@@ -78,7 +78,7 @@ public class Target implements Process {
                 if (list != null) new ArrayList<>(list).forEach(element -> {
                     try {
                         if (isName) procUnit.target.player = Bukkit.getPlayer(element);
-                        procUnit.target.player = Bukkit.getPlayer(FastUUID.parseUUID(element));
+                        else procUnit.target.player = Bukkit.getPlayer(FastUUID.parseUUID(element));
                         lastProc.run(miniGame, procUnit);
                     } catch (Exception ignored) { }
                 });

@@ -18,6 +18,7 @@ import java.util.List;
 @Processable(alias = {"item"})
 public class Item implements Process {
 
+    Process process;
     SmallFrontBrace frontBrace;
     List<Process> processList;
     boolean isGame;
@@ -49,7 +50,7 @@ public class Item implements Process {
         isExists = parseUnit.useExecutor(ProcType.EXECUTE_EXISTS);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
         if (isGet) parseUnit.addExecutor(getType());
-        Process process = FileParser.parseProcess(parseUnit, arguments);
+        process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
         processList = frontBrace.cutBehindEndBrace();
@@ -62,7 +63,7 @@ public class Item implements Process {
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
             if (frontBrace == null) {
-                return "";
+                return process.run(miniGame, procUnit);
             }
             Process proc = processList.get(0);
             String name = proc.run(miniGame, procUnit);

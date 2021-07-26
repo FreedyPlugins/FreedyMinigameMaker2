@@ -70,9 +70,9 @@ public class Block implements Process {
                     boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
                     boolean isAllLocation = process.getType() == ProcType.EXECUTE_ONLINE;
                     String targetLocation = process.run(miniGame, procUnit);
-                    if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation());
-                    else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation());
-                    else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation());
+                    if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation().clone());
+                    else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation().clone());
+                    else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
                 } else if (isCode) {
                     BlockState block = miniGame.getGameData().getBlock(name);
                     return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -127,9 +127,9 @@ public class Block implements Process {
                     boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
                     boolean isAllLocation = process.getType() == ProcType.EXECUTE_ONLINE;
                     String targetLocation = process.run(miniGame, procUnit);
-                    if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation());
-                    else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation());
-                    else miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation());
+                    if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation().clone());
+                    else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation().clone());
+                    else miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
                 } else if (isCode) {
                     BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
                     return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
