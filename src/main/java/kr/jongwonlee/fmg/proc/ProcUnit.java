@@ -7,6 +7,7 @@ public class ProcUnit {
 
     public final ProcTarget target;
     private String returned;
+    private int taskId;
 
 
     public String getReturned() {
@@ -21,7 +22,13 @@ public class ProcUnit {
         this.target = target;
     }
 
+    public ProcUnit(ProcTarget target, int taskId) {
+        this.target = target;
+        this.taskId = taskId;
+    }
+
     public ProcUnit reset() {
+        returned = null;
         return this;
     }
 
@@ -41,4 +48,11 @@ public class ProcUnit {
         return new ProcUnit(new ProcTarget());
     }
 
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
 }

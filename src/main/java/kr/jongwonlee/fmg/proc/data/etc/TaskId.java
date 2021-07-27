@@ -1,18 +1,13 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import kr.jongwonlee.fmg.proc.Process;
 
-@Processable(alias = "do")
-public class Do implements Process {
+@Processable(alias = "taskid")
+public class TaskId implements Process {
 
     Process process;
-
-    @Override
-    public ProcType getType() {
-        return ProcType.DO;
-    }
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
@@ -21,8 +16,11 @@ public class Do implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        String message = process.run(miniGame, procUnit).toLowerCase();
-        return miniGame.run(message, new ProcUnit(procUnit.target, procUnit.getTaskId()));
+        return procUnit.getTaskId() + process.run(miniGame, procUnit);
     }
 
+    @Override
+    public ProcType getType() {
+        return ProcType.TASK_ID;
+    }
 }

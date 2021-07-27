@@ -51,12 +51,16 @@ public class While extends ConditionOperator {
                 compareType = process.getType();
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
+                    String returned = procUnit.getReturned();
+                    if (returned != null) return returned;
                     run(miniGame, procUnit);
                     return "";
                 }
                 else if (!result && compareType == ProcType.AND) return "";
             } else if (process instanceof SmallEndBrace && result) {
                 iterator.next().run(miniGame, procUnit);
+                String returned = procUnit.getReturned();
+                if (returned != null) return returned;
                 run(miniGame, procUnit);
                 return "";
             } else {

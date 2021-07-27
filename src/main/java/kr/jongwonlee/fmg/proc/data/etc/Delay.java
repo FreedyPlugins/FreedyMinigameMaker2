@@ -37,7 +37,6 @@ public class Delay implements Process {
         if (process.getType() == ProcType.SMALL_END_BRACE) {
             processList.add(FileParser.getOneMoreLine(parseUnit, ""));
         }
-
     }
 
     @Override
@@ -46,10 +45,13 @@ public class Delay implements Process {
         List<Process> processList = frontBrace.getProcessList();
         String delay = processList.get(0).run(miniGame, procUnit);
         int taskId;
-        if (isAsync) taskId = FMGPlugin.runTaskLaterAsync(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
-        else taskId = FMGPlugin.runTaskLater(() -> frontBrace.getLastProc().run(miniGame, procUnit), ((long) Double.parseDouble(delay)));
+        ProcUnit procUnit2 = new ProcUnit(procUnit.target, procUnit.getTaskId());
+        Runnable runnable = () -> frontBrace.getLastProc().run(miniGame, procUnit2);
+        if (isAsync) taskId = FMGPlugin.runTaskLaterAsync(runnable, ((long) Double.parseDouble(delay)));
+        else taskId = FMGPlugin.runTaskLater(runnable, ((long) Double.parseDouble(delay)));
         if (isGame) miniGame.getGameData().addTaskId(taskId);
         else if (!isOnline && player != null) miniGame.getPlayerData(player.getUniqueId()).addTaskId(taskId);
+        procUnit2.setTaskId(taskId);
         return String.valueOf(taskId);
     }
 

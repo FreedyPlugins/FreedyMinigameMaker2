@@ -53,6 +53,8 @@ public class For extends ConditionOperator {
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         setter.run(miniGame, procUnit);
         finalRun(miniGame, procUnit);
+        String returned = procUnit.getReturned();
+        if (returned != null) return returned;
         return "";
     }
 
@@ -71,6 +73,8 @@ public class For extends ConditionOperator {
                 if (result && compareType == ProcType.OR) {
                     adder.run(miniGame, procUnit);
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
+                    String returned = procUnit.getReturned();
+                    if (returned != null) return;
                     finalRun(miniGame, procUnit);
                     return;
                 }
@@ -78,6 +82,8 @@ public class For extends ConditionOperator {
             } else if (process instanceof SmallEndBrace && result) {
                 adder.run(miniGame, procUnit);
                 iterator.next().run(miniGame, procUnit);
+                String returned = procUnit.getReturned();
+                if (returned != null) return;
                 finalRun(miniGame, procUnit);
                 return;
             } else {

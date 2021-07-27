@@ -79,9 +79,9 @@ public class List implements Process {
                         list.remove(value);
                     } else if (isGet) {
                         try {
-                            if (list == null || list.isEmpty()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
                             String value = processList.get(2).run(miniGame, procUnit);
                             int index = Integer.parseInt(value);
+                            if (list == null || list.isEmpty() || index >= list.size()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
                             return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
                         } catch (Exception e) {
                             return frontBrace.getLastProc().run(miniGame, procUnit);
@@ -111,7 +111,7 @@ public class List implements Process {
                         try {
                             String value = processList.get(2).run(miniGame, procUnit);
                             int index = Integer.parseInt(value);
-                            if (list == null || list.isEmpty() || index + 1 >= list.size()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
+                            if (list == null || list.isEmpty() || index >= list.size()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
                             return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
                         } catch (Exception e) {
                             return frontBrace.getLastProc().run(miniGame, procUnit);
@@ -139,9 +139,9 @@ public class List implements Process {
                         list.remove(value);
                     } else if (isGet) {
                         try {
-                            if (list == null || list.isEmpty()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
                             String value = processList.get(2).run(miniGame, procUnit);
                             int index = Integer.parseInt(value);
+                            if (list == null || list.isEmpty() || index >= list.size()) return "null" + frontBrace.getLastProc().run(miniGame, procUnit);
                             return list.get(FastMath.min(list.size() - 1, index)) + frontBrace.getLastProc().run(miniGame, procUnit);
                         } catch (Exception e) {
                             return frontBrace.getLastProc().run(miniGame, procUnit);

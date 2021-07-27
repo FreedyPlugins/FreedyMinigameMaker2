@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.EventBundle;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -19,9 +20,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.projectiles.ProjectileSource;
+
+import java.util.stream.Collectors;
 
 public class FMGListener implements Listener {
 
@@ -142,6 +146,26 @@ public class FMGListener implements Listener {
     }
 
     @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        HumanEntity humanEntity = event.getWhoClicked();
+        if (!(humanEntity instanceof Player)) return;
+        Player player = ((Player) humanEntity);
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setInventory("inventoryDrag", event.getInventory());
+        playerData.setList("inventorySlots", event.getInventorySlots().stream().map(String::valueOf).collect(Collectors.toList()));
+        playerData.setList("inventoryRawSlots", event.getRawSlots().stream().map(String::valueOf).collect(Collectors.toList()));
+        playerData.setList("inventoryDragItems", event.getNewItems().keySet().stream().map(String::valueOf).collect(Collectors.toList()));
+        event.getNewItems().forEach((i, itemStack) -> playerData.setItemStack("inventoryDragItem_" + i, itemStack));
+        playerData.setItemStack("inventoryCursor", event.getCursor());
+        playerData.setItemStack("inventoryOldCursor", event.getOldCursor());
+        playerData.setData("inventoryDragType", event.getType().name());
+        String result = GameStore.getGame(player).run(EventBundle.INVENTORY_DRAG, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         HumanEntity humanEntity = event.getPlayer();
         if (!(humanEntity instanceof Player)) return;
@@ -250,6 +274,18 @@ public class FMGListener implements Listener {
         playerData.setBlock("blockPlace", event.getBlock().getState());
         String result = GameStore.getGame(player).run(EventBundle.BLOCK_PLACE, player);
         if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = game.getPlayerData(player.getUniqueId());
+        playerData.setLocation("respawnLocation", event.getRespawnLocation());
+        GameStore.getGame(player).run(EventBundle.PLAYER_RESPAWN, player);
+        Location respawnLocation = playerData.getLocation("respawnLocation");
+        if (respawnLocation != null) event.setRespawnLocation(respawnLocation);
     }
 
 }

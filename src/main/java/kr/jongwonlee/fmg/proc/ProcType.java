@@ -86,6 +86,7 @@ public enum ProcType {
     RANDOM(Random.class),
     REFERENCE(Refs.class),
     SPLIT(Split.class),
+    TASK_ID(TaskId.class),
     TIMINGS(Timings.class),
     /*minecraft package---------------------------------*/
     ACTION_BAR(ActionBar.class),

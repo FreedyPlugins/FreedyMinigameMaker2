@@ -8,16 +8,27 @@ import kr.jongwonlee.fmg.proc.*;
 public class ExecuteHotBar implements Process {
 
     Process process;
+    boolean isSet;
+    boolean isGet;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        parseUnit.addExecutor(getType());
+        isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
+        isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        if (!isSet && !isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        return process.run(miniGame, procUnit);
+        String value = process.run(miniGame, procUnit);
+            try {
+                if (isSet) procUnit.target.player.getInventory().setHeldItemSlot(Integer.parseInt(value));
+                else if (isGet) return procUnit.target.player.getInventory().getHeldItemSlot() + value;
+            } catch (Exception ignored) {
+                return value;
+            }
+        return value;
 
     }
 

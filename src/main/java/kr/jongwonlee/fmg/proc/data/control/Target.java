@@ -56,17 +56,25 @@ public class Target implements Process {
                     });
                 }
                 else if (proc2.getType() == ProcType.EXECUTE_ONLINE) {
-                    if (list != null) new ArrayList<>(list).forEach(e -> {
-                        GameDataStore.getInst().setData(value2, e);
-                        lastProc.run(miniGame, procUnit);
-                    });
+                    if (list != null) {
+                        for (String e : new ArrayList<>(list)) {
+                            GameDataStore.getInst().setData(value2, e);
+                            lastProc.run(miniGame, procUnit);
+                            String returned = procUnit.getReturned();
+                            if (returned != null) return returned;
+                        }
+                    }
                 }
                 else if (originPlayer != null) {
                     GameData playerData = miniGame.getPlayerData(originPlayer.getUniqueId());
-                    if (list != null) new ArrayList<>(list).forEach(e -> {
-                        playerData.setData(value2, e);
-                        lastProc.run(miniGame, procUnit);
-                    });
+                    if (list != null) {
+                        for (String e : new ArrayList<>(list)) {
+                            playerData.setData(value2, e);
+                            lastProc.run(miniGame, procUnit);
+                            String returned = procUnit.getReturned();
+                            if (returned != null) return returned;
+                        }
+                    }
                 }
                 //get list target ( all game name | all element )
             } else if (isOnline) {

@@ -138,7 +138,9 @@ public class YamlStore extends FileStore {
 
     public Map<String, String> getStringMap(String path) {
         final Map<String, String> stringMap = new HashMap<>();
-        for (String string : getKeys(getSection(path), false)) {
+        ConfigurationSection section = getSection(path);
+        for (String string : getKeys(section, true)) {
+            if (section.getConfigurationSection(string) != null) continue;
             stringMap.put(string, getString(path + DOT + string));
         }
         return stringMap;

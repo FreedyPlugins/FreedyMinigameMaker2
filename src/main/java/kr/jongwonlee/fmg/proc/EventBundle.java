@@ -25,6 +25,7 @@ public enum EventBundle {
     COMMAND,
     INVENTORY_CLICK,
     INVENTORY_CLOSE,
+    INVENTORY_DRAG,
     ATTACK,
     DAMAGE,
     PLAYER_DAMAGE,
@@ -33,6 +34,7 @@ public enum EventBundle {
     SWAP_HAND,
     BLOCK_BREAK,
     BLOCK_PLACE,
+    PLAYER_RESPAWN,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),
