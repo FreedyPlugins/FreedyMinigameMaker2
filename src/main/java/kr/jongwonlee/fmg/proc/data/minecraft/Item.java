@@ -35,6 +35,10 @@ public class Item implements Process {
     boolean isCode;
     boolean isGet;
 
+    public static ItemStack clone(ItemStack itemStack) {
+        return itemStack == null || itemStack.getType() == null ? null : itemStack.clone();
+    }
+
     @Override
     public ProcType getType() {
         return ProcType.ITEM;

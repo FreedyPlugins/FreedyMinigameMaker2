@@ -8,7 +8,6 @@ import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -262,12 +261,8 @@ public class Location implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
                     else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
-                    Vector vector1 = pos1.toVector();
-                    Vector vector2 = pos2.toVector();
-                    Vector max = Vector.getMaximum(vector1, vector2);
-                    Vector min = Vector.getMinimum(vector1, vector2);
                     if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
-                    return location.toVector().isInAABB(min, max) ? "true" : "false";
+                    return location.toVector().isInAABB(pos1.toVector(), pos2.toVector()) ? "true" : "false";
                 } else if (isEquals) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);

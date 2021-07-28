@@ -91,13 +91,13 @@ public class Inventory implements Process {
                     boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isGameItemStack){
                         GameData gameData = miniGame.getGameData();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (isAllItemStack) {
                         GameData gameData = GameDataStore.getInst();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (player != null) {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     }
                 } else if (isRemove) GameDataStore.getInst().setInventory(name, null);
                 else if (isClear) {
@@ -214,13 +214,13 @@ public class Inventory implements Process {
                     boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isGameItemStack){
                         GameData gameData = miniGame.getGameData();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (isAllItemStack) {
                         GameData gameData = GameDataStore.getInst();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (player != null) {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     }
                 } else if (isRemove) miniGame.getGameData().setInventory(name, null);
                 else if (isClear) {
@@ -338,13 +338,13 @@ public class Inventory implements Process {
                     boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
                     if (isGameItemStack){
                         GameData gameData = miniGame.getGameData();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (isAllItemStack) {
                         GameData gameData = GameDataStore.getInst();
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else {
                         GameData gameData = miniGame.getPlayerData(player.getUniqueId());
-                        gameData.setItemStack(value, inventory.getItem(index).clone());
+                        gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     }
                 } else if (isRemove) miniGame.getPlayerData(player.getUniqueId()).setInventory(name, null);
                 else if (isClear) {
