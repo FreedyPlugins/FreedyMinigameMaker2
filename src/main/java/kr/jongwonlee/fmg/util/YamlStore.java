@@ -178,7 +178,7 @@ public class YamlStore extends FileStore {
             return;
         }
         InventoryType type = inventory.getType();
-        set(path + DOT + "TYPE", type == InventoryType.CHEST ? null : type);
+        set(path + DOT + "TYPE", type == InventoryType.CHEST ? null : type.name());
         set(path + DOT + "TITLE", inventory.getTitle());
         set(path + DOT + "SIZE", inventory.getSize());
         ItemStack[] contents = inventory.getStorageContents();

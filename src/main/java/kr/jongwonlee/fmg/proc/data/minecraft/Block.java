@@ -21,6 +21,7 @@ public class Block implements Process {
     boolean isLocation;
     boolean isGet;
     boolean isClone;
+    boolean isRemove;
 
     @Override
     public ProcType getType() {
@@ -36,6 +37,7 @@ public class Block implements Process {
         isLocation = parseUnit.useExecutor(ProcType.LOCATION);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
         isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
+        isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         if (isGet) {
             parseUnit.addExecutor(getType());
             return;
@@ -55,7 +57,9 @@ public class Block implements Process {
             String name = processList.get(0).run(miniGame, procUnit);
             Player player = procUnit.target.player;
             if (isGame) {
-                if (isClone) {
+                if (isRemove) {
+                    miniGame.getGameData().setBlock(name, null);
+                } else if (isClone) {
                     BlockState block = miniGame.getGameData().getBlock(name);
                     Process process = processList.get(2);
                     String value = process.run(miniGame, procUnit);
@@ -113,7 +117,9 @@ public class Block implements Process {
                     }
                 }
             } else if (player != null) {
-                if (isClone) {
+                if (isRemove) {
+                    miniGame.getPlayerData(player.getUniqueId()).setBlock(name, null);
+                } else if (isClone) {
                     BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
                     Process process = processList.get(2);
                     String value = process.run(miniGame, procUnit);

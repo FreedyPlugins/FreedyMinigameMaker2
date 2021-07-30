@@ -26,6 +26,7 @@ public class List implements Process {
     boolean isRemove;
     boolean isShuffle;
     boolean isContains;
+    boolean isClone;
 
     @Override
     public ProcType getType() {
@@ -44,6 +45,7 @@ public class List implements Process {
         isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isShuffle = parseUnit.useExecutor(ProcType.EXECUTE_SHUFFLE);
         isContains = parseUnit.useExecutor(ProcType.EXECUTE_CONTAINS);
+        isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
         if (isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
@@ -59,7 +61,13 @@ public class List implements Process {
             Player player = procUnit.target.player;
             if (isOnline) {
                 java.util.List<String> list = GameDataStore.getInst().getList(name);
-                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value2 = proc2.run(miniGame, procUnit);
+                    if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
+                    else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
+                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isShuffle) Collections.shuffle(list);
                 else if (isClear && list != null) {
@@ -90,7 +98,13 @@ public class List implements Process {
                 }
             } else if (isGame) {
                 java.util.List<String> list = miniGame.getGameData().getList(name);
-                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value2 = proc2.run(miniGame, procUnit);
+                    if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
+                    else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
+                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isClear && list != null) {
                     miniGame.getGameData().setList(name, null);
@@ -120,7 +134,13 @@ public class List implements Process {
                 }
             } else if (player != null) {
                 java.util.List<String> list = miniGame.getPlayerData(player.getUniqueId()).getList(name);
-                if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+                if (isClone) {
+                    Process proc2 = processList.get(2);
+                    String value2 = proc2.run(miniGame, procUnit);
+                    if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
+                    else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
+                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isClear && list != null) {
                     miniGame.getPlayerData(player.getUniqueId()).setList(name, null);

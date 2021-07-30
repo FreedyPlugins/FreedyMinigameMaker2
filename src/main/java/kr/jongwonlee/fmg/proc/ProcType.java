@@ -56,6 +56,7 @@ public enum ProcType {
     EXECUTE_CODE(ExecuteCode.class),
     EXECUTE_COLOR(ExecuteColor.class),
     EXECUTE_CONTAINS(ExecuteContains.class),
+    EXECUTE_ENTITY(ExecuteEntity.class),
     EXECUTE_EQUALS(ExecuteEquals.class),
     EXECUTE_EXISTS(ExecuteExists.class),
     EXECUTE_GET(ExecuteGet.class),
@@ -85,6 +86,7 @@ public enum ProcType {
     MILLI_SECONDS(MilliSeconds.class),
     RANDOM(Random.class),
     REFERENCE(Refs.class),
+    REPEAT(Repeat.class),
     SPLIT(Split.class),
     TASK_ID(TaskId.class),
     TIMINGS(Timings.class),
@@ -113,6 +115,7 @@ public enum ProcType {
     TELEPORT(Teleport.class),
     TITLE(Title.class),
     UUID(Uuid.class),
+    VELOCITY(Velocity.class),
     /*---------------------------------*/
     EXTERNAL(null),
     ;
