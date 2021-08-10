@@ -19,12 +19,14 @@ public class Target implements Process {
     boolean isOnline;
     boolean isName;
     boolean isList;
+    boolean isEntity;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         isName = parseUnit.useExecutor(ProcType.NAME);
         isList = parseUnit.useExecutor(ProcType.LIST);
+        isEntity = parseUnit.useExecutor(ProcType.EXECUTE_ENTITY);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (process instanceof SmallFrontBrace) {
             frontBrace = ((SmallFrontBrace) process);
@@ -41,7 +43,15 @@ public class Target implements Process {
         try {
             Process process = processList.get(0);
             String name = process.run(miniGame, procUnit);
-            if (isList) {
+            if (isEntity) {
+                try {
+                    final org.bukkit.entity.Entity originEntity = procUnit.target.entity;
+                    procUnit.target.entity = Bukkit.getEntity(FastUUID.parseUUID(name));
+                    String value = frontBrace.getLastProc().run(miniGame, procUnit);
+                    procUnit.target.entity = originEntity;
+                    return value;
+                } catch (Exception ignored) { }
+            } else if (isList) {
                 List<String> list = null;
                 if (process.getType() == ProcType.EXECUTE_GAME) list = miniGame.getGameData().getList(name);
                 else if (process.getType() == ProcType.EXECUTE_ONLINE) list = GameDataStore.getInst().getList(name);

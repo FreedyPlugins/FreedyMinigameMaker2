@@ -4,7 +4,8 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -17,11 +18,21 @@ public class Velocity implements Process {
     SmallFrontBrace frontBrace;
     boolean isSet;
     boolean isAdd;
+    boolean isEntity;
+    boolean isGet;
+    boolean posX;
+    boolean posY;
+    boolean posZ;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
+        isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        isEntity = parseUnit.useExecutor(ProcType.EXECUTE_ENTITY);
+        posX = parseUnit.useExecutor(ProcType.EXECUTE_POS_X);
+        posY = parseUnit.useExecutor(ProcType.EXECUTE_POS_Y);
+        posZ = parseUnit.useExecutor(ProcType.EXECUTE_POS_Z);
         process = FileParser.parseProcess(parseUnit, arguments);
         if (process instanceof SmallFrontBrace) {
             frontBrace = ((SmallFrontBrace) process);
@@ -31,9 +42,17 @@ public class Velocity implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return process.run(miniGame, procUnit);
-        Player player = procUnit.target.player;
         try {
+            Entity player;
+            if (isEntity) player = procUnit.target.entity;
+            else player = procUnit.target.player;
+            if (isGet) {
+                Vector velocity = player.getVelocity();
+                if (posX) return velocity.getX() + process.run(miniGame, procUnit);
+                else if (posY) return velocity.getY() + process.run(miniGame, procUnit);
+                else if (posZ) return velocity.getZ() + process.run(miniGame, procUnit);
+            }
+            if (frontBrace == null) return process.run(miniGame, procUnit);
             Process proc1 = processList.get(0);
             String value1 = proc1.run(miniGame, procUnit);
             Process proc2 = processList.get(2);

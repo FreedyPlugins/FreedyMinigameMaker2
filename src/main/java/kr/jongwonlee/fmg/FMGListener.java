@@ -5,6 +5,8 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.EventBundle;
+import kr.jongwonlee.fmg.proc.ProcTarget;
+import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -224,7 +226,7 @@ public class FMGListener implements Listener {
                 playerData.setData("damageCause", event.getCause().name());
                 playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
                 playerData.setData("entityUuid", FastUUID.toString(entity.getUniqueId()));
-                String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, entity);
+                String result = GameStore.getGame(player).run(EventBundle.ATTACK, player, attacker);
                 if (result.equals("false")) event.setCancelled(true);
             }
         }
@@ -237,7 +239,7 @@ public class FMGListener implements Listener {
             playerData.setData("damageCause", event.getCause().name());
             playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
             playerData.setData("attackerUuid", FastUUID.toString(attacker.getUniqueId()));
-            String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, entity);
+            String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, attacker);
             if (result.equals("false")) event.setCancelled(true);
         }
     }

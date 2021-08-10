@@ -34,6 +34,7 @@ public class Location implements Process {
     boolean isContains;
     boolean isGet;
     boolean isBlock;
+    boolean isEntity;
 
     @Override
     public ProcType getType() {
@@ -59,6 +60,7 @@ public class Location implements Process {
         isContains = parseUnit.useExecutor(ProcType.EXECUTE_CONTAINS);
         isBlock = parseUnit.useExecutor(ProcType.BLOCK);
         isGet = parseUnit.useExecutor(ProcType.EXECUTE_GET);
+        isEntity = parseUnit.useExecutor(ProcType.EXECUTE_ENTITY);
         if (isGet) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
         if (process instanceof SmallFrontBrace) {
@@ -75,7 +77,8 @@ public class Location implements Process {
             String name = process.run(miniGame, procUnit);
             Player player = procUnit.target.player;
             if (isOnline) {
-                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
+                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
@@ -141,7 +144,8 @@ public class Location implements Process {
                     return location.equals(pos1) ? "true" : "false";
                 }
             } else if (isGame) {
-                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getGameData().getLocation(name);
+                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
@@ -207,7 +211,8 @@ public class Location implements Process {
                     return location.equals(pos1) ? "true" : "false";
                 }
             } else if (player != null) {
-                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);

@@ -95,6 +95,7 @@ public enum ProcType {
     BOSS_BAR(BossBar.class),
     BLOCK(Block.class),
     BROADCAST(Broadcast.class),
+    DAMAGE(Damage.class),
     FLYING(Flying.class),
     FOOD(Food.class),
     GAME_MODE(GameMode.class),

@@ -106,6 +106,7 @@ public class List implements Process {
                     else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
                 } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isShuffle) Collections.shuffle(list);
                 else if (isClear && list != null) {
                     miniGame.getGameData().setList(name, null);
                     return frontBrace.getLastProc().run(miniGame, procUnit);
@@ -142,6 +143,7 @@ public class List implements Process {
                     else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
                 } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (isShuffle) Collections.shuffle(list);
                 else if (isClear && list != null) {
                     miniGame.getPlayerData(player.getUniqueId()).setList(name, null);
                     return frontBrace.getLastProc().run(miniGame, procUnit);

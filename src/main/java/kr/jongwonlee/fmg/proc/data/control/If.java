@@ -55,7 +55,7 @@ public class If extends ConditionOperator {
                 compareType = process.getType();
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
-                    return "";
+                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
                 }
                 else if (!result && compareType == ProcType.AND) return "";
             } else if (process instanceof SmallEndBrace) {

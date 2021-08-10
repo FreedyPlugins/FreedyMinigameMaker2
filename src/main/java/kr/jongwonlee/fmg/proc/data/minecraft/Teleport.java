@@ -5,8 +5,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 
 @Processable(alias = {"teleport", "tp"})
 public class Teleport implements Process {
@@ -14,6 +13,7 @@ public class Teleport implements Process {
     private Process process;
     boolean isGame;
     boolean isOnline;
+    boolean isEntity;
 
     @Override
     public ProcType getType() {
@@ -24,13 +24,16 @@ public class Teleport implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
+        isEntity = parseUnit.useExecutor(ProcType.EXECUTE_ENTITY);
         process = FileParser.parseProcess(parseUnit, arguments);
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         String message = process.run(miniGame, procUnit);
-        Player player = procUnit.target.player;
+        LivingEntity player;
+        if (isEntity) player = (LivingEntity) procUnit.target.entity;
+        else player = procUnit.target.player;
         if (player != null) {
             Location location;
             if (isOnline) location = GameDataStore.getInst().getLocation(message);
