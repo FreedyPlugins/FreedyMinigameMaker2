@@ -16,6 +16,7 @@ public class Data implements Process {
     boolean isGame;
     boolean isSet;
     boolean isOnline;
+    boolean isRefs;
 
     @Override
     public ProcType getType() {
@@ -25,6 +26,7 @@ public class Data implements Process {
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
 //        isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
+        isRefs = parseUnit.useExecutor(ProcType.REFERENCE);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
@@ -35,6 +37,7 @@ public class Data implements Process {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
+
         try {
             if (frontBrace == null) return "";
             List<Process> processList = frontBrace.getProcessList();

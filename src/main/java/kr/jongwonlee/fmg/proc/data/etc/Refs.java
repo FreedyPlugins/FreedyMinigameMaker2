@@ -22,6 +22,7 @@ public class Refs implements Process {
     public void parse(ParseUnit parseUnit, String arguments) {
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (process instanceof SmallFrontBrace) frontBrace = ((SmallFrontBrace) process);
+        else parseUnit.addExecutor(getType());
     }
 
     @Override
