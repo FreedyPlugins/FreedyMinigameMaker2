@@ -145,7 +145,7 @@ public class Location implements Process {
                 }
             } else if (isGame) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
-                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getGameData().getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
@@ -212,7 +212,7 @@ public class Location implements Process {
                 }
             } else if (player != null) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
-                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);

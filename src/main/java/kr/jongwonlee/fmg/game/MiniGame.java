@@ -72,7 +72,7 @@ public class MiniGame {
     }
 
     public GameData getPlayerData(UUID uuid) {
-        return playersData.getOrDefault(uuid, gameData);
+        return GameStore.getHubGame().playersData.getOrDefault(uuid, gameData);
     }
 
     public void join(UUID playerUuid) {
@@ -91,6 +91,7 @@ public class MiniGame {
         Player player = toPlayer(playerUuid);
         getPlayerData(playerUuid).cancelTaskAll();
         run(EventBundle.PRE_GAME_LEFT, player);
+        playersData.get(playerUuid).cancelTaskAll();
         playersData.remove(playerUuid);
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
