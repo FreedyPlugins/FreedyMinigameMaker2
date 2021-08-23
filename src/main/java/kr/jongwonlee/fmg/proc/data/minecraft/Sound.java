@@ -15,6 +15,7 @@ public class Sound implements Process {
     private SmallFrontBrace frontBrace;
     boolean isGame;
     boolean isOnline;
+    boolean isRemove;
 
     @Override
     public ProcType getType() {
@@ -23,6 +24,7 @@ public class Sound implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
         Process process = FileParser.parseProcess(parseUnit, arguments);

@@ -105,6 +105,10 @@ public class GameData {
         taskIdList.add(taskId);
     }
 
+    public void removeTaskId(int taskId) {
+        taskIdList.remove(taskId);
+    }
+
     public void cancelTaskAll() {
         new ArrayList<>(taskIdList).forEach(taskId -> Bukkit.getScheduler().cancelTask(taskId));
         taskIdList = new ArrayList<>();

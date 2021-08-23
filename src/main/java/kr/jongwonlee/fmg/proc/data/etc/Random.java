@@ -34,9 +34,9 @@ public class Random implements Process {
             if (frontBrace == null) return process.run(miniGame, procUnit);
             List<Process> processList = frontBrace.getProcessList();
             if (procUnit.target.player != null) {
-                String min = processList.get(0).run(miniGame, procUnit);
-                String max = processList.get(2).run(miniGame, procUnit);
-                double result = FastMath.random() * Double.parseDouble(max) + Double.parseDouble(min);
+                double min = Double.parseDouble(processList.get(0).run(miniGame, procUnit));
+                double max = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
+                double result = FastMath.random() * ( max - min - 1 ) + min;
                 return String.valueOf(result);
             }
         } catch (NumberFormatException e) {

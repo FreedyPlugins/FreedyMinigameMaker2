@@ -49,7 +49,8 @@ public class Health implements Process {
                     if (isAdd) {
                         double health = livingEntity.getHealth();
                         double amount = Double.parseDouble(value);
-                        livingEntity.setHealth(FastMath.max(0, FastMath.min(livingEntity.getMaxHealth(), health + amount)));
+                        if (amount > 0) livingEntity.setHealth(FastMath.max(0, FastMath.min(livingEntity.getMaxHealth(), health + amount)));
+                        else livingEntity.damage(amount);
                     } else if (isSet) {
                         double amount = Double.parseDouble(value);
                         livingEntity.setHealth(FastMath.max(0, FastMath.min(livingEntity.getMaxHealth(), amount)));

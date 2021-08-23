@@ -209,8 +209,8 @@ public class FMGListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         Entity attacker = event.getDamager();
         Entity entity = event.getEntity();
+        Player player;
         {
-            Player player;
             if (attacker instanceof Player) player = (Player) attacker;
             else if (attacker instanceof Projectile) {
                 Projectile projectile = (Projectile) attacker;
@@ -231,15 +231,15 @@ public class FMGListener implements Listener {
             }
         }
         if (entity instanceof Player) {
-            Player player = (Player) entity;
-            if (!player.isOnline()) return;
-            MiniGame game = GameStore.getGame(player);
-            GameData playerData = game.getPlayerData(player.getUniqueId());
+            Player victimPlayer = (Player) entity;
+            if (!victimPlayer.isOnline()) return;
+            MiniGame game = GameStore.getGame(victimPlayer);
+            GameData playerData = game.getPlayerData(victimPlayer.getUniqueId());
             playerData.setData("damage", String.valueOf(event.getDamage()));
             playerData.setData("damageCause", event.getCause().name());
             playerData.setData("damageFinal", String.valueOf(event.getFinalDamage()));
-            playerData.setData("attackerUuid", FastUUID.toString(attacker.getUniqueId()));
-            String result = GameStore.getGame(player).run(EventBundle.DAMAGE, player, attacker);
+            playerData.setData("attackerUuid", FastUUID.toString(player == null ? attacker.getUniqueId() : player.getUniqueId()));
+            String result = GameStore.getGame(victimPlayer).run(EventBundle.DAMAGE, victimPlayer, attacker);
             if (result.equals("false")) event.setCancelled(true);
         }
     }
