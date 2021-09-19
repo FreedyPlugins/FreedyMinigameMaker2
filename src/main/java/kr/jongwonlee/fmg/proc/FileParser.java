@@ -127,6 +127,7 @@ public class FileParser {
             }
         } else externalProc = null;
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
+        Bukkit.broadcastMessage("\"" + args + "\"");
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
