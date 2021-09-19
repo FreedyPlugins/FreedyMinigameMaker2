@@ -26,7 +26,7 @@ public class Nothing implements Process {
         if (args.length() == 0) {
             return;
         }
-        int index = args.indexOf(' ');
+        int index = FileParser.getStartIndex(args);
         String frontArg = index == -1 ? args : args.substring(0, index + 1);
         int frontQuote = frontArg.indexOf('\"');
         int frontSmallQuote = frontArg.indexOf('\'');
