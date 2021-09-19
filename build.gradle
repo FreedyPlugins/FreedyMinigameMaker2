@@ -25,6 +25,7 @@ task pluginer {
     dependsOn 'jar'
     dependsOn 'copyPaste'
 }
+jar.shouldRunAfter clean
 pluginer.shouldRunAfter jar
 
 task copyPaste(type: Copy) {
