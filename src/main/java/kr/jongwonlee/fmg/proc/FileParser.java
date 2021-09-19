@@ -125,7 +125,7 @@ public class FileParser {
                 return getNothing(parseUnit, origin);
             }
         } else externalProc = null;
-        String args = ++index == 0 || index == string.length()? "" : cutFrontSpace(string.substring(index));
+        String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
