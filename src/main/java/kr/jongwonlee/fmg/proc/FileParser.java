@@ -84,19 +84,6 @@ public class FileParser {
         }
     }
 
-    @Deprecated
-    public static Process parseProcess(ParseUnit parseUnit, ProcType procType, String string) {
-        if (string == null) return getNothing(parseUnit, "");
-        String origin = toColor(string);
-        if (procType == null) return getNothing(parseUnit, string);
-        string = cutFrontSpace(origin);
-        int index = string.indexOf(' ');
-        String args = cutFrontSpace(index == -1 ? "" : string.substring(index));
-        Process process = procType.getNewProcess();
-        process.parse(parseUnit, args);
-        return process;
-    }
-
     public static Process parseProcess(ParseUnit parseUnit, String string) {
         if (string == null) return getNothing(parseUnit, "");
         String origin = toColor(string);

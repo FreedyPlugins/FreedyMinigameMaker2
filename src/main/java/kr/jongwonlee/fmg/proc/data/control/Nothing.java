@@ -4,8 +4,28 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Processable(alias = "nothing")
 public class Nothing implements Process {
+
+    static final Map<Character, ProcType> procBraces = new HashMap<Character, ProcType>(){{
+        put(' ', ProcType.NOTHING);
+        put('\t', ProcType.NOTHING);
+        put('{', ProcType.MID_FRONT_BRACE);
+        put('}', ProcType.MID_END_BRACE);
+        put('(', ProcType.SMALL_FRONT_BRACE);
+        put(')', ProcType.SMALL_END_BRACE);
+        put(',', ProcType.OR);
+        put('|', ProcType.OR);
+        put('&', ProcType.AND);
+        put('+', ProcType.ADD);
+        put('-', ProcType.SUBTRACT);
+        put('/', ProcType.DIVIDE);
+        put('%', ProcType.REMAINDER);
+        put('*', ProcType.MULTIPLY);
+    }};
 
     String value;
     Process process;
@@ -26,7 +46,8 @@ public class Nothing implements Process {
         if (args.length() == 0) {
             return;
         }
-        int index = args.indexOf(' ');
+        int index = getStartIndex(args);
+
         String frontArg = index == -1 ? args : args.substring(0, index + 1);
         int frontQuote = frontArg.indexOf('\"');
         int frontSmallQuote = frontArg.indexOf('\'');
@@ -150,4 +171,15 @@ public class Nothing implements Process {
                 .replace("\\n", "\n");
 
     }
+
+    private static int getStartIndex(String string) {
+        if (string == null) return -1;
+        for (int i = 0; i < string.length(); i++) {
+            if (procBraces.containsKey(string.charAt(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
