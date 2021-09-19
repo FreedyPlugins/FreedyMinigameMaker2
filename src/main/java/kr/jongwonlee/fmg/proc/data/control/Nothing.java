@@ -10,21 +10,6 @@ import java.util.Map;
 @Processable(alias = "nothing")
 public class Nothing implements Process {
 
-    static final Map<Character, ProcType> procBraces = new HashMap<Character, ProcType>(){{
-        put('{', ProcType.MID_FRONT_BRACE);
-        put('}', ProcType.MID_END_BRACE);
-        put('(', ProcType.SMALL_FRONT_BRACE);
-        put(')', ProcType.SMALL_END_BRACE);
-        put(',', ProcType.OR);
-        put('|', ProcType.OR);
-        put('&', ProcType.AND);
-        put('+', ProcType.ADD);
-        put('-', ProcType.SUBTRACT);
-        put('/', ProcType.DIVIDE);
-        put('%', ProcType.REMAINDER);
-        put('*', ProcType.MULTIPLY);
-    }};
-
     String value;
     Process process;
     Process frontProcess;
@@ -44,7 +29,7 @@ public class Nothing implements Process {
         if (args.length() == 0) {
             return;
         }
-        int index = getStartIndex(args);
+        int index = args.indexOf(' ');
 
         String frontArg = index == -1 ? args : args.substring(0, index + 1);
         int frontQuote = frontArg.indexOf('\"');
@@ -83,7 +68,7 @@ public class Nothing implements Process {
         else {
             value = repEscapes(frontArg);
             if (index != -1) {
-                process = FileParser.parseProcess(parseUnit, args.substring(index + 1));
+                process = FileParser.parseProcess(parseUnit, args.substring(index));
                 if (process.getType() != ProcType.NOTHING) value = args.substring(0, index);
                 if (process instanceof MathOperator) process = null;
             }
@@ -168,16 +153,6 @@ public class Nothing implements Process {
                 .replace("\\\"", "\"")
                 .replace("\\n", "\n");
 
-    }
-
-    private static int getStartIndex(String string) {
-        if (string == null) return -1;
-        for (int i = 0; i < string.length(); i++) {
-            if (procBraces.containsKey(string.charAt(i))) {
-                return i;
-            }
-        }
-        return -1;
     }
 
 }
