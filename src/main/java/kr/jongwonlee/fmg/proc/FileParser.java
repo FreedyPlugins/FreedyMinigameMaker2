@@ -87,7 +87,6 @@ public class FileParser {
 
     static final Map<Character, ProcType> procBraces = new HashMap<Character, ProcType>(){{
         put(' ', ProcType.NOTHING);
-        put('\t', ProcType.NOTHING);
         put('{', ProcType.MID_FRONT_BRACE);
         put('}', ProcType.MID_END_BRACE);
         put('(', ProcType.SMALL_FRONT_BRACE);
@@ -122,9 +121,7 @@ public class FileParser {
         Process externalProc;
         if (procType == null) {
             externalProc = ProcType.getExternalProc(processName);
-            if (externalProc == null) {
-                return getNothing(parseUnit, origin);
-            }
+            if (externalProc == null) return getNothing(parseUnit, origin);
         } else externalProc = null;
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
