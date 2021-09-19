@@ -2,7 +2,4 @@ build/
 out/
 .idea/
 .gradle/
-gradle/
-gradlew
-gradlew.bat
 build.gradle
