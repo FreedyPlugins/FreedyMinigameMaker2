@@ -122,18 +122,9 @@ public enum ProcType {
 
     private static final java.util.List<Class<? extends Process>> externalProc = new ArrayList<>();
     private final Class<? extends Process> aClass;
-    private final java.util.List<String> aliases = new ArrayList<>();
 
     ProcType(Class<? extends Process> aClass) {
         this.aClass = aClass;
-        try {
-            if (aClass != null) {
-                Processable annotation = aClass.getAnnotation(Processable.class);
-                aliases.addAll(Arrays.asList(annotation.alias()));
-            }
-        } catch (Exception ignored) {
-
-        }
     }
 
     public Process getNewProcess() {
@@ -145,10 +136,11 @@ public enum ProcType {
         }
     }
 
+
+
     public static ProcType getProcType(String name) {
         try {
             return Arrays.stream(ProcType.values()).filter(processType -> {
-                if (processType.aliases.contains(name)) return true;
                 try {
                     Class<? extends Process> aClass = processType.aClass;
                     if (aClass != null) {
