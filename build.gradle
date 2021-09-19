@@ -23,7 +23,7 @@ task pluginer(type: Copy) {
     dependsOn 'clean'
     dependsOn 'jar'
     from file("$projectDir/jar/*.jar")
-    into file("/home/bruce/adanceoffireandice/pluginer")
+    into file("/home/bruce/minecraft/adanceoffireandice/pluginer")
 }
 
 repositories {
