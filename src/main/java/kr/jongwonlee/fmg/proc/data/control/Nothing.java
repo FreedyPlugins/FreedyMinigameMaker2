@@ -22,6 +22,7 @@ public class Nothing implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        parseUnit.clearExecutor();
         String args = arguments.trim();
         if (args.length() == 0) {
             return;
