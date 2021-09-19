@@ -105,7 +105,6 @@ public class FileParser {
         if (string == null) return -1;
         for (int i = 0; i < string.length(); i++) {
             if (procBraces.containsKey(string.charAt(i))) {
-                Bukkit.broadcastMessage(ChatColor.GREEN + string + " : " + ChatColor.YELLOW + i);
                 return i == 0 ? 1 : i;
             }
         }
