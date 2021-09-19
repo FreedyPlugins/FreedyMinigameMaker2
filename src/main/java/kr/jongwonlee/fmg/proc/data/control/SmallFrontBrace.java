@@ -3,10 +3,12 @@ package kr.jongwonlee.fmg.proc.data.control;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Processable(alias = {"("})
 public class SmallFrontBrace implements FrontBrace {
@@ -32,6 +34,8 @@ public class SmallFrontBrace implements FrontBrace {
         parseUnit.addBraceProc(this);
         addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
         Collections.reverse(processList);
+        Bukkit.broadcastMessage(
+                processList.stream().map(process -> process.getType().name()).collect(Collectors.toList()).toString());
         for (int i = 1; i + 1 < processList.size(); i++) {
             Process process = processList.get(i);
             if (process instanceof MathOperator) {
