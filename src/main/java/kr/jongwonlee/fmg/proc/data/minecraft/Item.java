@@ -178,6 +178,9 @@ public class Item implements Process {
                 } else if (isSize) {
                     ItemStack itemStack = miniGame.getGameData().getItemStack(name);
                     return itemStack.getAmount() + frontBrace.getLastProc().run(miniGame, procUnit);
+                } else if (isType) {
+                    ItemStack itemStack = miniGame.getGameData().getItemStack(name);
+                    return itemStack.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isRemove) {
                     if (isLore) {
                         int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
@@ -296,6 +299,9 @@ public class Item implements Process {
                     if (isSize) {
                         ItemStack itemStack = GameDataStore.getInst().getItemStack(name);
                         return itemStack.getAmount() + frontBrace.getLastProc().run(miniGame, procUnit);
+                    } else if (isType) {
+                        ItemStack itemStack = GameDataStore.getInst().getItemStack(name);
+                        return itemStack.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                     } else if (isLore) {
                         int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
                         ItemStack itemStack = GameDataStore.getInst().getItemStack(name);
@@ -410,6 +416,9 @@ public class Item implements Process {
                 } else if (isSize) {
                     ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack.getAmount() + frontBrace.getLastProc().run(miniGame, procUnit);
+                } else if (isType) {
+                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    return itemStack.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isRemove) {
                     if (isLore) {
                         int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
