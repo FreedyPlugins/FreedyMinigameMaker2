@@ -11,8 +11,6 @@ import java.util.Map;
 public class Nothing implements Process {
 
     static final Map<Character, ProcType> procBraces = new HashMap<Character, ProcType>(){{
-        put(' ', ProcType.NOTHING);
-        put('\t', ProcType.NOTHING);
         put('{', ProcType.MID_FRONT_BRACE);
         put('}', ProcType.MID_END_BRACE);
         put('(', ProcType.SMALL_FRONT_BRACE);
@@ -85,7 +83,7 @@ public class Nothing implements Process {
         else {
             value = repEscapes(frontArg);
             if (index != -1) {
-                process = FileParser.parseProcess(parseUnit, args.substring(index));
+                process = FileParser.parseProcess(parseUnit, args.substring(index + 1));
                 if (process.getType() != ProcType.NOTHING) value = args.substring(0, index);
                 if (process instanceof MathOperator) process = null;
             }
