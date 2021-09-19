@@ -4,9 +4,6 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Processable(alias = "nothing")
 public class Nothing implements Process {
 
@@ -30,7 +27,6 @@ public class Nothing implements Process {
             return;
         }
         int index = args.indexOf(' ');
-
         String frontArg = index == -1 ? args : args.substring(0, index + 1);
         int frontQuote = frontArg.indexOf('\"');
         int frontSmallQuote = frontArg.indexOf('\'');
@@ -154,5 +150,4 @@ public class Nothing implements Process {
                 .replace("\\n", "\n");
 
     }
-
 }
