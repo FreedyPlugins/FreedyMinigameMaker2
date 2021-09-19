@@ -27,7 +27,7 @@ task pluginer {
 }
 
 task copyPaste(type: Copy) {
-    from files("$projectDir/jar/*.jar").getFiles()
+    from file("$projectDir/jar/FreedyMinigameMaker2.jar")
     into file("/home/bruce/minecraft/adanceoffireandice/pluginer")
 }
 
