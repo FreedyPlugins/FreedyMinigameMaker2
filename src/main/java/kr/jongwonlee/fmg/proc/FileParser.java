@@ -105,6 +105,7 @@ public class FileParser {
         if (string == null) return -1;
         for (int i = 0; i < string.length(); i++) {
             if (procBraces.containsKey(string.charAt(i))) {
+                Bukkit.broadcastMessage(ChatColor.GREEN + string + " : " + ChatColor.YELLOW + i);
                 return i == 0 ? 1 : i;
             }
         }
@@ -127,7 +128,6 @@ public class FileParser {
             }
         } else externalProc = null;
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
-        Bukkit.broadcastMessage("\"" + args + "\"");
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
