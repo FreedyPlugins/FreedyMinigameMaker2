@@ -3,6 +3,7 @@ package kr.jongwonlee.fmg.proc.data.control;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import org.bukkit.Bukkit;
 
 @Processable(alias = {"+"})
 public class Add implements MathOperator {
@@ -35,6 +36,7 @@ public class Add implements MathOperator {
         try {
             return String.valueOf(Double.parseDouble(string) + Double.parseDouble(string2));
         } catch (NumberFormatException e) {
+            Bukkit.broadcastMessage("string+string");
             return string + string2;
         }
     }
