@@ -19,6 +19,8 @@ jar {
     destinationDir = file("$projectDir/jar")
 }
 
+pluginer.shouldRunAfter jar
+
 task pluginer {
     dependsOn 'clean'
     dependsOn 'jar'
