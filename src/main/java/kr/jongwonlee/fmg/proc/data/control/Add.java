@@ -36,7 +36,6 @@ public class Add implements MathOperator {
         try {
             return String.valueOf(Double.parseDouble(string) + Double.parseDouble(string2));
         } catch (NumberFormatException e) {
-            Bukkit.broadcastMessage("[" + string + ", " + string2 + "]");
             return string + string2;
         }
     }

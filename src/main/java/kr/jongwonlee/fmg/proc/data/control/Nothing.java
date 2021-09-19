@@ -27,7 +27,7 @@ public class Nothing implements Process {
             return;
         }
         int index = FileParser.getStartIndex(args);
-        String frontArg = index == -1 ? args : args.substring(0, index + 1);
+        String frontArg = index == -1 ? args : args.substring(0, index);
         int frontQuote = frontArg.indexOf('\"');
         int frontSmallQuote = frontArg.indexOf('\'');
         if (frontQuote != -1 && args.charAt(frontQuote == 0 ? 0 : frontQuote - 1) != '\\') {
