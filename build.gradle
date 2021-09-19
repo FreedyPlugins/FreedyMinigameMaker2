@@ -25,8 +25,6 @@ task pluginer {
     dependsOn 'jar'
     dependsOn 'copyPaste'
 }
-jar.shouldRunAfter clean
-copyPaste.shouldRunAfter jar
 
 task copyPaste(type: Copy) {
     from file("$projectDir/jar/*.jar")
@@ -34,6 +32,10 @@ task copyPaste(type: Copy) {
     println file("/home/bruce/minecraft/adanceoffireandice/pluginer").list().toString()
     into file("/home/bruce/minecraft/adanceoffireandice/pluginer")
 }
+
+jar.shouldRunAfter clean
+copyPaste.shouldRunAfter jar
+
 
 repositories {
 //    jcenter()
