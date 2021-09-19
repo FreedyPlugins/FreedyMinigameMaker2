@@ -19,6 +19,13 @@ jar {
     destinationDir = file("$projectDir/jar")
 }
 
+task pluginer(type: Copy) {
+    dependsOn 'clean'
+    dependsOn 'jar'
+    from file("$projectDir/jar/*.jar")
+    into file("/home/bruce/adanceoffireandice/pluginer")
+}
+
 repositories {
 //    jcenter()
 //    mavenLocal()
