@@ -19,9 +19,13 @@ jar {
     destinationDir = file("$projectDir/jar")
 }
 
-task pluginer(type: Copy) {
+task pluginer {
     dependsOn 'clean'
     dependsOn 'jar'
+    dependsOn 'copyPaste'
+}
+
+task copyPaste(type: Copy) {
     from file("$projectDir/jar/*.jar")
     println file("$projectDir/jar/*.jar").exists()
     println file("/home/bruce/minecraft/adanceoffireandice/pluginer").list().toString()
