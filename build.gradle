@@ -23,8 +23,8 @@ task pluginer(type: Copy) {
     dependsOn 'clean'
     dependsOn 'jar'
     from file("$projectDir/jar/*.jar")
-    println file("$projectDir/jar/*.jar").name
-    println file("/home/bruce/minecraft/adanceoffireandice/pluginer").name
+    println file("$projectDir/jar/*.jar").exists()
+    println file("/home/bruce/minecraft/adanceoffireandice/pluginer").list().toString()
     into file("/home/bruce/minecraft/adanceoffireandice/pluginer")
 }
 
