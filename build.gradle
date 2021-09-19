@@ -19,13 +19,13 @@ jar {
     destinationDir = file("$projectDir/jar")
 }
 
-pluginer.shouldRunAfter jar
 
 task pluginer {
     dependsOn 'clean'
     dependsOn 'jar'
     dependsOn 'copyPaste'
 }
+pluginer.shouldRunAfter jar
 
 task copyPaste(type: Copy) {
     from file("$projectDir/jar/*.jar")
