@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.proc.data.control.MathOperator;
 import kr.jongwonlee.fmg.proc.data.control.Nothing;
 import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.util.GameAlert;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
@@ -126,6 +127,7 @@ public class FileParser {
             }
         } else externalProc = null;
         String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
+        Bukkit.broadcastMessage(args);
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
