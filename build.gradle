@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'kr.jongwonlee.fmg'
-version '1.4.3'
+version '1.5.0'
 
 compileJava.options.encoding 'UTF-8'
 
@@ -20,7 +20,6 @@ jar {
 }
 
 repositories {
-//    jcenter()
 //    mavenLocal()
 //    mavenCentral()
 //    maven { url "https://repo.dmulloy2.net/repository/public/" }

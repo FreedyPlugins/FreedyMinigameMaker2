@@ -156,6 +156,7 @@ public class YamlStore extends FileStore {
                 int size = getInt(path + DOT + string + DOT + "SIZE");
                 Inventory inventory;
                 if (inventoryType == InventoryType.CHEST) inventory = Bukkit.createInventory(null, size, title == null ? "" : title);
+                else if (inventoryType == InventoryType.PLAYER) inventory = Bukkit.createInventory(null, InventoryType.PLAYER, InventoryType.PLAYER.getDefaultTitle());
                 else inventory = Bukkit.createInventory(null, inventoryType, title == null ? "" : title);
                 Map<String, ItemStack> itemStackMap = getItemStackMap(path + DOT + string + DOT + "ITEMS");
                 itemStackMap.forEach((s, itemStack) -> inventory.setItem(Integer.parseInt(s), itemStack));
@@ -179,7 +180,7 @@ public class YamlStore extends FileStore {
         }
         InventoryType type = inventory.getType();
         set(path + DOT + "TYPE", type == InventoryType.CHEST ? null : type.name());
-        set(path + DOT + "TITLE", inventory.getTitle());
+        set(path + DOT + "TITLE", inventory.getType() == InventoryType.PLAYER ? InventoryType.PLAYER.getDefaultTitle() : inventory.getTitle());
         set(path + DOT + "SIZE", inventory.getSize());
         ItemStack[] contents = inventory.getStorageContents();
         for (int i = 0; i < contents.length; i++) set(path + DOT + "ITEMS" + DOT + i, contents[i]);

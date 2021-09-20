@@ -33,7 +33,7 @@ public class Add implements MathOperator {
 
     public String add(String string, String string2) {
         try {
-            return String.valueOf(Double.parseDouble(string) + Double.parseDouble(string2));
+            return parseIfInt(Double.parseDouble(string) + Double.parseDouble(string2));
         } catch (NumberFormatException e) {
             return string + string2;
         }

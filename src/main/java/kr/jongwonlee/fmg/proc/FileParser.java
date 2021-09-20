@@ -5,8 +5,10 @@ import kr.jongwonlee.fmg.proc.data.control.MathOperator;
 import kr.jongwonlee.fmg.proc.data.control.Nothing;
 import kr.jongwonlee.fmg.proc.data.control.Then;
 import kr.jongwonlee.fmg.util.GameAlert;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,32 +86,81 @@ public class FileParser {
         }
     }
 
-    @Deprecated
-    public static Process parseProcess(ParseUnit parseUnit, ProcType procType, String string) {
-        if (string == null) return getNothing(parseUnit, "");
-        String origin = toColor(string);
-        if (procType == null) return getNothing(parseUnit, string);
-        string = cutFrontSpace(origin);
-        int index = string.indexOf(' ');
-        String args = cutFrontSpace(index == -1 ? "" : string.substring(index));
-        Process process = procType.getNewProcess();
-        process.parse(parseUnit, args);
-        return process;
+    /**
+     * sequence divider
+     */
+    static final List<String> procBraces = new ArrayList<String>(){{
+        add(" ");
+        add("{");
+        add("}");
+        add("(");
+        add(")");
+        add(",");
+        add("||");
+        add("|");
+        add("&&");
+        add("&");
+        add("+");
+        add("-");
+        add("/");
+        add("%");
+        add("*");
+        add("==");
+        add("<=");
+        add("<");
+        add(">=");
+        add(">");
+        add("/=");
+        add("!=");
+        add("=!");
+        add("\\\"");
+        add("\\'");
+        add("\"");
+        add("'");
+    }};
+    public static IndexResult getStartIndexResult(String string) {
+        if (string == null) return new IndexResult();
+        for (int i = 0; i < string.length(); i++) {
+            int endIndex = i + 2;
+            if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
+                return new IndexResult(i == 0 ? i += 2 : i, i);  //a( : (a
+            }
+            if (procBraces.contains(string.substring(i, i + 1))) {
+
+                return new IndexResult(i == 0 ? ++i : i, i);
+            }
+        }
+        return new IndexResult();
+    }
+    public static class IndexResult {
+
+        public int startIndex;
+        public int endIndex;
+
+        public IndexResult(int startIndex, int endIndex) {
+            this.startIndex = startIndex;
+            this.endIndex = endIndex;
+        }
+
+        public IndexResult() {
+            startIndex = -1;
+            endIndex = -1;
+        }
     }
 
     public static Process parseProcess(ParseUnit parseUnit, String string) {
         if (string == null) return getNothing(parseUnit, "");
         String origin = toColor(string);
         string = cutFrontSpace(origin);
-        int index = string.indexOf(' ');
-        String processName = (index == -1 ? string : string.substring(0, index)).toLowerCase();
+        IndexResult indexResult = getStartIndexResult(string);
+        String processName = (indexResult.startIndex == -1 ? string : string.substring(0, indexResult.startIndex)).toLowerCase();
         ProcType procType = ProcType.getProcType(processName);
         Process externalProc;
         if (procType == null) {
             externalProc = ProcType.getExternalProc(processName);
             if (externalProc == null) return getNothing(parseUnit, origin);
         } else externalProc = null;
-        String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
+        String args = indexResult.endIndex == -1 ? "" : cutFrontSpace(string.substring(indexResult.endIndex));
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
@@ -140,17 +191,6 @@ public class FileParser {
         if (string == null) return false;
         int index = string.indexOf(regex);
         return index == 0;
-    }
-
-    @Deprecated
-    public static int getStartIndex(String string) {
-        if (string == null) return -1;
-        for (int i = string.length() - 1; i >= 0; i--) {
-            if (string.charAt(i) != ' ' && string.charAt(i) != '\t') {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public static String cutFrontSpace(String string) {

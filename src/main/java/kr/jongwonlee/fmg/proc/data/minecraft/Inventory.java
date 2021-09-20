@@ -141,9 +141,13 @@ public class Inventory implements Process {
                     }
                     if (gameData == null) {
                         inv = player.getInventory();
-                    } else if (inventory.getType() != InventoryType.CHEST)
+                    }
+                    else if (inventory.getType() == InventoryType.PLAYER)
+                        inv = Bukkit.createInventory(null, InventoryType.PLAYER, "");
+                    else if (inventory.getType() != InventoryType.CHEST)
                         inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
-                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    else
+                        inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
                     ItemStack[] contents = inventory.getContents();
                     ItemStack[] itemStacks = contents.clone();
                     for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
@@ -265,9 +269,13 @@ public class Inventory implements Process {
                     }
                     if (gameData == null) {
                         inv = player.getInventory();
-                    } else if (inventory.getType() != InventoryType.CHEST)
+                    }
+                    else if (inventory.getType() == InventoryType.PLAYER)
+                        inv = Bukkit.createInventory(null, InventoryType.PLAYER, "");
+                    else if (inventory.getType() != InventoryType.CHEST)
                         inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
-                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    else
+                        inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
                     ItemStack[] contents = inventory.getContents();
                     ItemStack[] itemStacks = contents.clone();
                     for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
@@ -336,7 +344,7 @@ public class Inventory implements Process {
                     String value = proc2.run(miniGame, procUnit);
                     boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
                     boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
-                    if (isGameItemStack){
+                    if (isGameItemStack) {
                         GameData gameData = miniGame.getGameData();
                         gameData.setItemStack(value, Item.clone(inventory.getItem(index)));
                     } else if (isAllItemStack) {
@@ -387,10 +395,14 @@ public class Inventory implements Process {
                         inventory = player.getInventory();
                     }
                     if (gameData == null) {
-                      inv = player.getInventory();
-                    } else if (inventory.getType() != InventoryType.CHEST)
+                        inv = player.getInventory();
+                    }
+                    else if (inventory.getType() == InventoryType.PLAYER)
+                        inv = Bukkit.createInventory(null, InventoryType.PLAYER, InventoryType.PLAYER.getDefaultTitle());
+                    else if (inventory.getType() != InventoryType.CHEST)
                         inv = Bukkit.createInventory(null, inventory.getType(), inventory.getTitle());
-                    else inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
+                    else
+                        inv = Bukkit.createInventory(null, inventory.getSize(), inventory.getTitle());
                     ItemStack[] contents = inventory.getContents();
                     ItemStack[] itemStacks = contents.clone();
                     for (int i = 0; i < itemStacks.length; i++) itemStacks[i] = contents[i] == null ? null : contents[i].clone();
@@ -447,6 +459,7 @@ public class Inventory implements Process {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
         return frontBrace.getLastProc().run(miniGame, procUnit);
