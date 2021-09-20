@@ -29,7 +29,7 @@ public class Nothing implements Process {
         if (index == -1) {
             value = args;
         } else {
-            process = FileParser.parseProcess(parseUnit, args.substring(index));
+            process = FileParser.parseProcess(parseUnit, args.substring(index + 1));
             value = args.substring(0, index);
         }
     }

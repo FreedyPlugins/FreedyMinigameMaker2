@@ -85,6 +85,9 @@ public class FileParser {
         }
     }
 
+    /**
+     * sequence divider
+     */
     static final List<String> procBraces = new ArrayList<String>(){{
         add(" ");
         add("{");
