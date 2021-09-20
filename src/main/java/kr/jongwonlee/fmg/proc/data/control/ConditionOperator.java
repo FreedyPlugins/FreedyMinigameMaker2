@@ -12,7 +12,6 @@ public abstract class ConditionOperator implements Process {
 
     static boolean getValue(String valueA, String valueB, ProcType operator) {
         try {
-            Bukkit.broadcastMessage("[" + valueA + "], " + "[" + valueB + "]");
             switch (operator) {
                 case IF_BIG: return toDouble(valueA) > toDouble(valueB);
                 case IF_BIG_SAME: return toDouble(valueA) >= toDouble(valueB);
