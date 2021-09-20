@@ -135,7 +135,7 @@ public class FileParser {
         for (int i = 0; i < string.length(); i++) {
             int endIndex = i + 2;
             if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
-                return new IndexResult(i == 0 ? ++i : i, i + 1);
+                return new IndexResult(i == 0 ? ++i : i, i + 2);
             }
             if (procBraces.contains(string.substring(i, i + 1))) {
 
