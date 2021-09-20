@@ -9,24 +9,22 @@ public class Subtract implements MathOperator {
 
     Process valueA;
     Process valueB;
+    Process process;
 
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        FrontBrace frontBrace = parseUnit.getFrontBrace();
-        if (frontBrace instanceof SmallFrontBrace) {
-            frontBrace.addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
-            frontBrace.addProc(parseUnit, this);
+        process = parseUnit.getFrontBrace();
+        if (process instanceof SmallFrontBrace) {
+            SmallFrontBrace process = (SmallFrontBrace) this.process;
+            process.addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
+            process.addProc(parseUnit, this);
         }
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (valueA == null) {
-            if (valueB == null) {
-                return "";
-            } else return '-' + valueB.run(miniGame, procUnit);
-        } else if (valueB == null) return valueA.run(miniGame, procUnit);
+        if (valueA == null || valueB == null) return process.run(miniGame, procUnit);
         return add(valueA.run(miniGame, procUnit), valueB.run(miniGame, procUnit));
     }
 
