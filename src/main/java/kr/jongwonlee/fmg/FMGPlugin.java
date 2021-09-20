@@ -42,7 +42,6 @@ public final class FMGPlugin extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
         GameStore.getGames().forEach(MiniGame::disable);
         GameDataStore.save();
-        GameStore.unset();
         Bukkit.getPluginManager().callEvent(new AddonDisableEvent());
     }
 
