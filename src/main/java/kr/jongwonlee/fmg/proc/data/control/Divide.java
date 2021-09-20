@@ -32,11 +32,12 @@ public class Divide implements MathOperator {
     }
 
     public String multiply(String string, String string2) {
-        try {
-            return parseIfInt(Double.parseDouble(string) / Double.parseDouble(string2));
-        } catch (NumberFormatException e) {
-            return string + string2;
-        }
+        return calculate(string, string2);
+    }
+
+    @Override
+    public double getCalculator(double numA, double numB) {
+        return numA / numB;
     }
 
     @Override
