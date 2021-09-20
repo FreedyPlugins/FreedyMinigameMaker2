@@ -17,7 +17,7 @@ public class DoubleQuotation implements Process {
             string = arguments;
         } else{
             string = arguments.substring(0, index);
-            if (arguments.length() <= ++index) {
+            if (arguments.length() > ++index) {
                 process = FileParser.parseProcess(parseUnit, arguments.substring(index));
             }
         }
