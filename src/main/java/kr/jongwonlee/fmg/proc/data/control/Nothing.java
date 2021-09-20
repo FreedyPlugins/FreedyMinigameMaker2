@@ -3,6 +3,8 @@ package kr.jongwonlee.fmg.proc.data.control;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 @Processable(alias = "NOTHING")  //must be capital letter to prevent notice
 public class Nothing implements Process {
@@ -21,11 +23,12 @@ public class Nothing implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        String args = arguments.trim();
+        String args = FileParser.cutFrontSpace(arguments);
         if (args.length() == 0) {
             return;
         }
         int index = FileParser.getStartIndex(args);
+        Bukkit.broadcastMessage(ChatColor.GREEN + args + " : " + ChatColor.YELLOW + index);
         if (index == -1) {
             value = args;
         } else {

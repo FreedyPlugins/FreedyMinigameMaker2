@@ -132,6 +132,7 @@ public class FileParser {
     }
 
     @Nonnull
+    @Deprecated
     public static IndexResult getStartIndexResult(String string) {
         if (string == null) return new IndexResult();
         for (int i = 0; i < string.length(); i++) {
