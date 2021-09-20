@@ -40,6 +40,7 @@ public class SmallFrontBrace implements FrontBrace {
                 MathOperator mathOperator = ((MathOperator) process);
                 Process valueA = processList.get(i - 1);
                 Process valueB = processList.get(i + 1);
+                if (valueA instanceof FrontBrace) continue;
                 processList.remove(i - 1);
                 processList.remove(i);
                 mathOperator.setValueA(valueA);
