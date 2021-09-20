@@ -25,10 +25,10 @@ public class Delay implements Process {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        process = FileParser.parseProcess(parseUnit, arguments);
         isAsync = parseUnit.useExecutor(ProcType.EXECUTE_ASYNC);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isOnline = parseUnit.useExecutor(ProcType.EXECUTE_ONLINE);
+        process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = ((SmallFrontBrace) process);
         List<Process> processList = frontBrace.getProcessList();

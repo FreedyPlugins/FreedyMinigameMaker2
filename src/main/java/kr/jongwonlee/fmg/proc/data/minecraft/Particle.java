@@ -15,10 +15,12 @@ public class Particle implements Process {
 
     SmallFrontBrace frontBrace;
     List<Process> processList;
+    boolean isColor;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         Process process = FileParser.parseProcess(parseUnit, arguments);
+        isColor = parseUnit.useExecutor(ProcType.EXECUTE_COLOR);
         if (process instanceof SmallFrontBrace) frontBrace = ((SmallFrontBrace) process);
         processList = frontBrace.cutBehindEndBrace();
     }
@@ -39,8 +41,18 @@ public class Particle implements Process {
             Process proc3 = processList.get(4);
             String value3 = proc3.run(miniGame, procUnit);
             int amount = Integer.parseInt(value3);
-            boolean isStatic = processList.size() >= 6;
-            if (isStatic) location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount, 0, 0, 0, 0);
+            double r;
+            double g;
+            double b;
+            if (isColor) {
+                r = Double.parseDouble(processList.get(6).run(miniGame, procUnit));
+                g = Double.parseDouble(processList.get(8).run(miniGame, procUnit));
+                b = Double.parseDouble(processList.get(10).run(miniGame, procUnit));
+            } else {
+                r = g = b = 0;
+            }
+            boolean isStatic = processList.size() >= (isColor ? 12 : 6);
+            if (isStatic) location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount, r, g, b, 0);
             else location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount);
         } catch (Exception ignored) {  }
         return frontBrace.getLastProc().run(miniGame, procUnit);
