@@ -14,10 +14,9 @@ public class Subtract implements MathOperator {
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
-        process = parseUnit.getFrontBrace();
+        FrontBrace process = parseUnit.getFrontBrace();
         if (process instanceof SmallFrontBrace) {
-            SmallFrontBrace process = (SmallFrontBrace) this.process;
-            process.addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
+            process.addProc(parseUnit, this.process = FileParser.parseProcess(parseUnit, arguments));
             process.addProc(parseUnit, this);
         }
     }
