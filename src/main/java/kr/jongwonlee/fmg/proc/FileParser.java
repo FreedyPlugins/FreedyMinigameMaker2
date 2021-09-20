@@ -134,10 +134,11 @@ public class FileParser {
         if (string == null) return new IndexResult();
         for (int i = 0; i < string.length(); i++) {
             int endIndex = i + 2;
+            if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
+                return new IndexResult(i == 0 ? ++i : i, i + 1);
+            }
             if (procBraces.contains(string.substring(i, i + 1))) {
-                if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
-                    return new IndexResult(i == 0 ? ++i : i, i + 1);
-                }
+
                 return new IndexResult(i == 0 ? ++i : i, i);
             }
         }
