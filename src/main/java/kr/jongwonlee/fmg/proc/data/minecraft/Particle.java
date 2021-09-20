@@ -53,7 +53,7 @@ public class Particle implements Process {
             }
             boolean isStatic = processList.size() >= (isColor ? 12 : 6);
             if (isStatic) location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2),
-                    location.getX(), location.getY(), location.getZ(), amount, r, g, b, 0);
+                    location.getX(), location.getY(), location.getZ(), amount, r, g, b, 0, 1);
             else location.getWorld().spawnParticle(org.bukkit.Particle.valueOf(value2), location, amount);
         } catch (Exception ignored) {  }
         return frontBrace.getLastProc().run(miniGame, procUnit);
