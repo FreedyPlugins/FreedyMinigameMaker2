@@ -110,6 +110,10 @@ public class FileParser {
         add("/=");
         add("!=");
         add("=!");
+        add("\"");
+        add("'");
+        add("\\\"");
+        add("\\'");
     }};
     public static int getStartIndex(String string) {
         if (string == null) return -1;
