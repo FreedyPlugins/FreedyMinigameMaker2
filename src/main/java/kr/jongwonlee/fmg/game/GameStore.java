@@ -39,6 +39,13 @@ public class GameStore implements Listener {
         }
     }
 
+    public static void unset() {
+        gameMap = null;
+        playerGameMap = null;
+        hubGame = null;
+        gameStore = null;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
