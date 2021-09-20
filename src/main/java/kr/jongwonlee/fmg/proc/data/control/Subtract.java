@@ -22,7 +22,11 @@ public class Subtract implements MathOperator {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (valueA == null | valueB == null) return "";
+        if (valueA == null) {
+            if (valueB == null) {
+                return "";
+            } else return valueB.run(miniGame, procUnit);
+        } else if (valueB == null) return valueA.run(miniGame, procUnit);
         return add(valueA.run(miniGame, procUnit), valueB.run(miniGame, procUnit));
     }
 
