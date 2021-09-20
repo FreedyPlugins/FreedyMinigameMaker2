@@ -24,7 +24,7 @@ public class Subtract implements MathOperator {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (valueA == null || valueB == null) return process.run(miniGame, procUnit);
+        if (valueA == null || valueB == null) return '-' + process.run(miniGame, procUnit);
         return add(valueA.run(miniGame, procUnit), valueB.run(miniGame, procUnit));
     }
 
