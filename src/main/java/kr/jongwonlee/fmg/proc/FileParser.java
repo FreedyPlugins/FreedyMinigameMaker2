@@ -8,6 +8,7 @@ import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,21 +96,20 @@ public class FileParser {
         add("(");
         add(")");
         add(",");
-        add("|");
         add("||");
-        add("&");
+        add("|");
         add("&&");
+        add("&");
         add("+");
         add("-");
         add("/");
         add("%");
         add("*");
-        add("=");
         add("==");
-        add("<");
         add("<=");
-        add(">");
+        add("<");
         add(">=");
+        add(">");
         add("/=");
         add("!=");
         add("=!");
@@ -122,14 +122,43 @@ public class FileParser {
         if (string == null) return -1;
         for (int i = 0; i < string.length(); i++) {
             int endIndex = i + 1;
-            if (procBraces.contains(string.substring(i, i)) ||
-                    string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
+            if (procBraces.contains(string.substring(i, i))) {
+                return i == 0 ? 1 : i;
+            } else if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
                 return i == 0 ? 1 : i;
             }
         }
         return -1;
     }
 
+    @Nonnull
+    public static IndexResult getStartIndexResult(String string) {
+        if (string == null) return new IndexResult();
+        for (int i = 0; i < string.length(); i++) {
+            int endIndex = i + 1;
+            if (procBraces.contains(string.substring(i, i))) {
+                return new IndexResult(i == 0 ? ++i : i, i);
+            } else if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
+                return new IndexResult(i == 0 ? ++i : i, i + 1);
+            }
+        }
+        return new IndexResult();
+    }
+    public static class IndexResult {
+
+        public int startIndex;
+        public int endIndex;
+
+        public IndexResult(int startIndex, int endIndex) {
+            this.startIndex = startIndex;
+            this.endIndex = endIndex;
+        }
+
+        public IndexResult() {
+            startIndex = -1;
+            endIndex = -1;
+        }
+    }
 
     public static Process parseProcess(ParseUnit parseUnit, String string) {
         if (string == null) return getNothing(parseUnit, "");
