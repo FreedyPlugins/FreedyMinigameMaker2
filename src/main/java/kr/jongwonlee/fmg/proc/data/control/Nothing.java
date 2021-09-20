@@ -28,7 +28,6 @@ public class Nothing implements Process {
             return;
         }
         int index = FileParser.getStartIndex(args);
-        Bukkit.broadcastMessage(ChatColor.GREEN + args + " : " + ChatColor.YELLOW + index);
         if (index == -1) {
             value = args;
         } else {
