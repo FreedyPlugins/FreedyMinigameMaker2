@@ -34,6 +34,7 @@ public class SmallFrontBrace implements FrontBrace {
         parseUnit.addBraceProc(this);
         addProc(parseUnit, FileParser.parseProcess(parseUnit, arguments));
         Collections.reverse(processList);
+        Bukkit.broadcastMessage(processList.stream().map(process -> process.getType().name()).collect(Collectors.toList()).toString());
         for (int i = 1; i + 1 < processList.size(); i++) {
             Process process = processList.get(i);
             if (process instanceof MathOperator) {
