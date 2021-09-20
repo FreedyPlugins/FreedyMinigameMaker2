@@ -3,7 +3,7 @@ package kr.jongwonlee.fmg.proc.data.control;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.*;
 
-@Processable(alias = {"!=", "/="})
+@Processable(alias = {"!=", "/=", "=!"})
 public class IfNotEqual implements IfOperator {
 
     @Override

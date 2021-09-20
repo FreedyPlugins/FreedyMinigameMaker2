@@ -19,24 +19,7 @@ jar {
     destinationDir = file("$projectDir/jar")
 }
 
-
-task pluginer {
-    dependsOn 'clean'
-    dependsOn 'jar'
-    dependsOn 'copyPaste'
-}
-
-task copyPaste(type: Copy) {
-    from file("$projectDir/jar/FreedyMinigameMaker2.jar")
-    into file("/home/bruce/minecraft/adanceoffireandice/pluginer")
-}
-
-jar.shouldRunAfter clean
-copyPaste.shouldRunAfter jar
-
-
 repositories {
-//    jcenter()
 //    mavenLocal()
 //    mavenCentral()
 //    maven { url "https://repo.dmulloy2.net/repository/public/" }

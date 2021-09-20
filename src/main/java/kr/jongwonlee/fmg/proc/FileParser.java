@@ -85,25 +85,38 @@ public class FileParser {
         }
     }
 
-    static final Map<Character, ProcType> procBraces = new HashMap<Character, ProcType>(){{
-        put(' ', ProcType.NOTHING);
-        put('{', ProcType.MID_FRONT_BRACE);
-        put('}', ProcType.MID_END_BRACE);
-        put('(', ProcType.SMALL_FRONT_BRACE);
-        put(')', ProcType.SMALL_END_BRACE);
-        put(',', ProcType.OR);
-        put('|', ProcType.OR);
-        put('&', ProcType.AND);
-        put('+', ProcType.ADD);
-        put('-', ProcType.SUBTRACT);
-        put('/', ProcType.DIVIDE);
-        put('%', ProcType.REMAINDER);
-        put('*', ProcType.MULTIPLY);
+    static final List<String> procBraces = new ArrayList<String>(){{
+        add(" ");
+        add("{");
+        add("}");
+        add("(");
+        add(")");
+        add(",");
+        add("|");
+        add("||");
+        add("&");
+        add("&&");
+        add("+");
+        add("-");
+        add("/");
+        add("%");
+        add("*");
+        add("=");
+        add("==");
+        add("<");
+        add("<=");
+        add(">");
+        add(">=");
+        add("/=");
+        add("!=");
+        add("=!");
     }};
     public static int getStartIndex(String string) {
         if (string == null) return -1;
         for (int i = 0; i < string.length(); i++) {
-            if (procBraces.containsKey(string.charAt(i))) {
+            int endIndex = i + 2;
+            if (procBraces.contains(string.substring(i, i+1)) ||
+                    string.length() != endIndex && procBraces.contains(string.substring(i, endIndex))) {
                 return i == 0 ? 1 : i;
             }
         }
