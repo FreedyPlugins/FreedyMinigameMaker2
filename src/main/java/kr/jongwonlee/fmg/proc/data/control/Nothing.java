@@ -33,6 +33,7 @@ public class Nothing implements Process {
         } else {
             process = FileParser.parseProcess(parseUnit, args.substring(indexResult.endIndex));
             value = args.substring(0, indexResult.startIndex);
+            if (process.getType() == ProcType.NOTHING) value = value + " ";
         }
     }
 
