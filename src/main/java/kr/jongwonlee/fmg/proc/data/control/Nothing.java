@@ -27,12 +27,12 @@ public class Nothing implements Process {
         if (args.length() == 0) {
             return;
         }
-        int index = FileParser.getStartIndex(args);
-        if (index == -1) {
+        FileParser.IndexResult indexResult = FileParser.getStartIndexResult(args);
+        if (indexResult.startIndex == -1) {
             value = args;
         } else {
-            process = FileParser.parseProcess(parseUnit, args.substring(index));
-            value = args.substring(0, index);
+            process = FileParser.parseProcess(parseUnit, args.substring(indexResult.endIndex));
+            value = args.substring(0, indexResult.startIndex);
         }
     }
 
