@@ -164,15 +164,15 @@ public class FileParser {
         if (string == null) return getNothing(parseUnit, "");
         String origin = toColor(string);
         string = cutFrontSpace(origin);
-        int index = getStartIndex(string);
-        String processName = (index == -1 ? string : string.substring(0, index)).toLowerCase();
+        IndexResult indexResult = getStartIndexResult(string);
+        String processName = (indexResult.startIndex == -1 ? string : string.substring(0, indexResult.startIndex)).toLowerCase();
         ProcType procType = ProcType.getProcType(processName);
         Process externalProc;
         if (procType == null) {
             externalProc = ProcType.getExternalProc(processName);
             if (externalProc == null) return getNothing(parseUnit, origin);
         } else externalProc = null;
-        String args = index == -1 ? "" : cutFrontSpace(string.substring(index));
+        String args = indexResult.endIndex == -1 ? "" : cutFrontSpace(string.substring(indexResult.endIndex));
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");
