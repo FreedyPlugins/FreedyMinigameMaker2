@@ -121,8 +121,8 @@ public class FileParser {
     public static int getStartIndex(String string) {
         if (string == null) return -1;
         for (int i = 0; i < string.length(); i++) {
-            int endIndex = i + 1;
-            if (procBraces.contains(string.substring(i, i))) {
+            int endIndex = i + 2;
+            if (procBraces.contains(string.substring(i, i + 1))) {
                 return i == 0 ? 1 : i;
             } else if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
                 return i == 0 ? 1 : i;
