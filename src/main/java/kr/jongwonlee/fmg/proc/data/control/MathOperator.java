@@ -9,7 +9,8 @@ public interface MathOperator extends Process {
     void setValueB(Process process);
 
     default String parseIfInt(Number number) {
-        if (number instanceof Integer) return String.valueOf(((int) number));
+        int intValue = number.intValue();
+        if (intValue == number.doubleValue()) return String.valueOf(intValue);
         else return String.valueOf(number);
     }
 
