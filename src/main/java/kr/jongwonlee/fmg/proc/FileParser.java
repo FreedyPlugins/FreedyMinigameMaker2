@@ -118,24 +118,12 @@ public class FileParser {
         add("\"");
         add("'");
     }};
-    public static int getStartIndex(String string) {
-        if (string == null) return -1;
-        for (int i = 0; i < string.length(); i++) {
-            int endIndex = i + 2;
-            if (procBraces.contains(string.substring(i, i + 1)) ||string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
-                return i == 0 ? 1 : i;
-            }
-        }
-        return -1;
-    }
-
-    @Nonnull
     public static IndexResult getStartIndexResult(String string) {
         if (string == null) return new IndexResult();
         for (int i = 0; i < string.length(); i++) {
             int endIndex = i + 2;
             if (string.length() > endIndex && procBraces.contains(string.substring(i, endIndex))) {
-                return new IndexResult(i == 0 ? ++i : i, i + 2);
+                return new IndexResult(i == 0 ? i += 2 : i, i);  //a( : (a
             }
             if (procBraces.contains(string.substring(i, i + 1))) {
 
