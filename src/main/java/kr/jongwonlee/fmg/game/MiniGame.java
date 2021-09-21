@@ -76,8 +76,8 @@ public class MiniGame {
     }
 
     public void join(UUID playerUuid) {
-        if (this != GameStore.getHubGame()) GameStore.getHubGame().quit(playerUuid);
         Player player = toPlayer(playerUuid);
+        GameStore.getGame(player).quit(playerUuid);
         String result = run(EventBundle.PRE_GAME_JOIN, player);
         if (result.equals("false")) return;
         if (playersData.containsKey(playerUuid)) return;
