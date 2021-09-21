@@ -96,7 +96,7 @@ public class MiniGame {
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
         if (playersData.size() == 0) disable();
-        if (this != GameStore.getHubGame()) GameStore.getHubGame().join(playerUuid);
+        GameStore.getHubGame().join(playerUuid);
     }
 
     public static Player toPlayer(UUID uuid) {
