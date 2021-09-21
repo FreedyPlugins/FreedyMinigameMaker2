@@ -72,7 +72,7 @@ public class MiniGame {
     }
 
     public GameData getPlayerData(UUID uuid) {
-        return GameStore.getHubGame().playersData.getOrDefault(uuid, gameData);
+        return playersData.getOrDefault(uuid, gameData);
     }
 
     public void join(UUID playerUuid) {
