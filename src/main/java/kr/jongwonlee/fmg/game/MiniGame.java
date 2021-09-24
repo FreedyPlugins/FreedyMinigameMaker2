@@ -72,12 +72,12 @@ public class MiniGame {
     }
 
     public GameData getPlayerData(UUID uuid) {
-        return GameStore.getHubGame().playersData.getOrDefault(uuid, gameData);
+        return playersData.getOrDefault(uuid, gameData);
     }
 
     public void join(UUID playerUuid) {
-        if (this != GameStore.getHubGame()) GameStore.getHubGame().quit(playerUuid);
         Player player = toPlayer(playerUuid);
+        GameStore.getGame(player).quit(playerUuid);
         String result = run(EventBundle.PRE_GAME_JOIN, player);
         if (result.equals("false")) return;
         if (playersData.containsKey(playerUuid)) return;
@@ -96,7 +96,7 @@ public class MiniGame {
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
         if (playersData.size() == 0) disable();
-        if (this != GameStore.getHubGame()) GameStore.getHubGame().join(playerUuid);
+        GameStore.getHubGame().join(playerUuid);
     }
 
     public static Player toPlayer(UUID uuid) {

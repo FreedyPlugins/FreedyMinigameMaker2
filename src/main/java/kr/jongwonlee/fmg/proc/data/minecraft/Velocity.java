@@ -59,9 +59,19 @@ public class Velocity implements Process {
             String value2 = proc2.run(miniGame, procUnit);
             Process proc3 = processList.get(4);
             String value3 = proc3.run(miniGame, procUnit);
-            Vector vector = new Vector(Double.parseDouble(value1), Double.parseDouble(value2), Double.parseDouble(value3));
-            if (isSet) player.setVelocity(vector);
-            else if (isAdd) player.setVelocity(player.getVelocity().add(vector));
+            if (isSet) {
+                if (posX) player.getVelocity().setX(Double.parseDouble(value1));
+                else if (posY) player.getVelocity().setY(Double.parseDouble(value1));
+                else if (posZ) player.getVelocity().setZ(Double.parseDouble(value1));
+                else {
+                    Vector vector = new Vector(Double.parseDouble(value1), Double.parseDouble(value2), Double.parseDouble(value3));
+                    player.setVelocity(vector);
+                }
+            }
+            else if (isAdd) {
+                Vector vector = new Vector(Double.parseDouble(value1), Double.parseDouble(value2), Double.parseDouble(value3));
+                player.setVelocity(player.getVelocity().add(vector));
+            }
         } catch (Exception ignored) {
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
