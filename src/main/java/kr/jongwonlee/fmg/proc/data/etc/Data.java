@@ -46,12 +46,12 @@ public class Data implements Process {
                 String value = processList.get(2).run(miniGame, procUnit);
                 if (isGame) miniGame.getGameData().setData(name, value);
                 else if (isOnline) GameDataStore.getInst().setData(name, value);
-                else if (procUnit.target.player != null) miniGame.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
+                else if (procUnit.target.player != null) GameDataStore.getPlayerData(procUnit.target.player.getUniqueId()).setData(name, value);
                 return value + frontBrace.getLastProc().run(miniGame, procUnit);
             } else {
                 if (isGame) return miniGame.getGameData().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isOnline) return GameDataStore.getInst().getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
-                else if (procUnit.target.player != null) return miniGame.getPlayerData(procUnit.target.player.getUniqueId()).getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
+                else if (procUnit.target.player != null) return GameDataStore.getPlayerData(procUnit.target.player.getUniqueId()).getData(name) + frontBrace.getLastProc().run(miniGame, procUnit);
             }
             return frontBrace.getLastProc().run(miniGame, procUnit);
         } catch (Exception e) {

@@ -65,7 +65,7 @@ public class Block implements Process {
                     String value = process.run(miniGame, procUnit);
                     org.bukkit.block.Block targetBlock;
                     if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value).getBlock();
-                    else targetBlock = miniGame.getPlayerData(player.getUniqueId()).getBlock(value).getBlock();
+                    else targetBlock = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(value).getBlock();
                     targetBlock.setType(block.getType());
                     targetBlock.setData(block.getRawData());
                 } else if (isLocation) {
@@ -76,7 +76,7 @@ public class Block implements Process {
                     String targetLocation = process.run(miniGame, procUnit);
                     if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation().clone());
                     else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation().clone());
-                    else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
+                    else if (player != null) GameDataStore.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
                 } else if (isCode) {
                     BlockState block = miniGame.getGameData().getBlock(name);
                     return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -111,36 +111,36 @@ public class Block implements Process {
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         miniGame.getGameData().setBlock(name, location.getBlock().getState());
                     } else {
-                        Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                        Location location = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         miniGame.getGameData().setBlock(name, location.getBlock().getState());
                     }
                 }
             } else if (player != null) {
                 if (isRemove) {
-                    miniGame.getPlayerData(player.getUniqueId()).setBlock(name, null);
+                    GameDataStore.getPlayerData(player.getUniqueId()).setBlock(name, null);
                 } else if (isClone) {
-                    BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                    BlockState block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name);
                     Process process = processList.get(2);
                     String value = process.run(miniGame, procUnit);
                     BlockState targetBlock;
                     if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value);
-                    else targetBlock = miniGame.getPlayerData(player.getUniqueId()).getBlock(value);
+                    else targetBlock = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(value);
                     targetBlock.setData(block.getData());
                 } else if (isLocation) {
-                    BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                    BlockState block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name);
                     Process process = processList.get(2);
                     boolean isGameLocation = process.getType() == ProcType.EXECUTE_GAME;
                     boolean isAllLocation = process.getType() == ProcType.EXECUTE_ONLINE;
                     String targetLocation = process.run(miniGame, procUnit);
                     if (isGameLocation) miniGame.getGameData().setLocation(targetLocation, block.getLocation().clone());
                     else if (isAllLocation) GameDataStore.getInst().setLocation(targetLocation, block.getLocation().clone());
-                    else miniGame.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setLocation(targetLocation, block.getLocation().clone());
                 } else if (isCode) {
-                    BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                    BlockState block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name);
                     return block.getTypeId() + ":" + block.getRawData() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isType) {
-                    BlockState block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name);
+                    BlockState block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name);
                     return block.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isSet) {
                     Process process = processList.get(2);
@@ -150,7 +150,7 @@ public class Block implements Process {
                     String value = process.run(miniGame, procUnit);
                     if (isCode) {
                         int typeId = Integer.parseInt(value);
-                        org.bukkit.block.Block block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name).getBlock();
+                        org.bukkit.block.Block block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name).getBlock();
                         block.setTypeId(typeId);
                         try {
                             Process proc2 = processList.get(4);
@@ -160,20 +160,20 @@ public class Block implements Process {
                         } catch (Exception ignored) {
                         }
                     } else if (isType) {
-                        org.bukkit.block.Block block = miniGame.getPlayerData(player.getUniqueId()).getBlock(name).getBlock();
+                        org.bukkit.block.Block block = GameDataStore.getPlayerData(player.getUniqueId()).getBlock(name).getBlock();
                         block.setType(Material.getMaterial(value));
                     } else if (isGameLocation) {
                         Location location = miniGame.getGameData().getLocation(value);
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
-                        miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
+                        GameDataStore.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                     } else if (isAllLocation) {
                         Location location = GameDataStore.getInst().getLocation(value);
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
-                        miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
+                        GameDataStore.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                     } else {
-                        Location location = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                        Location location = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                         if (location == null) return frontBrace.getLastProc().run(miniGame, procUnit);
-                        miniGame.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
+                        GameDataStore.getPlayerData(player.getUniqueId()).setBlock(name, location.getBlock().getState());
                     }
                 }
 

@@ -1,6 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.FMGPlugin;
+import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -48,7 +49,7 @@ public class Repeat implements Process {
         Runnable runnable = () -> frontBrace.getLastProc().run(miniGame, procUnit2);
         taskId = FMGPlugin.runTaskRepeatSync(runnable, ((long) Double.parseDouble(delay)), ((long) Double.parseDouble(period)));
         if (isGame) miniGame.getGameData().addTaskId(taskId);
-        else if (!isOnline && player != null) miniGame.getPlayerData(player.getUniqueId()).addTaskId(taskId);
+        else if (!isOnline && player != null) GameDataStore.getPlayerData(player.getUniqueId()).addTaskId(taskId);
         procUnit2.setTaskId(taskId);
         return String.valueOf(taskId);
     }

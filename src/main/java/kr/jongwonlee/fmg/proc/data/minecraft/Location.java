@@ -87,7 +87,7 @@ public class Location implements Process {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
-                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
@@ -117,7 +117,7 @@ public class Location implements Process {
                     String value = proc.run(miniGame, procUnit);
                     if (proc.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setLocation(value, location.clone());
                     else if (proc.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setLocation(value, location.clone());
-                    else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
+                    else if (player != null) GameDataStore.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
                 } else if (isAdd) {
                     double posX = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     double posY = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
@@ -129,13 +129,13 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     Process proc2 = processList.get(4);
                     String value2 = proc2.run(miniGame, procUnit);
                     org.bukkit.Location pos2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
-                    else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    else pos2 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value2);
                     if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     Vector min = Vector.getMinimum(pos1.toVector(), pos2.toVector());
                     Vector max = Vector.getMaximum(pos1.toVector(), pos2.toVector());
@@ -146,7 +146,7 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     return location.equals(pos1) ? "true" : "false";
                 }
             } else if (isGame) {
@@ -156,7 +156,7 @@ public class Location implements Process {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
-                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
@@ -186,7 +186,7 @@ public class Location implements Process {
                     String value = proc.run(miniGame, procUnit);
                     if (proc.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setLocation(value, location.clone());
                     else if (proc.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setLocation(value, location.clone());
-                    else if (player != null) miniGame.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
+                    else if (player != null) GameDataStore.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
                 } else if (isAdd) {
                     double posX = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     double posY = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
@@ -198,13 +198,13 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     Process proc2 = processList.get(4);
                     String value2 = proc2.run(miniGame, procUnit);
                     org.bukkit.Location pos2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
-                    else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    else pos2 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value2);
                     if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     Vector min = Vector.getMinimum(pos1.toVector(), pos2.toVector());
                     Vector max = Vector.getMaximum(pos1.toVector(), pos2.toVector());
@@ -215,17 +215,17 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     return location.equals(pos1) ? "true" : "false";
                 }
             } else if (player != null) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
-                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getPlayerData(player.getUniqueId()).getLocation(name);
+                        : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getPlayerData(player.getUniqueId()).getLocation(name);
                 if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
-                    else miniGame.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return location == null ? "false" : "true";
                 else if (isSet) {
                     double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
@@ -235,7 +235,7 @@ public class Location implements Process {
                     else if (isPosYaw)  location.setYaw((float) value);
                     else if (isPosPitch)  location.setPitch((float) value);
                 }
-                else if (isRemove) miniGame.getPlayerData(player.getUniqueId()).setLocation(name, null);
+                else if (isRemove) GameDataStore.getPlayerData(player.getUniqueId()).setLocation(name, null);
                 else if (isPosX) return location.getX() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isPosY) return location.getY() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isPosZ) return location.getZ() + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -249,13 +249,13 @@ public class Location implements Process {
                     boolean hasDirection = processList.size() >= 12;
                     float yaw = !hasDirection ? 0 : (float) Double.parseDouble(processList.get(10).run(miniGame, procUnit));
                     float pitch = !hasDirection ? 0 : (float) Double.parseDouble(processList.get(12).run(miniGame, procUnit));
-                    miniGame.getPlayerData(player.getUniqueId()).setLocation(name, new org.bukkit.Location(world, posX, posY, posZ, yaw, pitch));
+                    GameDataStore.getPlayerData(player.getUniqueId()).setLocation(name, new org.bukkit.Location(world, posX, posY, posZ, yaw, pitch));
                 } else if (isClone) {
                     Process proc = processList.get(2);
                     String value = proc.run(miniGame, procUnit);
                     if (proc.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setLocation(value, location.clone());
                     else if (proc.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setLocation(value, location.clone());
-                    else miniGame.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setLocation(value, location.clone());
                 } else if (isAdd) {
                     double posX = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
                     double posY = Double.parseDouble(processList.get(4).run(miniGame, procUnit));
@@ -267,13 +267,13 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     Process proc2 = processList.get(4);
                     String value2 = proc2.run(miniGame, procUnit);
                     org.bukkit.Location pos2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) pos2 = miniGame.getGameData().getLocation(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) pos2 = GameDataStore.getInst().getLocation(value2);
-                    else pos2 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+                    else pos2 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value2);
                     if (location.getWorld() != pos1.getWorld() || pos1.getWorld() != pos2.getWorld()) return "false";
                     Vector min = Vector.getMinimum(pos1.toVector(), pos2.toVector());
                     Vector max = Vector.getMaximum(pos1.toVector(), pos2.toVector());
@@ -284,7 +284,7 @@ public class Location implements Process {
                     org.bukkit.Location pos1;
                     if (proc1.getType() == ProcType.EXECUTE_GAME) pos1 = miniGame.getGameData().getLocation(value);
                     else if (proc1.getType() == ProcType.EXECUTE_ONLINE) pos1 = GameDataStore.getInst().getLocation(value);
-                    else pos1 = miniGame.getPlayerData(player.getUniqueId()).getLocation(value);
+                    else pos1 = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(value);
                     return location.equals(pos1) ? "true" : "false";
                 }
             }

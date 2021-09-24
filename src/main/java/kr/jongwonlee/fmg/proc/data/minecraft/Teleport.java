@@ -38,7 +38,7 @@ public class Teleport implements Process {
             Location location;
             if (isOnline) location = GameDataStore.getInst().getLocation(message);
             else if (isGame) location = miniGame.getGameData().getLocation(message);
-            else location = miniGame.getPlayerData(player.getUniqueId()).getLocation(message);
+            else location = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(message);
             if (location != null) player.teleport(location);
         } /*else {
             Entity entity = procUnit.target.entity;

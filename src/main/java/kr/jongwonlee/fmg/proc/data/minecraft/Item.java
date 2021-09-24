@@ -89,7 +89,7 @@ public class Item implements Process {
                     ItemStack itemStack2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
-                    else itemStack2 = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value2);
+                    else itemStack2 = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
                     return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     ItemStack itemStack = miniGame.getGameData().getItemStack(name);
@@ -171,7 +171,7 @@ public class Item implements Process {
                             ItemStack itemStack = GameDataStore.getInst().getItemStack(value);
                             miniGame.getGameData().setItemStack(name, cloneItemStack(itemStack));
                         } else if (player != null) {
-                            ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
+                            ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value);
                             miniGame.getGameData().setItemStack(name, cloneItemStack(itemStack));
                         }
                     }
@@ -209,7 +209,7 @@ public class Item implements Process {
                     ItemStack itemStack2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
-                    else itemStack2 = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value2);
+                    else itemStack2 = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
                     return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     ItemStack itemStack = GameDataStore.getInst().getItemStack(name);
@@ -291,7 +291,7 @@ public class Item implements Process {
                             ItemStack itemStack = GameDataStore.getInst().getItemStack(value);
                             GameDataStore.getInst().setItemStack(name, cloneItemStack(itemStack));
                         } else if (player != null) {
-                            ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
+                            ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value);
                             GameDataStore.getInst().setItemStack(name, cloneItemStack(itemStack));
                         }
                     }
@@ -320,24 +320,24 @@ public class Item implements Process {
                 }
             } else if (player != null) {
                 if (isCode) {
-                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack == null || itemStack.getType() == Material.AIR ? "0:0" : itemStack.getTypeId() + ":" + itemStack.getData().getData();
                 } else if (isEquals) {
-                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     Process proc2 = processList.get(2);
                     String value2 = proc2.run(miniGame, procUnit);
                     ItemStack itemStack2;
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
-                    else itemStack2 = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value2);
+                    else itemStack2 = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
                     return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
-                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isAdd) {
                     if (isLore) {
                         String value = processList.get(2).run(miniGame, procUnit);
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         if (isExist(itemStack)) {
                             ItemMeta itemMeta = itemStack.getItemMeta();
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -348,16 +348,16 @@ public class Item implements Process {
                             itemStack.setItemMeta(itemMeta);
                         }
                     } else {
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         player.getInventory().addItem(cloneItemStack(itemStack));
                     }
                 } else if (isSet) {
                     if (isSize) {
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         itemStack.setAmount(Integer.parseInt(processList.get(2).run(miniGame, procUnit)));
                     } else if (isName) {
                         String value = processList.get(2).run(miniGame, procUnit);
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         if (isExist(itemStack)) {
                             ItemMeta itemMeta = itemStack.getItemMeta();
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -367,7 +367,7 @@ public class Item implements Process {
                     } else if (isLore) {
                         int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
                         String value = processList.get(4).run(miniGame, procUnit);
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         if (isExist(itemStack)) {
                             ItemMeta itemMeta = itemStack.getItemMeta();
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -388,41 +388,41 @@ public class Item implements Process {
                         boolean isPlayerItemStack = process.getType() == ProcType.EXECUTE_PLAYER;
                         if (isPlayerItemStack) {
                             ItemStack itemStack = player.getInventory().getItem(Integer.parseInt(value));
-                            miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                            GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                         } else if (isCodeItemStack) {
                             try {
                                 byte damage = Byte.parseByte(processList.get(4).run(miniGame, procUnit));
                                 ItemStack itemStack = new ItemStack(Material.getMaterial(Integer.parseInt(value)), 1, damage);
-                                miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                                GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                             } catch (Exception ignored) {
                                 ItemStack itemStack = new ItemStack(Material.getMaterial(Integer.parseInt(value)));
-                                miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                                GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                             }
                         } else if (isTypeItemStack) {
                             ItemStack itemStack = new ItemStack(Material.getMaterial(value));
-                            miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                            GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                         } else if (isGameItemStack){
                             GameData gameData = miniGame.getGameData();
                             ItemStack itemStack = gameData.getItemStack(value);
-                            miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                            GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                         } else if (isAllItemStack) {
-                            ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
-                            miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                            ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value);
+                            GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                         } else {
-                            ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(value);
-                            miniGame.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
+                            ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(value);
+                            GameDataStore.getPlayerData(player.getUniqueId()).setItemStack(name, cloneItemStack(itemStack));
                         }
                     }
                 } else if (isSize) {
-                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack.getAmount() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isType) {
-                    ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                    ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack.getType().name() + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isRemove) {
                     if (isLore) {
                         int line = Integer.parseInt(processList.get(2).run(miniGame, procUnit));
-                        ItemStack itemStack = miniGame.getPlayerData(player.getUniqueId()).getItemStack(name);
+                        ItemStack itemStack = GameDataStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                         if (isExist(itemStack)) {
                             ItemMeta itemMeta = itemStack.getItemMeta();
                             if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());

@@ -4,10 +4,13 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.util.YamlStore;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class GameDataStore extends GameData {
 
     private static GameDataStore instance;
+    private static Map<UUID, GameData> playersData;
     private static final YamlStore dataStore = new YamlStore("data.yml");
     private static final YamlStore itemStackStore = new YamlStore("items.yml");
     private static final YamlStore locationStore = new YamlStore("locations.yml");
@@ -22,6 +25,15 @@ public class GameDataStore extends GameData {
                 itemStackStore.getItemStackMap(""),
                 inventoryStore.getInventoryMap(""),
                 listStore.getListMap(""));
+        playersData = new HashMap<>();
+    }
+
+    public static Map<UUID, GameData> getPlayersData() {
+        return playersData;
+    }
+
+    public static GameData getPlayerData(UUID uuid) {
+        return playersData.getOrDefault(uuid, null);
     }
 
     public static GameDataStore getInst() {

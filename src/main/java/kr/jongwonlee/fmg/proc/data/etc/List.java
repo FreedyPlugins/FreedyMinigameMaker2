@@ -66,7 +66,7 @@ public class List implements Process {
                     String value2 = proc2.run(miniGame, procUnit);
                     if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
-                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
                 } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isShuffle) Collections.shuffle(list);
@@ -103,7 +103,7 @@ public class List implements Process {
                     String value2 = proc2.run(miniGame, procUnit);
                     if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
-                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
                 } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isShuffle) Collections.shuffle(list);
@@ -134,24 +134,24 @@ public class List implements Process {
                     }
                 }
             } else if (player != null) {
-                java.util.List<String> list = miniGame.getPlayerData(player.getUniqueId()).getList(name);
+                java.util.List<String> list = GameDataStore.getPlayerData(player.getUniqueId()).getList(name);
                 if (isClone) {
                     Process proc2 = processList.get(2);
                     String value2 = proc2.run(miniGame, procUnit);
                     if (proc2.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setList(value2, new ArrayList<>(list));
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) GameDataStore.getInst().setList(value2, new ArrayList<>(list));
-                    else miniGame.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
+                    else GameDataStore.getPlayerData(player.getUniqueId()).setList(value2, new ArrayList<>(list));
                 } else if (isContains) return list == null ? "false" : list.contains(processList.get(2).run(miniGame, procUnit)) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSize) return list == null ? "0" : list.size() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isShuffle) Collections.shuffle(list);
                 else if (isClear && list != null) {
-                    miniGame.getPlayerData(player.getUniqueId()).setList(name, null);
+                    GameDataStore.getPlayerData(player.getUniqueId()).setList(name, null);
                     return frontBrace.getLastProc().run(miniGame, procUnit);
                 } else {
                     if (isAdd) {
                         if (list == null) {
                             list = new ArrayList<>();
-                            miniGame.getPlayerData(player.getUniqueId()).setList(name, list);
+                            GameDataStore.getPlayerData(player.getUniqueId()).setList(name, list);
                         }
                         String value = processList.get(2).run(miniGame, procUnit);
                         list.add(value);

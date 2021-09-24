@@ -24,7 +24,7 @@ public class CancelTask implements Process {
             Bukkit.getScheduler().cancelTask(taskId);
             miniGame.getGameData().removeTaskId(taskId);
             GameDataStore.getInst().removeTaskId(taskId);
-            miniGame.getPlayerData(procUnit.target.player.getUniqueId()).removeTaskId(taskId);
+            GameDataStore.getPlayerData(procUnit.target.player.getUniqueId()).removeTaskId(taskId);
         } catch (Exception ignored) { }
         return "";
     }
