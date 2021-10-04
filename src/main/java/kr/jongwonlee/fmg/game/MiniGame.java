@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,13 +17,13 @@ public class MiniGame {
 
     private final String name;
     private Map<String, ProcBundle> bundleMap;
-    private final Map<UUID, GameData> playersData;
+    private final List<UUID> players;
     private final GameData gameData;
 
     public MiniGame(String name) {
         this.name = name;
         bundleMap = FileParser.parseBundles(name);
-        playersData = new HashMap<>();
+        players = new ArrayList<>();
         gameData = new GameData();
     }
 
@@ -55,6 +55,10 @@ public class MiniGame {
         else return "";
     }
 
+    public List<UUID> getPlayers() {
+        return players;
+    }
+
     public ProcBundle getProcBundle(String name) {
         return bundleMap.getOrDefault(name, null);
     }
@@ -63,16 +67,8 @@ public class MiniGame {
         return name;
     }
 
-    public Map<UUID, GameData> getPlayersData() {
-        return playersData;
-    }
-
     public GameData getGameData() {
         return gameData;
-    }
-
-    public GameData getPlayerData(UUID uuid) {
-        return playersData.getOrDefault(uuid, gameData);
     }
 
     public void join(UUID playerUuid) {
@@ -80,22 +76,20 @@ public class MiniGame {
         GameStore.getGame(player).quit(playerUuid);
         String result = run(EventBundle.PRE_GAME_JOIN, player);
         if (result.equals("false")) return;
-        if (playersData.containsKey(playerUuid)) return;
-        playersData.put(playerUuid, new GameData());
+        if (players.contains(playerUuid)) return;
+        players.add(playerUuid);
         GameStore.setGame(player, this);
         run(EventBundle.GAME_JOIN, player);
     }
 
     public void quit(UUID playerUuid) {
-        if (!playersData.containsKey(playerUuid)) return;
+        if (!players.contains(playerUuid)) return;
         Player player = toPlayer(playerUuid);
-        getPlayerData(playerUuid).cancelTaskAll();
         run(EventBundle.PRE_GAME_LEFT, player);
-        playersData.get(playerUuid).cancelTaskAll();
-        playersData.remove(playerUuid);
+        players.remove(playerUuid);
         GameStore.removeGame(player);
         run(EventBundle.GAME_LEFT, player);
-        if (playersData.size() == 0) disable();
+        if (players.size() == 0) disable();
         GameStore.getHubGame().join(playerUuid);
     }
 
@@ -111,8 +105,8 @@ public class MiniGame {
         String result = run(EventBundle.PRE_GAME_STOP);
         if (result.equals("false")) return;
         gameData.cancelTaskAll();
-        new ArrayList<>(playersData.keySet()).forEach(this::quit);
-        playersData.clear();
+        new ArrayList<>(players).forEach(this::quit);
+        players.clear();
         gameData.clear();
         run(EventBundle.GAME_STOP);
     }

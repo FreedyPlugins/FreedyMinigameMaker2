@@ -39,7 +39,7 @@ public class Title implements Process {
             String fadeOut = processList.get(4).run(miniGame, procUnit);
             String title = processList.get(6).run(miniGame, procUnit);
             String subTitle = processList.get(8).run(miniGame, procUnit);
-            if (isGame) miniGame.getPlayersData().keySet().forEach(uuid -> Bukkit.getPlayer(uuid).sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut)));
+            if (isGame) miniGame.getPlayers().forEach(uuid -> Bukkit.getPlayer(uuid).sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut)));
             else if (isOnline) Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut)));
             else if (procUnit.target.player != null) procUnit.target.player.sendTitle(title, subTitle, Integer.parseInt(fadeIn), Integer.parseInt(keeping), Integer.parseInt(fadeOut));
         } catch (NumberFormatException e) {

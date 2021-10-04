@@ -3,6 +3,7 @@ package kr.jongwonlee.fmg.proc.data.control;
 import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.game.GameData;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -55,7 +56,7 @@ public class Target implements Process {
                 List<String> list = null;
                 if (process.getType() == ProcType.EXECUTE_GAME) list = miniGame.getGameData().getList(name);
                 else if (process.getType() == ProcType.EXECUTE_ONLINE) list = GameDataStore.getInst().getList(name);
-                else if (originPlayer != null) list = miniGame.getPlayerData(originPlayer.getUniqueId()).getList(name);
+                else if (originPlayer != null) list = GameStore.getPlayerData(originPlayer.getUniqueId()).getList(name);
                 Process proc2 = processList.get(2);
                 String value2 = proc2.run(miniGame, procUnit);
                 Process lastProc = frontBrace.getLastProc();
@@ -76,7 +77,7 @@ public class Target implements Process {
                     }
                 }
                 else if (originPlayer != null) {
-                    GameData playerData = miniGame.getPlayerData(originPlayer.getUniqueId());
+                    GameData playerData = GameStore.getPlayerData(originPlayer.getUniqueId());
                     if (list != null) {
                         for (String e : new ArrayList<>(list)) {
                             playerData.setData(value2, e);
@@ -91,7 +92,7 @@ public class Target implements Process {
                 List<String> list = null;
                 if (process.getType() == ProcType.EXECUTE_GAME) list = miniGame.getGameData().getList(name);
                 else if (process.getType() == ProcType.EXECUTE_ONLINE) list = GameDataStore.getInst().getList(name);
-                else if (originPlayer != null) list = miniGame.getPlayerData(originPlayer.getUniqueId()).getList(name);
+                else if (originPlayer != null) list = GameStore.getPlayerData(originPlayer.getUniqueId()).getList(name);
                 Process lastProc = frontBrace.getLastProc();
                 if (list != null) new ArrayList<>(list).forEach(element -> {
                     try {

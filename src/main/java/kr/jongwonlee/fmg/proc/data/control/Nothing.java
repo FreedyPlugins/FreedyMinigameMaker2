@@ -3,8 +3,6 @@ package kr.jongwonlee.fmg.proc.data.control;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 @Processable(alias = "NOTHING")  //must be capital letter to prevent notice
 public class Nothing implements Process {

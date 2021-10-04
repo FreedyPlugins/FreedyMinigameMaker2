@@ -2,9 +2,10 @@ package kr.jongwonlee.fmg.proc.data.minecraft;
 
 import com.eatthepath.uuid.FastUUID;
 import kr.jongwonlee.fmg.conf.GameDataStore;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -45,7 +46,7 @@ public class Spawn implements Process {
             if (proc2.getType() == ProcType.EXECUTE_GAME) location = miniGame.getGameData().getLocation(value2);
             else if (proc2.getType() == ProcType.EXECUTE_ONLINE) location = GameDataStore.getInst().getLocation(value2);
             else if (proc2.getType() == ProcType.EXECUTE_PLAYER) location = player.getLocation();
-            else location = miniGame.getPlayerData(player.getUniqueId()).getLocation(value2);
+            else location = GameStore.getPlayerData(player.getUniqueId()).getLocation(value2);
             Entity entity = location.getWorld().spawn(location, EntityType.valueOf(value1).getEntityClass(), e -> {
                 Entity origin = procUnit.target.entity;
                 procUnit.target.entity = e;

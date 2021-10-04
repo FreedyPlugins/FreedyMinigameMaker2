@@ -27,7 +27,7 @@ public class SendMessage implements Process {
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         String message = process.run(miniGame, procUnit);
-        if (isGame) miniGame.getPlayersData().keySet().forEach(uuid -> Bukkit.getPlayer(uuid).sendMessage(message));
+        if (isGame) miniGame.getPlayers().forEach(uuid -> Bukkit.getPlayer(uuid).sendMessage(message));
         else if (isOnline) Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
         else if (procUnit.target.player != null) procUnit.target.player.sendMessage(message);
         return message;

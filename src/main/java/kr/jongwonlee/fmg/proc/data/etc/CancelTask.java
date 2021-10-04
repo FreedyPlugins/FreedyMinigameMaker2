@@ -1,6 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.conf.GameDataStore;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -24,7 +25,7 @@ public class CancelTask implements Process {
             Bukkit.getScheduler().cancelTask(taskId);
             miniGame.getGameData().removeTaskId(taskId);
             GameDataStore.getInst().removeTaskId(taskId);
-            miniGame.getPlayerData(procUnit.target.player.getUniqueId()).removeTaskId(taskId);
+            GameStore.getPlayerData(procUnit.target.player.getUniqueId()).removeTaskId(taskId);
         } catch (Exception ignored) { }
         return "";
     }

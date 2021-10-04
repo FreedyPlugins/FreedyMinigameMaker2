@@ -51,7 +51,7 @@ public class Sound implements Process {
                 if (volume < 0) volume = Float.MAX_VALUE;
                 float pitch = (float) Double.parseDouble(processList.get(4).run(miniGame, procUnit));
                 float finalVolume = volume;
-                miniGame.getPlayersData().keySet().forEach(uuid -> Bukkit.getPlayer(uuid).playSound(player.getLocation(), name, finalVolume, pitch));
+                miniGame.getPlayers().forEach(uuid -> Bukkit.getPlayer(uuid).playSound(player.getLocation(), name, finalVolume, pitch));
             } else if (player != null) {
                 String name = processList.get(0).run(miniGame, procUnit);
                 float volume = (float) Double.parseDouble(processList.get(2).run(miniGame, procUnit));

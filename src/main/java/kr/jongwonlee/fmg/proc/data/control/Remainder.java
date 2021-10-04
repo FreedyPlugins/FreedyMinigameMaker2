@@ -4,8 +4,6 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
-import java.util.function.BiConsumer;
-
 @Processable(alias = {"%"})
 public class Remainder implements MathOperator {
 

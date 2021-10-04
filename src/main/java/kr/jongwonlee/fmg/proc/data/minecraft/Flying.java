@@ -1,8 +1,8 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.entity.Player;
 

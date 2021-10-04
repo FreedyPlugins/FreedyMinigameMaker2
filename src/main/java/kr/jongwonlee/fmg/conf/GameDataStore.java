@@ -2,10 +2,9 @@ package kr.jongwonlee.fmg.conf;
 
 import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.util.YamlStore;
+import org.bukkit.event.Listener;
 
-import java.util.HashMap;
-
-public class GameDataStore extends GameData {
+public class GameDataStore extends GameData implements Listener {
 
     private static GameDataStore instance;
     private static final YamlStore dataStore = new YamlStore("data.yml");
