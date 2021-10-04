@@ -18,8 +18,10 @@ public class GameStore implements Listener {
     private static Map<Player, MiniGame> playerGameMap;
     private static MiniGame hubGame;
     private static GameStore gameStore;
+    private static Map<UUID, GameData> playersData;
 
     public static void init() {
+        playersData = new HashMap<>();
         if (gameMap == null) gameMap = new HashMap<>();
         if (playerGameMap == null) playerGameMap = new HashMap<>();
         createGame(Settings.getHubGameName());
@@ -39,19 +41,31 @@ public class GameStore implements Listener {
         }
     }
 
+    public static Map<UUID, GameData> getPlayersData() {
+        return playersData;
+    }
+
+    public static GameData getPlayerData(UUID uuid) {
+        return playersData.getOrDefault(uuid, null);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        GameStore.getHubGame().join(player.getUniqueId());
+        final UUID uniqueId = player.getUniqueId();
+        playersData.put(uniqueId, new GameData());
+        getHubGame().join(uniqueId);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        MiniGame game = getGame(player);
-        if (game != null) game.quit(player.getUniqueId());
-        getHubGame().quit(player.getUniqueId());
+        final MiniGame game = getGame(player);
+        final UUID uniqueId = player.getUniqueId();
+        if (game != null) game.quit(uniqueId);
+        getHubGame().quit(uniqueId);
         playerGameMap.remove(player);
+        playersData.remove(uniqueId);
     }
 
     public static MiniGame getGame(Player player) {

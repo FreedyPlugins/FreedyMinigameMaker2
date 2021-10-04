@@ -1,6 +1,5 @@
 package kr.jongwonlee.fmg.game;
 
-import kr.jongwonlee.fmg.conf.GameDataStore;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
@@ -9,7 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class MiniGame {
 

@@ -1,9 +1,9 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
-import kr.jongwonlee.fmg.conf.GameDataStore;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
+import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -58,7 +58,7 @@ public class BossBar implements Process {
             if (isExists) {
                 org.bukkit.boss.BossBar bossBar;
                 if (isGame) bossBar = miniGame.getGameData().getBossBar(name);
-                else bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                else bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
                 return ( bossBar != null ? "true" : "false" ) + frontBrace.getLastProc().run(miniGame, procUnit);
             }
             else if (isRemove) {
@@ -67,19 +67,19 @@ public class BossBar implements Process {
                     bossBar = miniGame.getGameData().getBossBar(name);
                     miniGame.getGameData().setBossBar(name, null);
                 } else {
-                    bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
-                    GameDataStore.getPlayerData(player.getUniqueId()).setBossBar(name, null);
+                    bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                    GameStore.getPlayerData(player.getUniqueId()).setBossBar(name, null);
                 }
                 bossBar.removeAll();
             } else if (isClose) {
                 org.bukkit.boss.BossBar bossBar;
                 if (isGame) bossBar = miniGame.getGameData().getBossBar(name);
-                else bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                else bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
                 bossBar.removePlayer(player);
             } else if (isOpen) {
                 org.bukkit.boss.BossBar bossBar;
                 if (isGame) bossBar = miniGame.getGameData().getBossBar(name);
-                else bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                else bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
                 bossBar.addPlayer(player);
             } else if (isCreate) {
                 {
@@ -88,8 +88,8 @@ public class BossBar implements Process {
                         bossBar = miniGame.getGameData().getBossBar(name);
                         miniGame.getGameData().setBossBar(name, null);
                     } else {
-                        bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
-                        GameDataStore.getPlayerData(player.getUniqueId()).setBossBar(name, null);
+                        bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                        GameStore.getPlayerData(player.getUniqueId()).setBossBar(name, null);
                     }
                     if (bossBar != null) bossBar.removeAll();
                 }
@@ -120,13 +120,13 @@ public class BossBar implements Process {
                 }
                 org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar("", BarColor.valueOf(value2), barStyle);
                 if (isGame) miniGame.getGameData().setBossBar(name, bossBar);
-                else GameDataStore.getPlayerData(player.getUniqueId()).setBossBar(name, bossBar);
+                else GameStore.getPlayerData(player.getUniqueId()).setBossBar(name, bossBar);
             } else if (isSet) {
                 Process proc2 = processList.get(2);
                 String value2 = proc2.run(miniGame, procUnit);
                 org.bukkit.boss.BossBar bossBar;
                 if (isGame) bossBar = miniGame.getGameData().getBossBar(name);
-                else bossBar = GameDataStore.getPlayerData(player.getUniqueId()).getBossBar(name);
+                else bossBar = GameStore.getPlayerData(player.getUniqueId()).getBossBar(name);
                 if (isColor) bossBar.setColor(BarColor.valueOf(value2));
                 else if (isType) {
                     BarStyle barStyle;

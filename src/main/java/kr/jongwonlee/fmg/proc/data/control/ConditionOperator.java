@@ -2,7 +2,6 @@ package kr.jongwonlee.fmg.proc.data.control;
 
 import kr.jongwonlee.fmg.proc.ProcType;
 import kr.jongwonlee.fmg.proc.Process;
-import org.bukkit.Bukkit;
 
 public abstract class ConditionOperator implements Process {
 

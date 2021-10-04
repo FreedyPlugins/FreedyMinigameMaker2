@@ -1,6 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
 import kr.jongwonlee.fmg.conf.GameDataStore;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -38,7 +39,7 @@ public class Teleport implements Process {
             Location location;
             if (isOnline) location = GameDataStore.getInst().getLocation(message);
             else if (isGame) location = miniGame.getGameData().getLocation(message);
-            else location = GameDataStore.getPlayerData(player.getUniqueId()).getLocation(message);
+            else location = GameStore.getPlayerData(player.getUniqueId()).getLocation(message);
             if (location != null) player.teleport(location);
         } /*else {
             Entity entity = procUnit.target.entity;

@@ -1,7 +1,7 @@
 package kr.jongwonlee.fmg.proc.data.etc;
 
 import kr.jongwonlee.fmg.FMGPlugin;
-import kr.jongwonlee.fmg.conf.GameDataStore;
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -51,7 +51,7 @@ public class Delay implements Process {
         if (isAsync) taskId = FMGPlugin.runTaskLaterAsync(runnable, ((long) Double.parseDouble(delay)));
         else taskId = FMGPlugin.runTaskLater(runnable, ((long) Double.parseDouble(delay)));
         if (isGame) miniGame.getGameData().addTaskId(taskId);
-        else if (!isOnline && player != null) GameDataStore.getPlayerData(player.getUniqueId()).addTaskId(taskId);
+        else if (!isOnline && player != null) GameStore.getPlayerData(player.getUniqueId()).addTaskId(taskId);
         procUnit2.setTaskId(taskId);
         return String.valueOf(taskId);
     }
