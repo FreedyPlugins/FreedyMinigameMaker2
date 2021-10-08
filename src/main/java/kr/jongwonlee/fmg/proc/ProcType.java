@@ -77,6 +77,7 @@ public enum ProcType {
     EXECUTE_TYPE(ExecuteType.class),
     EXECUTE_UPDATE(ExecuteUpdate.class),
     EXECUTE_WORLD(ExecuteWorld.class),
+    HASH_CODE(HashCode.class),
     INT(Int.class),
     JOIN(Join.class),
     LEFT(Left.class),
