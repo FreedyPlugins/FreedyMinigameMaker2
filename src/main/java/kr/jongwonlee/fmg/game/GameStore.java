@@ -18,10 +18,9 @@ public class GameStore implements Listener {
     private static Map<Player, MiniGame> playerGameMap;
     private static MiniGame hubGame;
     private static GameStore gameStore;
-    private static Map<UUID, GameData> playersData;
+    private static Map<UUID, GameData> playersData = new HashMap<>();
 
     public static void init() {
-        playersData = new HashMap<>();
         if (gameMap == null) gameMap = new HashMap<>();
         if (playerGameMap == null) playerGameMap = new HashMap<>();
         createGame(Settings.getHubGameName());
@@ -34,10 +33,9 @@ public class GameStore implements Listener {
             }
         }
         gameMap.values().forEach(MiniGame::reload);
-        if (GameStore.gameStore == null) {
-            GameStore gameStore = new GameStore();
+        if (gameStore == null) {
+            gameStore = new GameStore();
             FMGPlugin.registerEvent(gameStore);
-            GameStore.gameStore = gameStore;
         }
     }
 
