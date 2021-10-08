@@ -91,7 +91,7 @@ public class Item implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
                     else itemStack2 = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
-                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     ItemStack itemStack = miniGame.getGameData().getItemStack(name);
                     return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -211,7 +211,7 @@ public class Item implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
                     else itemStack2 = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
-                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     ItemStack itemStack = GameDataStore.getInst().getItemStack(name);
                     return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -331,7 +331,7 @@ public class Item implements Process {
                     if (proc2.getType() == ProcType.EXECUTE_GAME) itemStack2 = miniGame.getGameData().getItemStack(value2);
                     else if (proc2.getType() == ProcType.EXECUTE_ONLINE) itemStack2 = GameDataStore.getInst().getItemStack(value2);
                     else itemStack2 = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value2);
-                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
+                    return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
                 } else if (isExists) {
                     ItemStack itemStack = GameStore.getPlayerData(player.getUniqueId()).getItemStack(name);
                     return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
