@@ -6,6 +6,7 @@ import kr.jongwonlee.fmg.proc.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Processable(alias = "if")
 public class If extends ConditionOperator {
@@ -13,6 +14,7 @@ public class If extends ConditionOperator {
     private SmallFrontBrace frontBrace;
     private MidFrontBrace midFrontBrace;
     private boolean result = true;
+    private int bundleHash;
 
     public boolean isResult() {
         return result;
@@ -23,8 +25,13 @@ public class If extends ConditionOperator {
         return ProcType.IF;
     }
 
+    public int getBundleHash() {
+        return bundleHash;
+    }
+
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        bundleHash = setBundleHash(parseUnit);
         parseUnit.addIf(this);
         Process parseProcess = FileParser.parseProcess(parseUnit, arguments);
         if (!(parseProcess instanceof SmallFrontBrace)) return;
@@ -77,6 +84,13 @@ public class If extends ConditionOperator {
         }
         if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
         return "";
+    }
+
+    public static int setBundleHash(ParseUnit parseUnit) {
+        List<FrontBrace> braces = parseUnit.getBraces().stream()
+                .filter(frontBrace1 -> frontBrace1 instanceof MidFrontBrace).collect(Collectors.toList());
+        if (braces.isEmpty()) return parseUnit.hashCode();
+        else return braces.get(braces.size() - 1).hashCode();
     }
 
 }

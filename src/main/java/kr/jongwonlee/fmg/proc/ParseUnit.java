@@ -48,12 +48,20 @@ public class ParseUnit {
         return braceList.get(braceList.size() - 1);
     }
 
+    public List<FrontBrace> getBraces() {
+        return new ArrayList<>(braceList);
+    }
+
     public void addIf(If anIf) {
         ifList.add(anIf);
     }
 
     public void removeIf() {
         if (ifList.size() != 0) ifList.remove(ifList.size() - 1);
+    }
+
+    public void removeIf(If aIf) {
+        ifList.remove(aIf);
     }
 
     public boolean hasIf() {
@@ -63,6 +71,10 @@ public class ParseUnit {
     public If getIf() {
         if (ifList.size() == 0) return null;
         return ifList.get(ifList.size() - 1);
+    }
+
+    public List<If> getIfs() {
+        return new ArrayList<>(ifList);
     }
 
     @Deprecated
