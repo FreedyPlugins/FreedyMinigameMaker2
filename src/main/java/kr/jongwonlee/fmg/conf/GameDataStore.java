@@ -4,6 +4,8 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.util.YamlStore;
 import org.bukkit.event.Listener;
 
+import java.util.Map;
+
 public class GameDataStore extends GameData implements Listener {
 
     private static GameDataStore instance;
@@ -38,16 +40,25 @@ public class GameDataStore extends GameData implements Listener {
         itemStackStore.reset(false);
         inventoryStore.reset(false);
         listStore.reset(false);
-        inst.dataMap.forEach(dataStore::set);
-        inst.locationMap.forEach(locationStore::setLocation);
-        inst.itemStackMap.forEach(itemStackStore::set);
-        inst.inventoryMap.forEach(inventoryStore::setInventory);
-        inst.listMap.forEach(listStore::setList);
-        dataStore.save();
-        itemStackStore.save();
-        locationStore.save();
-        inventoryStore.save();
-        listStore.save();
+        set(inst.dataMap, dataStore::set, dataStore);
+        set(inst.locationMap, locationStore::setLocation, locationStore);
+        set(inst.itemStackMap, itemStackStore::set, itemStackStore);
+        set(inst.inventoryMap, inventoryStore::setInventory, inventoryStore);
+        set(inst.listMap, listStore::setList, listStore);
+    }
+
+    @FunctionalInterface
+    private interface Setter<T> {
+        void run(String string, T t);
+    }
+
+    public static <T> void set(Map<String, T> map, Setter<T> setter, YamlStore yamlStore) {
+        try {
+            map.forEach(setter::run);
+            yamlStore.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

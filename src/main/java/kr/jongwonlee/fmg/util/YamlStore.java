@@ -187,7 +187,7 @@ public class YamlStore extends FileStore {
     }
 
     public void setList(String path, List<String> stringList) {
-        if (stringList.size() == 0) set(path, null);
+        if (stringList == null || stringList.size() == 0) set(path, null);
         else set(path, stringList);
     }
 
