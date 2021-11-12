@@ -460,7 +460,6 @@ public class Inventory implements Process {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
         return frontBrace.getLastProc().run(miniGame, procUnit);
