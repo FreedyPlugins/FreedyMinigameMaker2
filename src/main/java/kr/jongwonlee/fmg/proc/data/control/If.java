@@ -40,7 +40,8 @@ public class If extends ConditionOperator {
         if (processList.size() == 0) return;
         Process process = processList.get(processList.size() - 1);
         if (process instanceof SmallEndBrace) {
-            processList.add(FileParser.getOneMoreLine(parseUnit, ""));
+            Then then = FileParser.getOneMoreLine(parseUnit, "");
+            processList.add(then);
         } else if (process instanceof MidFrontBrace) {
             midFrontBrace = ((MidFrontBrace) process);
         }
@@ -63,6 +64,7 @@ public class If extends ConditionOperator {
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
                     if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
+                    return "";
                 }
                 else if (!result && compareType == ProcType.AND) return "";
             } else if (process instanceof SmallEndBrace) {
