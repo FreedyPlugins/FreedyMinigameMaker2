@@ -46,7 +46,7 @@ public class GameData {
         this.inventoryMap = new HashMap<>();
         this.listMap = new HashMap<>();
         this.bossBarMap = new HashMap<>();
-        taskIdList = new ArrayList<>();
+        this.taskIdList = new ArrayList<>();
     }
 
     public Location getLocation(String key) {
