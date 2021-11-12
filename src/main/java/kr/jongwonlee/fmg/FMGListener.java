@@ -46,10 +46,10 @@ public class FMGListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (!player.isOnline()) return;
-        MiniGame game = GameStore.getGame(player);
+        MiniGame game = GameStore.getHubGame();
         GameData playerData = GameStore.getPlayerData(player.getUniqueId());
         playerData.setData("joinMessage", event.getJoinMessage());
-        game.run(EventBundle.JOIN, player);
+        game.run("join", player);
         String joinMessage = playerData.getData("joinMessage");
         if (joinMessage.equals("null")) event.setJoinMessage(null);
         else event.setJoinMessage(joinMessage);
@@ -59,10 +59,10 @@ public class FMGListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (!player.isOnline()) return;
-        MiniGame game = GameStore.getGame(player);
+        MiniGame game = GameStore.getHubGame();
         GameData playerData = GameStore.getPlayerData(player.getUniqueId());
         playerData.setData("leftMessage", event.getQuitMessage());
-        game.run(EventBundle.LEFT, player);
+        game.run("left", player);
         String joinMessage = playerData.getData("leftMessage");
         if (joinMessage.equals("null")) event.setQuitMessage(null);
         else event.setQuitMessage(joinMessage);
