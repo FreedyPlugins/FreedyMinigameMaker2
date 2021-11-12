@@ -2,7 +2,10 @@ package kr.jongwonlee.fmg.game;
 
 import kr.jongwonlee.fmg.FMGPlugin;
 import kr.jongwonlee.fmg.conf.Settings;
+import kr.jongwonlee.fmg.proc.FileParser;
+import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.util.FileStore;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,6 +17,7 @@ import java.util.*;
 
 public class GameStore implements Listener {
 
+    private static Map<String, Map<String, ProcBundle>> bundleMap;
     private static Map<String, MiniGame> gameMap;
     private static Map<Player, MiniGame> playerGameMap;
     private static MiniGame hubGame;
@@ -21,22 +25,22 @@ public class GameStore implements Listener {
     private static Map<UUID, GameData> playersData = new HashMap<>();
 
     public static void init() {
-        if (gameMap == null) gameMap = new HashMap<>();
-        if (playerGameMap == null) playerGameMap = new HashMap<>();
-        createGame(Settings.getHubGameName());
-        hubGame = getGame(Settings.getHubGameName());
-        List<String> dirFiles = FileStore.getDirFiles("");
-        dirFiles.forEach(GameStore::loadGame);
-        for (String name : new ArrayList<>(gameMap.keySet())) {
-            if (!dirFiles.contains(name) || name.length() == 0) {
-                removeGame(name);
-            }
-        }
-        gameMap.values().forEach(MiniGame::reload);
         if (gameStore == null) {
             gameStore = new GameStore();
             FMGPlugin.registerEvent(gameStore);
         }
+        if (gameMap == null) gameMap = new HashMap<>();
+        if (playerGameMap == null) playerGameMap = new HashMap<>();
+        bundleMap = new HashMap<>();
+        List<String> dirFiles = FileStore.getDirFiles("");
+        dirFiles.forEach(name -> bundleMap.put(name, FileParser.parseBundles(name)));
+        createGame(Settings.getHubGameName());
+        hubGame = getGame(Settings.getHubGameName());
+        gameMap.values().forEach(MiniGame::reload);
+    }
+
+    public static Map<String, ProcBundle> getBundles(String name) {
+        return bundleMap.getOrDefault(name, null);
     }
 
     public static Map<UUID, GameData> getPlayersData() {
@@ -79,7 +83,6 @@ public class GameStore implements Listener {
         playerGameMap.remove(player);
     }
 
-    @Deprecated
     public static void createGame(String name, MiniGame game) {
         if (isGame(name)) return;
         gameMap.put(name, game);
@@ -91,7 +94,6 @@ public class GameStore implements Listener {
         gameMap.put(name, game);
     }
 
-    @Deprecated
     public static void unloadGame(String name) {
         if (isGame(name)) return;
         gameMap.remove(name);

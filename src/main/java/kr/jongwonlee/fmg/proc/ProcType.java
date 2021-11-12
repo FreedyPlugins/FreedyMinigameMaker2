@@ -89,6 +89,7 @@ public enum ProcType {
     MATH_SQRT(MathSqrt.class),
     MATH_TAN(MathTan.class),
     MILLI_SECONDS(MilliSeconds.class),
+    MINI_GAME(MiniGame.class),
     RANDOM(Random.class),
     REFERENCE(Refs.class),
     REPEAT(Repeat.class),
