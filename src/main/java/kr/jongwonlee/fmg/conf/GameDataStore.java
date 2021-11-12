@@ -34,7 +34,6 @@ public class GameDataStore extends GameData implements Listener {
     public static void save() {
         GameDataStore inst = getInst();
         dataStore.reset(false);
-        dataStore.reset(false);
         locationStore.reset(false);
         itemStackStore.reset(false);
         inventoryStore.reset(false);
