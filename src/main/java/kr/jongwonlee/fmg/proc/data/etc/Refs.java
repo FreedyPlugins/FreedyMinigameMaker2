@@ -32,7 +32,7 @@ public class Refs implements Process {
             List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             String message = processList.get(2).run(miniGame, procUnit);
-            return GameStore.getGame(name).getProcBundle(message).run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
+            return GameStore.getBundles(name).get(message).run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
         } catch (Exception ignored) {
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
