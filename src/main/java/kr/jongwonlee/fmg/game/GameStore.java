@@ -36,6 +36,7 @@ public class GameStore implements Listener {
         dirFiles.forEach(name -> bundleMap.put(name, FileParser.parseBundles(name)));
         createGame(Settings.getHubGameName());
         hubGame = getGame(Settings.getHubGameName());
+        bundleMap.keySet().forEach(GameStore::createGame);
         gameMap.values().forEach(MiniGame::reload);
     }
 

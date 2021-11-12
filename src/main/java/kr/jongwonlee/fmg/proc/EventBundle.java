@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 public enum EventBundle {
 
-    JOIN,
-    LEFT,
     PRE_GAME_JOIN,
     GAME_JOIN,
     PRE_GAME_LEFT,

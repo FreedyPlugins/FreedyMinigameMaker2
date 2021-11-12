@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
@@ -32,8 +33,12 @@ public class Refs implements Process {
             List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             String message = processList.get(2).run(miniGame, procUnit);
-            return GameStore.getBundles(name).get(message).run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
+            return GameStore
+                    .getBundles(name)
+                    .get(message)
+                    .run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
         } catch (Exception ignored) {
+            ignored.printStackTrace();
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
 
