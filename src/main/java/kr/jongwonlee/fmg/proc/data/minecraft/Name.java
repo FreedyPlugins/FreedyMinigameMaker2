@@ -1,5 +1,6 @@
 package kr.jongwonlee.fmg.proc.data.minecraft;
 
+import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
@@ -33,7 +34,7 @@ public class Name implements Process {
         if (isSet) {
             if (isPlayer) player.setDisplayName(message);
             else player.setPlayerListName(message);
-        } else if (isGame) return miniGame.getName() + message;
+        } else if (isGame) return GameStore.getGame(player).getName();
         else if (isPlayer) {
             if (player != null) return player.getName() + message;
         } else if (isEntity) {
