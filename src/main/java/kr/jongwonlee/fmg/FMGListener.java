@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.game.GameData;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
 import kr.jongwonlee.fmg.proc.EventBundle;
+import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -31,6 +32,14 @@ public class FMGListener implements Listener {
 
     public static void init() {
         FMGPlugin.registerEvent(new FMGListener());
+    }
+
+    public static void onEnable() {
+        GameStore.getHubGame().run("server enable", ProcUnit.getNewProcUnit());
+    }
+
+    public static void onDisable() {
+        GameStore.getHubGame().run("server disable", ProcUnit.getNewProcUnit());
     }
 
     @EventHandler
