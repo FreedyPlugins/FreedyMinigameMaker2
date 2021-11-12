@@ -78,41 +78,7 @@ public class Item implements Process {
             String name = proc.run(miniGame, procUnit);
             Player player = procUnit.target.player;
             GameData gameData = getGameData(miniGame, procUnit, dataType);
-            if (isName) {
-                return gameData.getItemStack(name).getItemMeta().getDisplayName()
-                        + frontBrace.getLastProc().run(miniGame, procUnit);
-            }
-            if (isCode) {
-                ItemStack itemStack = gameData.getItemStack(name);
-                return itemStack == null || itemStack.getType() == Material.AIR ? "0:0" : itemStack.getTypeId() + ":" + itemStack.getData().getData();
-            } else if (isEquals) {
-                ItemStack itemStack = gameData.getItemStack(name);
-                Process proc2 = processList.get(2);
-                String value2 = proc2.run(miniGame, procUnit);
-                GameData gameData2 = getGameData(miniGame, procUnit, proc2.getType());
-                ItemStack itemStack2 = gameData2.getItemStack(value2);
-                return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
-            } else if (isExists) {
-                ItemStack itemStack = gameData.getItemStack(name);
-                return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
-            } else if (isAdd) {
-                if (isLore) {
-                    String value = processList.get(2).run(miniGame, procUnit);
-                    ItemStack itemStack = gameData.getItemStack(name);
-                    if (isExist(itemStack)) {
-                        ItemMeta itemMeta = itemStack.getItemMeta();
-                        if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-                        List<String> lore = itemMeta.getLore();
-                        if (lore == null) lore = new ArrayList<>();
-                        lore.add(value);
-                        itemMeta.setLore(lore);
-                        itemStack.setItemMeta(itemMeta);
-                    }
-                } else {
-                    ItemStack itemStack = gameData.getItemStack(name);
-                    player.getInventory().addItem(cloneItemStack(itemStack));
-                }
-            } else if (isSet) {
+            if (isSet) {
                 if (isSize) {
                     ItemStack itemStack = gameData.getItemStack(name);
                     itemStack.setAmount(Integer.parseInt(processList.get(2).run(miniGame, procUnit)));
@@ -166,6 +132,40 @@ public class Item implements Process {
                         gameData.setItemStack(name,
                                 cloneItemStack(getGameData(miniGame, procUnit, proc.getType()).getItemStack(name)));
                     }
+                }
+            } else if (isName) {
+                return gameData.getItemStack(name).getItemMeta().getDisplayName()
+                        + frontBrace.getLastProc().run(miniGame, procUnit);
+            }
+            else if (isCode) {
+                ItemStack itemStack = gameData.getItemStack(name);
+                return itemStack == null || itemStack.getType() == Material.AIR ? "0:0" : itemStack.getTypeId() + ":" + itemStack.getData().getData();
+            } else if (isEquals) {
+                ItemStack itemStack = gameData.getItemStack(name);
+                Process proc2 = processList.get(2);
+                String value2 = proc2.run(miniGame, procUnit);
+                GameData gameData2 = getGameData(miniGame, procUnit, proc2.getType());
+                ItemStack itemStack2 = gameData2.getItemStack(value2);
+                return itemStack == null ? "false" : itemStack.isSimilar(itemStack2) ? "true" : "false" + frontBrace.getLastProc().run(miniGame, procUnit);
+            } else if (isExists) {
+                ItemStack itemStack = gameData.getItemStack(name);
+                return itemStack == null ? "false" : "true" + frontBrace.getLastProc().run(miniGame, procUnit);
+            } else if (isAdd) {
+                if (isLore) {
+                    String value = processList.get(2).run(miniGame, procUnit);
+                    ItemStack itemStack = gameData.getItemStack(name);
+                    if (isExist(itemStack)) {
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+                        if (itemMeta == null) itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+                        List<String> lore = itemMeta.getLore();
+                        if (lore == null) lore = new ArrayList<>();
+                        lore.add(value);
+                        itemMeta.setLore(lore);
+                        itemStack.setItemMeta(itemMeta);
+                    }
+                } else {
+                    ItemStack itemStack = gameData.getItemStack(name);
+                    player.getInventory().addItem(cloneItemStack(itemStack));
                 }
             } else if (isSize) {
                 ItemStack itemStack = gameData.getItemStack(name);
