@@ -117,7 +117,7 @@ public class MiniGame {
         players.clear();
         gameData.clear();
         run(EventBundle.GAME_STOP);
-        GameStore.unloadGame(name);
+        if (!name.equals(bundle)) GameStore.unloadGame(name);
     }
 
 }

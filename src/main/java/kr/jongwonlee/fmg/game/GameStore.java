@@ -5,7 +5,6 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.util.FileStore;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -96,7 +95,6 @@ public class GameStore implements Listener {
     }
 
     public static void unloadGame(String name) {
-        if (isGame(name)) return;
         gameMap.remove(name);
     }
 
