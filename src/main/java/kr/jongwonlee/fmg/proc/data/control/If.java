@@ -49,7 +49,7 @@ public class If extends ConditionOperator {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
+        if (frontBrace == null) return "false";
         Process tempProc = null;
         ProcType compareType;
         ProcType conditionType = null;
@@ -63,17 +63,17 @@ public class If extends ConditionOperator {
                 compareType = process.getType();
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
-                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
-                    return "";
+                    if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+                    return "true";
                 }
-                else if (!result && compareType == ProcType.AND) return "";
+                else if (!result && compareType == ProcType.AND) return "false";
             } else if (process instanceof SmallEndBrace) {
                 if (result) {
                     iterator.next().run(miniGame, procUnit);
-                    return "";
                 } else {
-                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
+                    if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
                 }
+                return "true";
             } else {
                 if (tempProc != null && conditionType != null) {
                     String valueA = tempProc.run(miniGame, procUnit);
@@ -84,8 +84,8 @@ public class If extends ConditionOperator {
                 tempProc = process;
             }
         }
-        if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
-        return "";
+        if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+        return "false";
     }
 
     public static int setBundleHash(ParseUnit parseUnit) {
