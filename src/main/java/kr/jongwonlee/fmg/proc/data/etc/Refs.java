@@ -34,8 +34,8 @@ public class Refs implements Process {
             String name = processList.get(0).run(miniGame, procUnit);
             String message = processList.get(2).run(miniGame, procUnit);
             return GameStore
-                    .getBundles(name)
-                    .get(message)
+                    .getGame(name)
+                    .getProcBundle(message)
                     .run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
         } catch (Exception ignored) {
             ignored.printStackTrace();
