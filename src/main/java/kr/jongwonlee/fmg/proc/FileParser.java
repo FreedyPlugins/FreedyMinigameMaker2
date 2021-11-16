@@ -50,7 +50,9 @@ public class FileParser {
                         parseUnit.clearExecutor();
                         processList.add(process);
                         if (bundles.containsKey(bundleName)) {
-                            GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
+//                            GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
+                            ProcBundle procBundle = bundles.get(bundleName);
+                            processList.forEach(procBundle::add);
                         } else bundles.put(bundleName, new ProcBundle(processList));
                         continue;
                     }
