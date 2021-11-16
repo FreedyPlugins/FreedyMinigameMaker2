@@ -5,7 +5,6 @@ import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
-import org.bukkit.Bukkit;
 
 import java.util.List;
 
@@ -41,26 +40,25 @@ public class MiniGame implements Process {
                     kr.jongwonlee.fmg.game.MiniGame mg = new kr.jongwonlee.fmg.game.MiniGame(gameName, bundleName);
                     GameStore.createGame(gameName, mg);
                 }
-            }
-            if (run(name)) return String.valueOf(GameStore.isGame(name));
+            } else if (run(name, procUnit)) return String.valueOf(GameStore.isGame(name));
             return frontBrace.getLastProc().run(miniGame, procUnit);
         } else {
-            if (run(name)) return String.valueOf(GameStore.isGame(name));
+            if (run(name, procUnit)) return String.valueOf(GameStore.isGame(name));
             return name;
         }
     }
 
-    private boolean run(String name) {
+    private boolean run(String name, ProcUnit procUnit) {
         if (isExists) {
             return GameStore.isGame(name);
-        }
-        else if (isCreate) {
-            GameStore.createGame(name);
         } else if (isRemove) {
             if (name.equals(Settings.getHubGameName())) return false;
             kr.jongwonlee.fmg.game.MiniGame game = GameStore.getGame(name);
             game.disable();
             GameStore.unloadGame(name);
+        } else {
+            frontBrace.getLastProc().run(GameStore.getGame(name), procUnit);
+            return true;
         }
         return false;
     }

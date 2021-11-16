@@ -70,10 +70,11 @@ public class If extends ConditionOperator {
             } else if (process instanceof SmallEndBrace) {
                 if (result) {
                     iterator.next().run(miniGame, procUnit);
+                    return "true";
                 } else {
                     if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+                    return "false";
                 }
-                return "true";
             } else {
                 if (tempProc != null && conditionType != null) {
                     String valueA = tempProc.run(miniGame, procUnit);
