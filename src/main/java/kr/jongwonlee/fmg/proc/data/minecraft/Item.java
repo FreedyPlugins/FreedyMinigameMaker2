@@ -34,6 +34,7 @@ public class Item implements Process {
     boolean isSize;
     boolean isCode;
     boolean isGet;
+    boolean isClone;
 
     public static ItemStack clone(ItemStack itemStack) {
         return itemStack == null || itemStack.getType() == null ? null : itemStack.clone();
@@ -47,6 +48,7 @@ public class Item implements Process {
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
         dataType = getGameData(parseUnit);
+        isClone = parseUnit.useExecutor(ProcType.EXECUTE_CLONE);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
         isType = parseUnit.useExecutor(ProcType.EXECUTE_TYPE);
         isAdd = parseUnit.useExecutor(ProcType.EXECUTE_ADD);
@@ -78,7 +80,12 @@ public class Item implements Process {
             String name = proc.run(miniGame, procUnit);
             Player player = procUnit.target.player;
             GameData gameData = getGameData(miniGame, procUnit, dataType);
-            if (isSet) {
+            if(isClone) {
+                ItemStack itemStack = gameData.getItemStack(name);
+                Process proc2 = processList.get(2);
+                String value2 = proc2.run(miniGame, procUnit);
+                getGameData(miniGame, procUnit, proc2.getType()).setItemStack(value2, itemStack);
+            } else if (isSet) {
                 if (isSize) {
                     ItemStack itemStack = gameData.getItemStack(name);
                     itemStack.setAmount(Integer.parseInt(processList.get(2).run(miniGame, procUnit)));
