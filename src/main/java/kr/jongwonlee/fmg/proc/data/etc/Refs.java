@@ -38,7 +38,6 @@ public class Refs implements Process {
                     .getProcBundle(message)
                     .run(miniGame, new ProcUnit(procUnit.target, procUnit.getTaskId()));
         } catch (Exception ignored) {
-            ignored.printStackTrace();
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
 
