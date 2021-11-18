@@ -35,11 +35,6 @@ public class GameDataStore extends GameData implements Listener {
 
     public static void save() {
         GameDataStore inst = getInst();
-        dataStore.reset(false);
-        locationStore.reset(false);
-        itemStackStore.reset(false);
-        inventoryStore.reset(false);
-        listStore.reset(false);
         set(inst.dataMap, dataStore::set, dataStore);
         set(inst.locationMap, locationStore::setLocation, locationStore);
         set(inst.itemStackMap, itemStackStore::set, itemStackStore);
@@ -48,12 +43,13 @@ public class GameDataStore extends GameData implements Listener {
     }
 
     @FunctionalInterface
-    private interface Setter<T> {
+    public interface Setter<T> {
         void run(String string, T t);
     }
 
     public static <T> void set(Map<String, T> map, Setter<T> setter, YamlStore yamlStore) {
         try {
+            yamlStore.setEmpty();
             map.forEach(setter::run);
             yamlStore.save();
         } catch (Exception e) {

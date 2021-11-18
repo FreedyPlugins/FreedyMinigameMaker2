@@ -197,4 +197,8 @@ public class YamlStore extends FileStore {
         reload();
     }
 
+    public void setEmpty() {
+        config = new YamlConfiguration();
+    }
+
 }
