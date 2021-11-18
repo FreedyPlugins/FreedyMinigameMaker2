@@ -50,7 +50,9 @@ public class FileParser {
                         parseUnit.clearExecutor();
                         processList.add(process);
                         if (bundles.containsKey(bundleName)) {
-                            GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
+//                            GameAlert.DUPLICATED_BUNDLE.print(new String[]{bundleName});
+                            ProcBundle procBundle = bundles.get(bundleName);
+                            processList.forEach(procBundle::add);
                         } else bundles.put(bundleName, new ProcBundle(processList));
                         continue;
                     }
@@ -158,7 +160,7 @@ public class FileParser {
             externalProc = ProcType.getExternalProc(processName);
             if (externalProc == null) return getNothing(parseUnit, origin);
         } else externalProc = null;
-        String args = indexResult.endIndex == -1 ? "" : cutFrontSpace(string.substring(indexResult.endIndex));
+        String args = indexResult.endIndex == -1 ? "" : string.substring(indexResult.endIndex);
         Process process = externalProc != null ? externalProc : procType.getNewProcess();
         process.parse(parseUnit, args);
         if (process instanceof MathOperator) return getNothing(parseUnit, "");

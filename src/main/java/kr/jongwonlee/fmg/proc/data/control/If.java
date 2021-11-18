@@ -6,6 +6,7 @@ import kr.jongwonlee.fmg.proc.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Processable(alias = "if")
 public class If extends ConditionOperator {
@@ -13,6 +14,7 @@ public class If extends ConditionOperator {
     private SmallFrontBrace frontBrace;
     private MidFrontBrace midFrontBrace;
     private boolean result = true;
+    private int bundleHash;
 
     public boolean isResult() {
         return result;
@@ -23,8 +25,13 @@ public class If extends ConditionOperator {
         return ProcType.IF;
     }
 
+    public int getBundleHash() {
+        return bundleHash;
+    }
+
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
+        bundleHash = setBundleHash(parseUnit);
         parseUnit.addIf(this);
         Process parseProcess = FileParser.parseProcess(parseUnit, arguments);
         if (!(parseProcess instanceof SmallFrontBrace)) return;
@@ -33,7 +40,8 @@ public class If extends ConditionOperator {
         if (processList.size() == 0) return;
         Process process = processList.get(processList.size() - 1);
         if (process instanceof SmallEndBrace) {
-            processList.add(FileParser.getOneMoreLine(parseUnit, ""));
+            Then then = FileParser.getOneMoreLine(parseUnit, "");
+            processList.add(then);
         } else if (process instanceof MidFrontBrace) {
             midFrontBrace = ((MidFrontBrace) process);
         }
@@ -41,7 +49,7 @@ public class If extends ConditionOperator {
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
-        if (frontBrace == null) return "";
+        if (frontBrace == null) return "false";
         Process tempProc = null;
         ProcType compareType;
         ProcType conditionType = null;
@@ -55,15 +63,17 @@ public class If extends ConditionOperator {
                 compareType = process.getType();
                 if (result && compareType == ProcType.OR) {
                     processList.get(processList.size() - 1).run(miniGame, procUnit);
-                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
+                    if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+                    return "true";
                 }
-                else if (!result && compareType == ProcType.AND) return "";
+                else if (!result && compareType == ProcType.AND) return "false";
             } else if (process instanceof SmallEndBrace) {
                 if (result) {
                     iterator.next().run(miniGame, procUnit);
-                    return "";
+                    return "true";
                 } else {
-                    if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
+                    if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+                    return "false";
                 }
             } else {
                 if (tempProc != null && conditionType != null) {
@@ -75,8 +85,15 @@ public class If extends ConditionOperator {
                 tempProc = process;
             }
         }
-        if (midFrontBrace != null) return midFrontBrace.skip(miniGame, procUnit);
-        return "";
+        if (midFrontBrace != null) midFrontBrace.skip(miniGame, procUnit);
+        return "false";
+    }
+
+    public static int setBundleHash(ParseUnit parseUnit) {
+        List<FrontBrace> braces = parseUnit.getBraces().stream()
+                .filter(frontBrace1 -> frontBrace1 instanceof MidFrontBrace).collect(Collectors.toList());
+        if (braces.isEmpty()) return parseUnit.hashCode();
+        else return braces.get(braces.size() - 1).hashCode();
     }
 
 }

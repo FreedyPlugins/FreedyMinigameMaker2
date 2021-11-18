@@ -1,7 +1,6 @@
 package kr.jongwonlee.fmg.game;
 
 import kr.jongwonlee.fmg.proc.EventBundle;
-import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.proc.ProcUnit;
 import org.bukkit.Bukkit;
@@ -15,16 +14,22 @@ import java.util.UUID;
 
 public class MiniGame {
 
+    private final String bundle;
     private final String name;
     private Map<String, ProcBundle> bundleMap;
     private final List<UUID> players;
     private final GameData gameData;
 
-    public MiniGame(String name) {
+    public MiniGame(String name, String bundle) {
         this.name = name;
-        bundleMap = FileParser.parseBundles(name);
+        this.bundle = bundle;
+        bundleMap = GameStore.getBundles(bundle);
         players = new ArrayList<>();
         gameData = new GameData();
+    }
+
+    public MiniGame(String name) {
+        this(name, name);
     }
 
     public String run(String name, Player player) {
@@ -97,7 +102,11 @@ public class MiniGame {
     }
 
     public void reload() {
-        bundleMap = FileParser.parseBundles(name);
+        bundleMap = GameStore.getBundles(bundle);
+        if (bundleMap == null) {
+            players.stream().map(Bukkit::getPlayer).forEach(GameStore::removeGame);
+            GameStore.unloadGame(name);
+        }
     }
 
     public void disable() {
@@ -108,6 +117,7 @@ public class MiniGame {
         players.clear();
         gameData.clear();
         run(EventBundle.GAME_STOP);
+        if (!name.equals(bundle)) GameStore.unloadGame(name);
     }
 
 }
