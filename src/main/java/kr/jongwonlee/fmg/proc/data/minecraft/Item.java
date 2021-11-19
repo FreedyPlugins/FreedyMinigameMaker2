@@ -84,7 +84,7 @@ public class Item implements Process {
                 ItemStack itemStack = gameData.getItemStack(name);
                 Process proc2 = processList.get(2);
                 String value2 = proc2.run(miniGame, procUnit);
-                getGameData(miniGame, procUnit, proc2.getType()).setItemStack(value2, itemStack);
+                getGameData(miniGame, procUnit, proc2.getType()).setItemStack(value2, cloneItemStack(itemStack));
             } else if (isSet) {
                 if (isSize) {
                     ItemStack itemStack = gameData.getItemStack(name);
