@@ -67,8 +67,12 @@ public class Block implements Process {
                     org.bukkit.block.Block targetBlock;
                     if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value).getBlock();
                     else targetBlock = GameStore.getPlayerData(player.getUniqueId()).getBlock(value).getBlock();
-                    targetBlock.setType(block.getType());
-                    targetBlock.setData(block.getRawData());
+                    if (targetBlock == null) getGameData(miniGame, procUnit, process.getType())
+                            .setBlock(value, block.getBlock().getState());
+                    else {
+                        targetBlock.setType(block.getType());
+                        targetBlock.setData(block.getRawData());
+                    }
                 } else if (isLocation) {
                     BlockState block = miniGame.getGameData().getBlock(name);
                     Process process = processList.get(2);
@@ -92,12 +96,15 @@ public class Block implements Process {
                     String value = process.run(miniGame, procUnit);
                     if (isCode) {
                         int typeId = Integer.parseInt(value);
-                        org.bukkit.block.Block block = miniGame.getGameData().getBlock(name).getBlock();
+                        BlockState state = miniGame.getGameData().getBlock(name);
+                        state.setTypeId(typeId);
+                        org.bukkit.block.Block block = state.getBlock();
                         block.setTypeId(typeId);
                         try {
                             Process proc2 = processList.get(4);
                             String value2 = proc2.run(miniGame, procUnit);
                             int dataId = Integer.parseInt(value2);
+                            state.setRawData((byte) dataId);
                             block.setData(((byte) dataId));
                         } catch (Exception ignored) { }
                     } else if (isType) {
@@ -127,7 +134,9 @@ public class Block implements Process {
                     BlockState targetBlock;
                     if (process.getType() == ProcType.EXECUTE_GAME) targetBlock = miniGame.getGameData().getBlock(value);
                     else targetBlock = GameStore.getPlayerData(player.getUniqueId()).getBlock(value);
-                    targetBlock.setData(block.getData());
+                    if (targetBlock == null) getGameData(miniGame, procUnit, process.getType())
+                            .setBlock(value, block.getBlock().getState());
+                    else targetBlock.setData(block.getData());
                 } else if (isLocation) {
                     BlockState block = GameStore.getPlayerData(player.getUniqueId()).getBlock(name);
                     Process process = processList.get(2);
