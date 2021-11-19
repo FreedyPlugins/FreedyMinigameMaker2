@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.proc.Process;
 import kr.jongwonlee.fmg.proc.*;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Processable(alias =  "else")
 public class Else implements Process {
@@ -19,9 +20,7 @@ public class Else implements Process {
         anIf = isIf(parseUnit);
         if (anIf == null) return;
         parseUnit.removeIf(anIf);
-        if (anIf != null) {
-            process = FileParser.parseProcess(parseUnit, arguments);
-        }
+        process = FileParser.parseProcess(parseUnit, arguments);
         if (FileParser.isEmptyProcess(process)) process = FileParser.getOneMoreLine(parseUnit, "");
     }
 
@@ -38,9 +37,10 @@ public class Else implements Process {
 
     public If isIf(ParseUnit parseUnit) {
         List<If> ifs = parseUnit.getIfs();
-        for (If aIf : ifs) {
-            if (aIf.getBundleHash() == bundleHash) {
-                return aIf;
+        for (int i = ifs.size() - 1; i >= 0; i--) {
+            If anIf = ifs.get(i);
+            if (anIf.getBundleHash() == bundleHash) {
+                return anIf;
             }
         }
         return null;
