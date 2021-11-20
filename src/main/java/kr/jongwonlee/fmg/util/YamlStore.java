@@ -113,7 +113,7 @@ public class YamlStore extends FileStore {
 
     public Location getLocation(String path) {
         final World world = Bukkit.getWorld(getString(path + ".WORLD"));
-        if (world == null) return null;
+        //if (world == null) return null;
         final double x = getDouble(path + ".X");
         final double y = getDouble(path + ".Y");
         final double z = getDouble(path + ".Z");

@@ -18,13 +18,16 @@ public final class FMGPlugin extends JavaPlugin {
 
     private static FMGPlugin plugin;
 
+    public FMGPlugin() {
+        plugin = this;
+    }
+
     public static FMGPlugin getInst() {
         return plugin;
     }
 
     @Override
     public void onEnable() {
-        plugin = this;
         new MetricsLite(this, 12184);
         NMS.init();
         FMGCommand.init();
