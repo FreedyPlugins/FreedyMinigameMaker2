@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.io.File;
 import java.util.*;
 
 public class GameStore implements Listener {
@@ -31,6 +32,7 @@ public class GameStore implements Listener {
         if (gameMap == null) gameMap = new HashMap<>();
         if (playerGameMap == null) playerGameMap = new HashMap<>();
         bundleMap = new HashMap<>();
+        new FileStore(FileStore.DIR + File.separator + Settings.getHubGameName() + Settings.getExtension()).create(true);
         List<String> dirFiles = FileStore.getDirFiles("");
         dirFiles.forEach(name -> bundleMap.put(name, FileParser.parseBundles(name)));
         createGame(Settings.getHubGameName());
