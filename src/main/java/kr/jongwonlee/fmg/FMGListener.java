@@ -297,4 +297,12 @@ public class FMGListener implements Listener {
         if (respawnLocation != null) event.setRespawnLocation(respawnLocation);
     }
 
+    @EventHandler
+    public void onToggleSneak(PlayerToggleSneakEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        String result = GameStore.getGame(player).run(EventBundle.TOGGLE_SNEAK, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
 }

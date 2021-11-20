@@ -33,6 +33,7 @@ public enum EventBundle {
     BLOCK_BREAK,
     BLOCK_PLACE,
     PLAYER_RESPAWN,
+    TOGGLE_SNEAK,
 /*
     INTERACT_ENTITY("onInteractEntity"),
     ITEM_CONSUME("onItemConsume"),
