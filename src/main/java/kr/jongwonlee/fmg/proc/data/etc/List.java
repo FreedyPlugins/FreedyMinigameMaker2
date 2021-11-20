@@ -17,6 +17,7 @@ public class List implements Process {
 
     SmallFrontBrace frontBrace;
     Process process;
+    java.util.List<Process> processList;
     boolean isAdd;
     boolean isGame;
     boolean isOnline;
@@ -51,13 +52,13 @@ public class List implements Process {
         process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) return;
         frontBrace = (SmallFrontBrace) process;
+        processList = frontBrace.cutBehindEndBrace();
     }
 
     @Override
     public String run(MiniGame miniGame, ProcUnit procUnit) {
         try {
             if (frontBrace == null) return process.run(miniGame, procUnit);
-            java.util.List<Process> processList = frontBrace.getProcessList();
             String name = processList.get(0).run(miniGame, procUnit);
             Player player = procUnit.target.player;
             if (isOnline) {
@@ -80,8 +81,10 @@ public class List implements Process {
                             list = new ArrayList<>();
                             GameDataStore.getInst().setList(name, list);
                         }
-                        String value = processList.get(2).run(miniGame, procUnit);
-                        list.add(value);
+                        for (int i = 2; i < processList.size(); i += 2) {
+                            String value = processList.get(i).run(miniGame, procUnit);
+                            list.add(value);
+                        }
                     } else if (isRemove) {
                         if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         String value = processList.get(2).run(miniGame, procUnit);
@@ -117,8 +120,10 @@ public class List implements Process {
                             list = new ArrayList<>();
                             miniGame.getGameData().setList(name, list);
                         }
-                        String value = processList.get(2).run(miniGame, procUnit);
-                        list.add(value);
+                        for (int i = 2; i < processList.size(); i += 2) {
+                            String value = processList.get(i).run(miniGame, procUnit);
+                            list.add(value);
+                        }
                     } else if (isRemove) {
                         if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         String value = processList.get(2).run(miniGame, procUnit);
@@ -154,8 +159,10 @@ public class List implements Process {
                             list = new ArrayList<>();
                             GameStore.getPlayerData(player.getUniqueId()).setList(name, list);
                         }
-                        String value = processList.get(2).run(miniGame, procUnit);
-                        list.add(value);
+                        for (int i = 2; i < processList.size(); i += 2) {
+                            String value = processList.get(i).run(miniGame, procUnit);
+                            list.add(value);
+                        }
                     } else if (isRemove) {
                         if (list == null) return frontBrace.getLastProc().run(miniGame, procUnit);
                         String value = processList.get(2).run(miniGame, procUnit);
