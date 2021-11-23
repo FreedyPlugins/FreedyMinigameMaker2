@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class Inventory implements Process {
     private boolean isRemove;
     private boolean isClose;
     private boolean isItem;
+    private boolean isUpdate;
 
     @Override
     public ProcType getType() {
@@ -57,6 +59,7 @@ public class Inventory implements Process {
         isRemove = parseUnit.useExecutor(ProcType.EXECUTE_REMOVE);
         isClose = parseUnit.useExecutor(ProcType.EXECUTE_CLOSE);
         isItem = parseUnit.useExecutor(ProcType.ITEM);
+        isUpdate = parseUnit.useExecutor(ProcType.EXECUTE_UPDATE);
         Process process = FileParser.parseProcess(parseUnit, arguments);
         if (!(process instanceof SmallFrontBrace)) {
             parseUnit.addExecutor(getType());
@@ -76,7 +79,11 @@ public class Inventory implements Process {
         Process process = processList.get(0);
         String name = process.run(miniGame, procUnit);
         try {
-            if (isOnline) {
+            if(isUpdate) {
+                player.updateInventory();
+                return "";
+            }
+            else if (isOnline) {
                 org.bukkit.inventory.Inventory inventory = GameDataStore.getInst().getInventory(name);
                 if (process.getType() == ProcType.EXECUTE_PLAYER) inventory = player.getInventory();
                 if (isItem) {
@@ -175,19 +182,11 @@ public class Inventory implements Process {
                     int index = Integer.parseInt(proc);
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
-                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
-                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
-                    if (isGameItemStack){
-                        GameData gameData = miniGame.getGameData();
-                        ItemStack itemStack = gameData.getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else if (isAllItemStack) {
-                        ItemStack itemStack = GameDataStore.getInst().getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else if (player != null) {
-                        ItemStack itemStack = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    }
+                    GameData gameData = getGameData(miniGame, procUnit, proc2.getType());
+                    ItemStack itemStack = gameData.getItemStack(value);
+                    if (index >= 36 && inventory instanceof PlayerInventory) {
+                        setArmor((PlayerInventory) inventory, index, itemStack);
+                    } else inventory.setItem(index, itemStack);
                 } else if (isCreate) {
                     String proc = processList.get(2).run(miniGame, procUnit);
                     try {
@@ -303,19 +302,11 @@ public class Inventory implements Process {
                     int index = Integer.parseInt(proc);
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
-                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
-                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
-                    if (isGameItemStack) {
-                        GameData gameData = miniGame.getGameData();
-                        ItemStack itemStack = gameData.getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else if (isAllItemStack) {
-                        ItemStack itemStack = GameDataStore.getInst().getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else if (player != null) {
-                        ItemStack itemStack = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    }
+                    GameData gameData = getGameData(miniGame, procUnit, proc2.getType());
+                    ItemStack itemStack = gameData.getItemStack(value);
+                    if (index >= 36 && inventory instanceof PlayerInventory) {
+                        setArmor((PlayerInventory) inventory, index, itemStack);
+                    } else inventory.setItem(index, itemStack);
                 } else if (isCreate) {
                     String proc = processList.get(2).run(miniGame, procUnit);
                     try {
@@ -430,19 +421,11 @@ public class Inventory implements Process {
                     int index = Integer.parseInt(proc);
                     Process proc2 = processList.get(4);
                     String value = proc2.run(miniGame, procUnit);
-                    boolean isGameItemStack = proc2.getType() == ProcType.EXECUTE_GAME;
-                    boolean isAllItemStack = proc2.getType() == ProcType.EXECUTE_ONLINE;
-                    if (isGameItemStack){
-                        GameData gameData = miniGame.getGameData();
-                        ItemStack itemStack = gameData.getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else if (isAllItemStack) {
-                        ItemStack itemStack = GameDataStore.getInst().getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    } else {
-                        ItemStack itemStack = GameStore.getPlayerData(player.getUniqueId()).getItemStack(value);
-                        inventory.setItem(index, itemStack.clone());
-                    }
+                    GameData gameData = getGameData(miniGame, procUnit, proc2.getType());
+                    ItemStack itemStack = gameData.getItemStack(value);
+                    if (index >= 36 && inventory instanceof PlayerInventory) {
+                        setArmor((PlayerInventory) inventory, index, itemStack);
+                    } else inventory.setItem(index, itemStack);
                 } else if (isCreate) {
                     String proc = processList.get(2).run(miniGame, procUnit);
                     try {
@@ -463,6 +446,32 @@ public class Inventory implements Process {
             return frontBrace.getLastProc().run(miniGame, procUnit);
         }
         return frontBrace.getLastProc().run(miniGame, procUnit);
+    }
+
+    public void setArmor(PlayerInventory pInv, int index, ItemStack itemStack) {
+        switch (index) {
+            case 36: {
+                pInv.setBoots(itemStack);
+                break;
+            }
+            case 37: {
+                pInv.setLeggings(itemStack);
+                break;
+            }
+            case 38: {
+                pInv.setChestplate(itemStack);
+                break;
+            }
+            case 39: {
+                pInv.setHelmet(itemStack);
+                break;
+            }
+            default: {
+                pInv.setItem(index, itemStack);
+                return;
+            }
+
+        }
     }
 
 }
