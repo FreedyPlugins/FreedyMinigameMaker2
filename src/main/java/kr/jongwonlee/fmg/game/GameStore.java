@@ -61,7 +61,7 @@ public class GameStore implements Listener {
         getHubGame().join(uniqueId);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
         final MiniGame game = getGame(player);
@@ -69,7 +69,7 @@ public class GameStore implements Listener {
         if (game != null) game.quit(uniqueId);
         getHubGame().quit(uniqueId);
         playerGameMap.remove(player);
-        playersData.remove(uniqueId);
+        FMGPlugin.runTask(() -> playersData.remove(uniqueId));
     }
 
     public static MiniGame getGame(Player player) {
