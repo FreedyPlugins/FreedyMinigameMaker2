@@ -103,6 +103,9 @@ public class YamlStore extends FileStore {
             set(path, null);
             return;
         }
+        if (location.getWorld() == null) {
+            return;
+        }
         set(path + ".WORLD", location.getWorld().getName());
         set(path + ".X", location.getX());
         set(path + ".Y", location.getY());
