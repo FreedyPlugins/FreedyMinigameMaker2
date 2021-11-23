@@ -84,6 +84,7 @@ public enum ProcType {
     LENGTH(Length.class),
     LIST(List.class),
     LOG(Log.class),
+    MATH_RADIAN(MathRadian.class),
     MATH_COS(MathCos.class),
     MATH_SIN(MathSin.class),
     MATH_SQRT(MathSqrt.class),
