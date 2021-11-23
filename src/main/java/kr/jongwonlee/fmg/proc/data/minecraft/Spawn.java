@@ -46,7 +46,7 @@ public class Spawn implements Process {
             if (proc2.getType() == ProcType.EXECUTE_GAME) location = miniGame.getGameData().getLocation(value2);
             else if (proc2.getType() == ProcType.EXECUTE_ONLINE) location = GameDataStore.getInst().getLocation(value2);
             else if (proc2.getType() == ProcType.EXECUTE_PLAYER) location = player.getLocation();
-            else location = GameStore.getPlayerData(player.getUniqueId()).getLocation(value2);
+            else location = GameStore.getPlayerData(procUnit.target.player.getUniqueId()).getLocation(value2);
             Entity entity = location.getWorld().spawn(location, EntityType.valueOf(value1).getEntityClass(), e -> {
                 Entity origin = procUnit.target.entity;
                 procUnit.target.entity = e;

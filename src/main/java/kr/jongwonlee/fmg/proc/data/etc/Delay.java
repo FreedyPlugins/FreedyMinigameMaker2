@@ -46,7 +46,7 @@ public class Delay implements Process {
         List<Process> processList = frontBrace.getProcessList();
         String delay = processList.get(0).run(miniGame, procUnit);
         int taskId;
-        ProcUnit procUnit2 = new ProcUnit(procUnit.target, procUnit.getTaskId());
+        ProcUnit procUnit2 = new ProcUnit(new ProcTarget(procUnit.target), procUnit.getTaskId());
         Runnable runnable = () -> frontBrace.getLastProc().run(miniGame, procUnit2);
         if (isAsync) taskId = FMGPlugin.runTaskLaterAsync(runnable, ((long) Double.parseDouble(delay)));
         else taskId = FMGPlugin.runTaskLater(runnable, ((long) Double.parseDouble(delay)));
