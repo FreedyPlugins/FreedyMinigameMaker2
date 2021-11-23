@@ -32,7 +32,11 @@ public class Health implements Process {
         Entity entity = procUnit.target.entity;
         String value = process.run(miniGame, procUnit);
         try {
-            if (isEntity && entity instanceof LivingEntity) {
+            if (isEntity) {
+                if (!(entity instanceof LivingEntity)) {
+                    entity.remove();
+                    return value;
+                }
                 LivingEntity livingEntity = ((LivingEntity) entity);
                 if (isSize) {
                     if (isAdd) {
