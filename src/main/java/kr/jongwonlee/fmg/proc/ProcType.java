@@ -60,6 +60,7 @@ public enum ProcType {
     EXECUTE_CODE(ExecuteCode.class),
     EXECUTE_COLOR(ExecuteColor.class),
     EXECUTE_CONTAINS(ExecuteContains.class),
+    EXECUTE_DISPLAY(ExecuteDisplay.class),
     EXECUTE_ENTITY(ExecuteEntity.class),
     EXECUTE_EQUALS(ExecuteEquals.class),
     EXECUTE_EXISTS(ExecuteExists.class),

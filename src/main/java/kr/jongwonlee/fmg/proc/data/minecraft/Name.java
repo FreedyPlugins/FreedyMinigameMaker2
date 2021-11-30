@@ -15,6 +15,8 @@ public class Name implements Process {
     boolean isEntity;
     boolean isGame;
     boolean isSet;
+    boolean isDisplay;
+    boolean isList;
 
     @Override
     public void parse(ParseUnit parseUnit, String arguments) {
@@ -22,6 +24,8 @@ public class Name implements Process {
         isPlayer = parseUnit.useExecutor(ProcType.EXECUTE_PLAYER);
         isGame = parseUnit.useExecutor(ProcType.EXECUTE_GAME);
         isSet = parseUnit.useExecutor(ProcType.EXECUTE_SET);
+        isDisplay = parseUnit.useExecutor(ProcType.EXECUTE_DISPLAY);
+        isList = parseUnit.useExecutor(ProcType.LIST);
         if (!isPlayer && !isGame) parseUnit.addExecutor(getType());
         process = FileParser.parseProcess(parseUnit, arguments);
     }
@@ -36,11 +40,15 @@ public class Name implements Process {
             else player.setPlayerListName(message);
         } else if (isGame) return GameStore.getGame(player).getName();
         else if (isPlayer) {
-            if (player != null) return player.getName() + message;
+            if (player != null) {
+                if (isList) return player.getPlayerListName() + message;
+                else if (isDisplay) return player.getDisplayName() + message;
+                else return player.getName() + message;
+            }
         } else if (isEntity) {
             if (entity != null) return entity.getName() + message;
         }
-            return message;
+        return message;
     }
 
     @Override
