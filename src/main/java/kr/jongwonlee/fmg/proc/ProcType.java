@@ -108,6 +108,7 @@ public enum ProcType {
     FLYING(Flying.class),
     FOOD(Food.class),
     GAME_MODE(GameMode.class),
+    GLIDING(Gliding.class),
     HEALTH(Health.class),
     HIDE(Hide.class),
     INVENTORY(Inventory.class),

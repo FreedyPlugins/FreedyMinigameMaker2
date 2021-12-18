@@ -18,6 +18,7 @@ public enum EventBundle {
     PRE_GAME_STOP,
     GAME_STOP,
     INTERACT,
+    INTERACT_ENTITY,
     MOVE,
     CHAT,
     COMMAND,

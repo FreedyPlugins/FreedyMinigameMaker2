@@ -25,6 +25,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.util.Vector;
 
 import java.util.stream.Collectors;
 
@@ -94,6 +95,19 @@ public class FMGListener implements Listener {
         playerData.setBlock("interactBlock", clickedBlock == null ? null : clickedBlock.getState());
         playerData.setItemStack("interactItem", event.getItem());
         String result = GameStore.getGame(player).run(EventBundle.INTERACT, player);
+        if (result.equals("false")) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteractEntity(PlayerInteractAtEntityEvent event) {
+        Player player = event.getPlayer();
+        if (!player.isOnline()) return;
+        MiniGame game = GameStore.getGame(player);
+        GameData playerData = GameStore.getPlayerData(player.getUniqueId());
+        Vector vector = event.getClickedPosition();
+        playerData.setLocation("interactedPosition",
+                new Location(player.getWorld(), vector.getX(), vector.getY(), vector.getZ()));
+        String result = game.run(EventBundle.INTERACT_ENTITY, player, event.getRightClicked());
         if (result.equals("false")) event.setCancelled(true);
     }
 

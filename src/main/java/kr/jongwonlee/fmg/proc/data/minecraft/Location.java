@@ -85,21 +85,25 @@ public class Location implements Process {
             if (isOnline) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
                         : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameDataStore.getInst().getLocation(name);
-                if (isPosWorld) return location.getWorld().getName() + frontBrace.getLastProc().run(miniGame, procUnit);
-                else if (isBlock) {
+                if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
                     else GameStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return (location == null ? "false" : "true") + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSet) {
-                    double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
-                    if (isPosX) location.setX(value);
-                    else if (isPosY) location.setY(value);
-                    else if (isPosZ)  location.setZ(value);
-                    else if (isPosYaw)  location.setYaw((float) value);
-                    else if (isPosPitch)  location.setPitch((float) value);
+                    String run = processList.get(2).run(miniGame, procUnit);
+                    if (isPosWorld) location.setWorld(Bukkit.getWorld(run));
+                    else {
+                        double value = Double.parseDouble(run);
+                        if (isPosX) location.setX(value);
+                        else if (isPosY) location.setY(value);
+                        else if (isPosZ) location.setZ(value);
+                        else if (isPosYaw) location.setYaw((float) value);
+                        else if (isPosPitch) location.setPitch((float) value);
+                    }
                 }
+                else if (isPosWorld) return location.getWorld().getName() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isRemove) GameDataStore.getInst().setLocation(name, null);
                 else if (isPosX) return location.getX() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isPosY) return location.getY() + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -155,21 +159,25 @@ public class Location implements Process {
             } else if (isGame) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
                         : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : miniGame.getGameData().getLocation(name);
-                if (isPosWorld) return (location.getWorld().getName()) + frontBrace.getLastProc().run(miniGame, procUnit);
-                else if (isBlock) {
+                if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
                     else GameStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return (location == null ? "false" : "true") + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSet) {
-                    double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
-                    if (isPosX) location.setX(value);
-                    else if (isPosY) location.setY(value);
-                    else if (isPosZ)  location.setZ(value);
-                    else if (isPosYaw)  location.setYaw((float) value);
-                    else if (isPosPitch)  location.setPitch((float) value);
+                    String run = processList.get(2).run(miniGame, procUnit);
+                    if (isPosWorld) location.setWorld(Bukkit.getWorld(run));
+                    else {
+                        double value = Double.parseDouble(run);
+                        if (isPosX) location.setX(value);
+                        else if (isPosY) location.setY(value);
+                        else if (isPosZ) location.setZ(value);
+                        else if (isPosYaw) location.setYaw((float) value);
+                        else if (isPosPitch) location.setPitch((float) value);
+                    }
                 }
+                else if (isPosWorld) return (location.getWorld().getName()) + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isRemove) miniGame.getGameData().setLocation(name, null);
                 else if (isPosX) return location.getX() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isPosY) return location.getY() + frontBrace.getLastProc().run(miniGame, procUnit);
@@ -225,21 +233,25 @@ public class Location implements Process {
             } else if (player != null) {
                 org.bukkit.Location location = process.getType() == ProcType.EXECUTE_ENTITY ? procUnit.target.entity.getLocation()
                         : process.getType() == ProcType.EXECUTE_PLAYER ? player.getLocation() : GameStore.getPlayerData(player.getUniqueId()).getLocation(name);
-                if (isPosWorld) return location.getWorld().getName() + frontBrace.getLastProc().run(miniGame, procUnit);
-                else if (isBlock) {
+                if (isBlock) {
                     Process proc1 = processList.get(2);
                     String value = proc1.run(miniGame, procUnit);
                     if (proc1.getType() == ProcType.EXECUTE_GAME) miniGame.getGameData().setBlock(value, location.getBlock().getState());
                     else GameStore.getPlayerData(player.getUniqueId()).setBlock(value, location.getBlock().getState());
                 } else if (isExists) return (location == null ? "false" : "true") + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isSet) {
-                    double value = Double.parseDouble(processList.get(2).run(miniGame, procUnit));
-                    if (isPosX) location.setX(value);
-                    else if (isPosY) location.setY(value);
-                    else if (isPosZ)  location.setZ(value);
-                    else if (isPosYaw)  location.setYaw((float) value);
-                    else if (isPosPitch)  location.setPitch((float) value);
+                    String run = processList.get(2).run(miniGame, procUnit);
+                    if (isPosWorld) location.setWorld(Bukkit.getWorld(run));
+                    else {
+                        double value = Double.parseDouble(run);
+                        if (isPosX) location.setX(value);
+                        else if (isPosY) location.setY(value);
+                        else if (isPosZ) location.setZ(value);
+                        else if (isPosYaw) location.setYaw((float) value);
+                        else if (isPosPitch) location.setPitch((float) value);
+                    }
                 }
+                else if (isPosWorld) return location.getWorld().getName() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isRemove) GameStore.getPlayerData(player.getUniqueId()).setLocation(name, null);
                 else if (isPosX) return location.getX() + frontBrace.getLastProc().run(miniGame, procUnit);
                 else if (isPosY) return location.getY() + frontBrace.getLastProc().run(miniGame, procUnit);

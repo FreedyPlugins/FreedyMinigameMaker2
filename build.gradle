@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'kr.jongwonlee.fmg'
-version '2.0.4'
+version '2.0.5'
 
 compileJava.options.encoding 'UTF-8'
 

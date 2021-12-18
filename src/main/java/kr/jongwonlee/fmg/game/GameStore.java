@@ -69,7 +69,7 @@ public class GameStore implements Listener {
         if (game != null) game.quit(uniqueId);
         getHubGame().quit(uniqueId);
         playerGameMap.remove(player);
-        FMGPlugin.runTask(() -> playersData.remove(uniqueId));
+        playersData.remove(uniqueId);
     }
 
     public static MiniGame getGame(Player player) {
