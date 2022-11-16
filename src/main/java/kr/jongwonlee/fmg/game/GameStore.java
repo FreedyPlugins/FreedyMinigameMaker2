@@ -5,6 +5,7 @@ import kr.jongwonlee.fmg.conf.Settings;
 import kr.jongwonlee.fmg.proc.FileParser;
 import kr.jongwonlee.fmg.proc.ProcBundle;
 import kr.jongwonlee.fmg.util.FileStore;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,6 +40,11 @@ public class GameStore implements Listener {
         hubGame = getGame(Settings.getHubGameName());
         new ArrayList<>(bundleMap.keySet()).forEach(GameStore::createGame);
         new ArrayList<>(gameMap.values()).forEach(MiniGame::reload);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!playersData.containsKey(player.getUniqueId())) {
+                playersData.put(player.getUniqueId(), new GameData());
+            }
+        }
     }
 
     public static Map<String, ProcBundle> getBundles(String name) {
