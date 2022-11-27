@@ -9,9 +9,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Release
-        uses: docker://antonyurchenko/git-release:latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          args: |
-            jar/*.jar
+          title: "Release ${{github.run_number}}"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          files: jar/*.jar
+          prerelease: false

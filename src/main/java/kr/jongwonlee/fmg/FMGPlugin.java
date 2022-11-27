@@ -6,7 +6,6 @@ import kr.jongwonlee.fmg.event.AddonDisableEvent;
 import kr.jongwonlee.fmg.event.AddonEnableEvent;
 import kr.jongwonlee.fmg.game.GameStore;
 import kr.jongwonlee.fmg.game.MiniGame;
-import kr.jongwonlee.fmg.nms.NMS;
 import kr.jongwonlee.fmg.proc.EventBundle;
 import kr.jongwonlee.fmg.util.GameAlert;
 import org.bukkit.Bukkit;
@@ -29,7 +28,6 @@ public final class FMGPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         new MetricsLite(this, 12184);
-        NMS.init();
         FMGCommand.init();
         FMGListener.init();
         GameAlert.init();

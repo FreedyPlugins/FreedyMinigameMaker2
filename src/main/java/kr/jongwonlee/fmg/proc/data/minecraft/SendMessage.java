@@ -6,7 +6,6 @@ import kr.jongwonlee.fmg.proc.*;
 import kr.jongwonlee.fmg.proc.data.control.FrontBrace;
 import kr.jongwonlee.fmg.proc.data.control.SmallFrontBrace;
 import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
